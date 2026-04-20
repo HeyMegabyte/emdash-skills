@@ -313,6 +313,27 @@ After a project has been live for 1+ day, the idea engine (skill 14) should chec
 
 These checks feed directly into skill 14's idea queue as research-backed proposals.
 
+## Delightful Integration Checklist (ALL must be present)
+
+Every product ships with these integrations working harmoniously:
+
+| Integration | Implementation | Verification |
+|-------------|---------------|--------------|
+| **Google Tag Manager** | Single GTM container script in `<head>`. ALL other scripts loaded via GTM (never hardcoded). | Check: only 1 script tag in HTML, everything else via GTM |
+| **Google Analytics 4** | Via GTM. Enhanced measurement ON. Custom events for: page_view, sign_up, purchase, form_submit, cta_click, scroll_depth, video_play | Check: GA4 debug view shows events firing |
+| **PostHog** | Via GTM OR direct SDK. Session recording ON. Feature flags configured. Funnels for: signup → activation → retention | Check: PostHog dashboard shows live sessions |
+| **Sentry** | SDK in app code (not GTM). Source maps uploaded on deploy. Performance tracing ON. Release tracking with commit SHA | Check: Sentry shows 0 unresolved errors after deploy |
+| **Stripe** | Checkout session events tracked in PostHog. Revenue attribution. Webhook → analytics pipeline | Check: purchase events appear in both PostHog and GA4 |
+| **Listmonk** | Newsletter signup in footer. Welcome flow automated. Segment by source | Check: test subscribe → receive welcome email |
+
+### Integration Harmony Rules
+- GTM is the ONLY script loader (except Sentry SDK which needs early initialization)
+- PostHog and GA4 must NOT double-count events — use GTM to deduplicate
+- Sentry captures errors that PostHog session replay can correlate with
+- Every user action that matters has: GA4 event + PostHog event + Sentry breadcrumb
+- Feature flags in PostHog control A/B tests reported to GA4
+- Stripe webhook → PostHog `purchase` event → GA4 `purchase` event → Sentry transaction
+
 ## What This Skill Owns
 - Analytics setup and configuration (GA4, GTM, PostHog)
 - Error tracking (Sentry)
