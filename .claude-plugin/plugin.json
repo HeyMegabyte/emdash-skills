@@ -1,7 +1,7 @@
 {
   "name": "emdash-operating-system",
   "description": "58-skill autonomous product-building system for Claude Code. Converts weak one-line prompts into fully realized, production-ready SaaS products with elite UX, multimedia, testing, and deployment on Cloudflare.",
-  "version": "4.1.0",
+  "version": "5.1.0",
   "author": {
     "name": "Brian Zalewski",
     "url": "https://megabyte.space"
