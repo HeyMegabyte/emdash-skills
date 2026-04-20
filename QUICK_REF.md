@@ -62,7 +62,7 @@ Images < 200KB WebP | No placeholders | No dead forms
 | Nonprofit | 501c3 verification display, donation receipts with EIN, state charity registration notice |
 
 ## Common Mistakes to Avoid
-- Loading all 49 skills for a simple fix (wastes 40K tokens)
+- Loading all 58 skills for a simple fix (wastes 40K tokens)
 - Forgetting to purge CF cache after deploy (users see stale content)
 - Using `innerHTML` instead of `textContent` (XSS vulnerability)
 - Skipping Turnstile on forms (spam within hours)

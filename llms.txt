@@ -85,3 +85,11 @@
 - [Coolify Docker Proxmox](50-coolify-docker-proxmox/SKILL.md) -- Self-hosted infra: Coolify API, Docker, Proxmox
 - [MCP and Cloud Integrations](52-mcp-and-cloud-integrations/SKILL.md) -- MCP servers, secrets, Slack/Discord/Zapier, AI APIs
 - [GitHub CI Fix](gh-fix-ci/SKILL.md) -- Debug failing GitHub Actions PR checks
+
+## Automation and Orchestration
+
+- [Autonomous Orchestrator](53-autonomous-orchestrator/SKILL.md) -- Parallel agents, autonomous decisions, competitive iteration
+- [Computer Use Automation](54-computer-use-automation/SKILL.md) -- Native macOS app automation via Computer Use MCP
+- [Chrome and Browser Workflows](55-chrome-and-browser-workflows/SKILL.md) -- Browser automation, Playwright MCP, Firecrawl
+- [Completeness Verification](56-completeness-verification/SKILL.md) -- AI visual loop until zero issues remain
+- [AI Technology Integration](57-ai-technology-integration/SKILL.md) -- Latest AI APIs, models, and techniques
