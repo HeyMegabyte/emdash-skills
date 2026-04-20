@@ -202,6 +202,49 @@ Each GPT-4o vision call costs ~$0.01-0.03 depending on image size.
 - Budget: max 10 iterations = $24 total
 - This is a BARGAIN compared to shipping broken UI to production
 
+---
+
+## Multi-Pass Verification Protocol (5 sequential passes — ALL must pass)
+
+After the AI visual inspection loop completes, run these 5 verification passes in order. A deployment is not "done" until all 5 pass. Each pass catches a different failure class.
+
+### Pass 1: Functional Verification
+- Every route returns 200 (or correct status code)
+- Every form submits and shows success/error states
+- Every interactive element responds to click/tap/keyboard
+- Every API endpoint returns valid data with correct Zod-validated shape
+- E2E test suite is green — zero failures, zero flaky tests
+
+### Pass 2: Visual Verification
+- AI screenshot critique at 1280px + 375px (minimum) finds zero layout issues
+- No horizontal overflow, no overlapping elements, no orphaned content
+- Typography hierarchy is clear; brand colors are consistent throughout
+- The page passes the "agency test" — would a top-tier design firm ship this?
+
+### Pass 3: Content Verification
+- Zero placeholder text (Lorem, TBD, TODO, "coming soon", sample data)
+- All copy is specific to this product — not generic marketing filler
+- Microcopy is complete: button labels, empty states, error messages, tooltips
+- Alt text on every image; meta descriptions on every page
+- Reading level Flesch >= 60 on all user-facing text
+
+### Pass 4: Technical Verification
+- Lighthouse Performance >= 90 (report, don't block for multimedia-heavy)
+- Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
+- SEO: title + meta desc + H1 + canonical + JSON-LD + OG tags on every page
+- Accessibility: skip link, ARIA landmarks, focus rings, 4.5:1 contrast, axe-core clean
+- Security: CSP headers, Zod on all inputs, no eval/innerHTML, secrets in wrangler secrets
+
+### Pass 5: Business & Psychology Verification
+- Does the product serve the user's actual need? (not just technically correct — genuinely useful)
+- Is the conversion path clear? (CTA visible, value proposition above fold, friction removed)
+- Peak-End Rule: is the last interaction as good as the first? (success page, confirmation email, next step)
+- Social proof present where appropriate (testimonials, trust badges, usage stats)
+- Ethical persuasion only — no dark patterns, no fake urgency, no manipulative copy
+
+### Pass Failure Protocol
+If any pass fails: fix the issues, re-deploy, re-run that pass and all subsequent passes. Do not skip ahead.
+
 ## Trigger Conditions
 
 Run the completeness loop when:

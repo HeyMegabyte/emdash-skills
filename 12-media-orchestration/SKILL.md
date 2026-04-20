@@ -1,6 +1,9 @@
 ---
 name: "media-orchestration"
 description: "Section-by-section media planning and generation. Image generation (built-in + DALL-E fallback), logo/icon generation (Ideogram → favicon set), video generation (Sora), social preview images (OG 1200x630), stock photo curation (Unsplash, Pexels), critique/remix loops (max 3 rounds), asset compression pipeline, and media performance budgets."
+submodules:
+  - media-prompts.md
+  - compression-pipeline.md
 ---
 
 # 12 — Media Orchestration
@@ -76,21 +79,13 @@ When the stock photo or Ideogram catalog doesn't have what you need, use DALL-E 
 
 ## Brian's Visual Style (from 3,110 ChatGPT conversations)
 
-Every image generated must reflect this aesthetic:
 - **Space/cosmic themes**: cyan (#00E5FF) + purple (#7C3AED), deep black backgrounds
 - **Connections and dots**: quantum-inspired, neural network visuals, constellation patterns
-- **"Ultra realistic"** when generating scenes or product imagery
-- **Transparent logos** that work on dark backgrounds
-- **Refinement direction is ALWAYS "simpler"** — if in doubt, reduce visual complexity
-- **Never generic**: no stock-photo-looking AI slop, no "diverse team at whiteboard"
-- **Personal motifs**: squirrels, turtles (for easter eggs and brand personality)
+- **"Ultra realistic"** for scenes/product imagery. **Transparent logos** on dark backgrounds.
+- **Refinement is ALWAYS "simpler"** — reduce visual complexity when in doubt
+- **Never generic**: no stock-photo AI slop. **Personal motifs**: squirrels, turtles (easter eggs)
 
-### Prompt Style for Brian's Brand
-```
-Dark, atmospheric [subject]. Cyan (#00E5FF) light streaks and purple (#7C3AED) nebula effects
-on deep black (#060610). Quantum-inspired dots and connections. Premium tech aesthetic.
-Ultra-wide composition. Ultra realistic. No text.
-```
+> See **media-prompts.md** for full prompt schema, brand prompt style, and all template prompts.
 
 ---
 
@@ -102,39 +97,16 @@ Use the built-in image generation capability. This is the preferred method.
 ### Fallback CLI Mode (when explicit)
 Use `scripts/image_gen.py` with `OPENAI_API_KEY`:
 ```bash
-# Generate
 uv run python scripts/image_gen.py generate --prompt "..." --size 1792x1024 --output hero.png
-
-# Edit
 uv run python scripts/image_gen.py edit --image input.png --prompt "..." --output edited.png
-
-# Batch
 uv run python scripts/image_gen.py generate-batch --prompts prompts.json --output-dir output/
 ```
 
-### Prompt Engineering for Images
-
-#### Shared Prompt Schema
-```
-Subject: [main subject]
-Style: [art style — digital illustration, photograph, 3D render, etc.]
-Mood: [emotional tone — professional, energetic, calm, bold]
-Color palette: [specific colors from brand]
-Composition: [framing — centered, rule of thirds, wide angle]
-Background: [specific background description]
-Lighting: [lighting style — soft, dramatic, studio, natural]
-Details: [specific details that matter]
-Avoid: [what to exclude — text, watermarks, specific elements]
-Aspect ratio: [dimensions]
-```
-
-#### Prompt Rules
-- Be specific about style, not generic ("dark tech illustration with cyan accent glow" not "cool image")
-- Include brand colors explicitly
-- Specify what to AVOID (text in images, watermarks, specific unwanted elements)
+### Prompt Rules
+- Be specific about style; include brand colors explicitly; specify what to AVOID
 - For product screenshots, use browser rendering instead of generation
-- For people, specify diversity and professional context
 - Never add detail the user didn't imply — augment generic prompts, preserve specific ones
+- See **media-prompts.md** for the full prompt schema and templates
 
 ---
 
@@ -198,42 +170,8 @@ If no suitable logo exists (or enhancement fails), generate one:
 5. Process the winner into the full asset set (see below)
 ```
 
-### Ideogram Prompt Templates (for premium results)
-
-**Horizontal lockup:**
-```
-a premium, clean, modern logo for "{BusinessName}", a {industry} business.
-Minimal design with the text "{BusinessName}" in a bold sans-serif font.
-{brand_color} accent color on dark transparent background. Professional,
-scalable, no gradients, vector-style. PNG with transparency.
-```
-
-**Icon/monogram:**
-```
-a minimal icon logo using the letter "{FirstLetter}" for "{BusinessName}",
-a {industry} business. Clean geometric shape, {brand_color} color,
-transparent background, works at very small sizes. Modern, professional.
-```
-
-**Wordmark:**
-```
-a premium wordmark logo that spells "{BusinessName}" in elegant, custom
-typography. {brand_color} on transparent background. Think Apple, Stripe,
-or Linear level of typographic quality. No icons, text only.
-```
-
-### Ideogram v3 API Call (best text rendering)
-
-```bash
-curl -X POST "https://api.ideogram.ai/v1/ideogram-v3/generate" \
-  -H "Api-Key: $IDEOGRAM_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "a minimalist tech logo with the text \"BrandName\" in cyan #00E5FF, dark background, sans-serif",
-    "aspect_ratio": "ASPECT_16_9",
-    "rendering_speed": "DEFAULT"
-  }'
-```
+### Ideogram Prompt Templates
+See **media-prompts.md** for horizontal lockup, icon/monogram, and wordmark prompt templates, plus the Ideogram v3 API call format.
 
 ### Step 3: Regeneration — When the User Asks for a New Logo
 
@@ -314,29 +252,11 @@ Every logo MUST pass these checks before deployment:
 - Max 2 character references per generation
 
 ### Video Prompt Template
-```
-[Opening shot/setup, 0-2s]: [describe initial frame]
-[Main action, 2-6s]: [describe what happens]
-[Closing/hold, 6-8s]: [describe ending state]
-
-Style: [cinematic, documentary, animated, etc.]
-Camera: [static, slow pan, tracking, drone]
-Lighting: [natural, studio, dramatic, ambient]
-Color: [brand-consistent palette]
-Mood: [match product tone]
-```
+See **media-prompts.md** for the full video prompt template (opening/action/closing structure).
 
 ### Video Delivery
-```html
-<video autoplay muted loop playsinline poster="hero-poster.webp">
-  <source src="hero.mp4" type="video/mp4">
-</video>
-```
-- Always include `poster` image (first frame, WebP)
-- Always `muted` for autoplay
-- Always `playsinline` for iOS
-- Compress to < 2MB for hero backgrounds
-- Lazy-load videos below the fold
+- Always: `autoplay muted loop playsinline poster="hero-poster.webp"`
+- Compress to < 2MB for hero backgrounds; lazy-load below the fold
 
 ---
 
@@ -350,24 +270,10 @@ PWA manifest screenshots MUST be captured with Playwright against the live produ
 Capture after deploy, visually inspect before adding to manifest. Re-capture on every significant UI change.
 
 ### OG Image Requirements
-- Size: 1200x630px (MANDATORY per-page — not just homepage)
-- Format: PNG or JPEG
-- Include: product name, tagline, brand colors
-- Readable at thumbnail size (small text is invisible)
+- Size: 1200x630px (MANDATORY per-page — not just homepage), PNG or JPEG
+- Include product name, tagline, brand colors. Readable at thumbnail size.
 - Visually inspect every OG image before deployment (Read tool)
-- Test on Twitter Card Validator and Facebook Debugger
-
-### OG Image Template Prompt
-```
-Create a social media preview image for [product name].
-Dimensions: 1200x630 pixels.
-Background: dark (#060610) with subtle gradient.
-Text: "[Product Name]" in large, bold white text (Space Grotesk).
-Subtitle: "[Tagline]" in smaller cyan (#00E5FF) text below.
-Include a simple iconic element representing [product purpose].
-No photographs, no busy backgrounds.
-Clean, modern, tech-forward design.
-```
+- See **media-prompts.md** for the OG image template prompt
 
 ---
 
@@ -431,41 +337,7 @@ curl "https://api.pexels.com/v1/search?query=team+meeting&per_page=5" \
 
 ## Asset Pipeline
 
-### Compression Standards
-| Format | Quality | Max Size | Tool |
-|--------|---------|----------|------|
-| WebP (photo) | 80% | 200KB | cwebp or sharp |
-| WebP (illustration) | 90% | 150KB | cwebp or sharp |
-| PNG (logo/icon) | Lossless | 50KB | pngquant |
-| SVG | Optimized | 10KB | svgo |
-| MP4 (hero video) | CRF 28 | 2MB | ffmpeg |
-| MP4 (feature video) | CRF 26 | 5MB | ffmpeg |
-| ICO | Multi-resolution | 15KB | ImageMagick |
-
-### Image Dimensions
-| Use | Dimensions | Format |
-|-----|-----------|--------|
-| Hero (desktop) | 1920x1080 | WebP |
-| Hero (mobile) | 750x1334 | WebP |
-| Feature icon | 128x128 | SVG or WebP |
-| Testimonial headshot | 96x96 | WebP |
-| OG image | 1200x630 | PNG |
-| Blog header | 1200x675 | WebP |
-| Logo (horizontal) | 240xauto | SVG or PNG |
-| Favicon | 16/32/48/180/192/512 | ICO/PNG |
-
-### Delivery via Cloudflare
-```html
-<!-- Responsive images -->
-<picture>
-  <source media="(max-width: 768px)" srcset="/images/hero-mobile.webp">
-  <source media="(min-width: 769px)" srcset="/images/hero-desktop.webp">
-  <img src="/images/hero-desktop.webp" alt="..." loading="eager" decoding="async">
-</picture>
-
-<!-- Below-fold images -->
-<img src="/images/feature.webp" alt="..." loading="lazy" decoding="async">
-```
+See **compression-pipeline.md** for full compression standards (format/quality/max size tables), image dimensions reference, delivery HTML patterns, Cloudflare Image Transforms, CLS prevention, and the broken image detection Playwright test.
 
 ---
 
@@ -541,20 +413,7 @@ Resolutions: 1024x1024, 1536x1024 (landscape), 1024x1536 (portrait)
 Supports transparent PNG when requested in prompt.
 
 ### Ideogram v3 — Best Logo Generation
-Use v3 endpoint for 90-95% text rendering accuracy (Source: Ideogram API Docs):
-```bash
-curl -X POST "https://api.ideogram.ai/v1/ideogram-v3/generate" \
-  -H "Api-Key: $IDEOGRAM_API_KEY" \
-  -d '{
-    "prompt": "a minimalist tech logo with the text \"BrandName\" in cyan #00E5FF, dark background, sans-serif",
-    "rendering_speed": "TURBO",
-    "aspect_ratio": "ASPECT_1_1",
-    "style_type": "DESIGN"
-  }'
-```
-- Put desired text in quotation marks within the prompt
-- Upload up to 3 style reference images for consistency
-- TURBO mode: ~4s generation at $0.03-0.05 per image
+90-95% text rendering accuracy. Put desired text in quotation marks within prompt. Upload up to 3 style references. TURBO mode: ~4s at $0.03-0.05/image. See **media-prompts.md** for API call format.
 
 ### Sora 2 — Deprecates September 24, 2026
 Both `sora-2` and `sora-2-pro` deprecate Sept 24, 2026 (Source: OpenAI Docs).
@@ -566,21 +425,13 @@ Two-tier strategy:
 Use webhook events (`video.completed`, `video.failed`) for production.
 Videos downloadable for 24 hours post-completion.
 
-### Cloudflare Image Transforms (Source: CF Docs)
-Store originals in R2, transform on-the-fly via URL params — no pre-generated variants:
-```
-https://domain.com/cdn-cgi/image/width=800,quality=75,format=auto/path/to/image.jpg
-```
-- `format=auto` serves AVIF/WebP based on browser support
-- Each variant cached at the edge automatically
-- Sub-50ms delivery globally
+### Cloudflare Image Transforms
+Store originals in R2, transform on-the-fly via URL params (`format=auto` serves AVIF/WebP). See **compression-pipeline.md** for details.
 
 ### Core Web Vitals Impact (Source: Google Web.dev, Amazon)
-- 1s LCP delay = 7% conversion loss
-- Every 100ms of latency costs ~1% in sales
+- 1s LCP delay = 7% conversion loss; 100ms latency costs ~1% in sales
 - Hero image MUST be preloaded: `<link rel="preload" as="image" href="hero.webp">`
-- Never lazy-load the LCP element
-- Set explicit `width`/`height` on all images to prevent CLS
+- Never lazy-load the LCP element; set explicit `width`/`height` to prevent CLS
 
 ---
 
@@ -601,115 +452,6 @@ All keys in shared pool: `/Users/apple/emdash-projects/worktrees/rare-chefs-film
 
 ---
 
-## Image Compression Pipeline
+## Image Compression and Delivery
 
-### Compress
-```python
-from PIL import Image
-import subprocess
-
-def optimize_image(input_path, output_path, max_width=1200, quality=80):
-    """Compress and convert to WebP."""
-    img = Image.open(input_path)
-
-    # Resize if wider than max_width
-    if img.width > max_width:
-        ratio = max_width / img.width
-        img = img.resize((max_width, int(img.height * ratio)), Image.LANCZOS)
-
-    # Save as WebP (best compression for web)
-    img.save(output_path.replace('.png', '.webp'), 'WEBP', quality=quality, method=6)
-
-    # Also save JPEG fallback
-    if img.mode == 'RGBA':
-        img = img.convert('RGB')
-    img.save(output_path.replace('.png', '.jpg'), 'JPEG', quality=quality, optimize=True)
-```
-
-### Verify Size
-```python
-import os
-MAX_SIZES = {
-    'hero': 200_000,      # 200KB
-    'feature': 100_000,   # 100KB
-    'icon': 20_000,       # 20KB
-    'og': 150_000,        # 150KB
-    'thumbnail': 30_000,  # 30KB
-}
-
-def check_size(path, category='hero'):
-    size = os.path.getsize(path)
-    limit = MAX_SIZES.get(category, 200_000)
-    if size > limit:
-        print(f"WARNING: {path} is {size/1000:.0f}KB (limit: {limit/1000:.0f}KB)")
-        return False
-    return True
-```
-
----
-
-## Visual Quality Inspection (MANDATORY)
-
-Every image used in a build MUST be visually inspected before deployment.
-
-### Inspection Workflow
-1. **Read every image** using the Read tool to visually verify quality
-2. **Check for:** blurriness, artifacts, watermarks, wrong colors, misaligned text, AI hallucination artifacts
-3. **Verify brand alignment:** colors match palette, style is consistent across the page
-4. **If an image fails inspection:** regenerate with improved prompt, then re-inspect
-5. **Never ship an image you haven't looked at**
-
-### Augmentation Pipeline
-When the stock photo or Ideogram catalog doesn't have what you need:
-
-1. **Generate 2-3 variants** with different prompts for the same concept
-2. **Visually inspect all variants** — pick the best one
-3. **If none pass:** adjust prompt (more specific, different angle, different style) and regenerate
-4. **Maximum 3 rounds** of generation per image before falling back to stock
-5. **Document the winning prompt** in a comment near the image reference for future regeneration
-
-### Quality Criteria
-- Resolution: at least 2x the display size (retina-ready)
-- No visible compression artifacts at 100% zoom
-- No AI text artifacts (gibberish text, misspelled words)
-- Colors within deltaE < 10 of brand palette
-- Consistent lighting/style across all images on the same page
-- Human faces: no uncanny valley, extra fingers, distorted features
-
----
-
-## Broken Image Detection (Playwright)
-
-```typescript
-test('no broken images', async ({ page }) => {
-  await page.goto('/');
-  const images = page.locator('img');
-  const count = await images.count();
-  for (let i = 0; i < count; i++) {
-    const img = images.nth(i);
-    const complete = await img.evaluate(el => (el as HTMLImageElement).complete);
-    const naturalWidth = await img.evaluate(el => (el as HTMLImageElement).naturalWidth);
-    const src = await img.getAttribute('src');
-    expect(complete, `Image not loaded: ${src}`).toBe(true);
-    expect(naturalWidth, `Broken image: ${src}`).toBeGreaterThan(0);
-  }
-});
-```
-
----
-
-## Preventing CLS (Layout Shift)
-
-Always include `width` and `height` attributes on `<img>` tags.
-Use CSS `aspect-ratio` for responsive containers:
-```css
-.image-container {
-  aspect-ratio: 16/9;
-  overflow: hidden;
-}
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-```
+See **compression-pipeline.md** for Python compression/verification code, broken image detection (Playwright), and CLS prevention patterns.

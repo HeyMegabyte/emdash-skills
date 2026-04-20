@@ -251,17 +251,10 @@ when their real logo is burgundy. The cyan is OUR brand, not theirs. ALWAYS extr
 ## Legal and Trust Pages
 
 ### Required Legal Pages
-- **Privacy Policy** — required by law, linked in footer
-- **Terms of Service** — required for any commercial product
-- **Cookie Policy** — required in EU, linked in footer
-- **Acceptable Use Policy** — for SaaS/platform products
+Privacy Policy (required by law), Terms of Service, Cookie Policy (EU), Acceptable Use Policy (SaaS).
 
 ### Legal Content Rules
-- Plain language (not legalese)
-- Accurate to what the product actually does
-- Include effective date
-- Include contact information for questions
-- Dark theme consistent with site design
+Plain language (not legalese), accurate to actual product, include effective date and contact info, dark theme consistent with site.
 
 ---
 
