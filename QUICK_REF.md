@@ -45,11 +45,11 @@ Headings: Sora | Body: Space Grotesk | Code: JetBrains Mono
 E2E 0 failures | WCAG AA | CSP on | Flesch >= 60 | Yoast pass
 Images < 200KB WebP | No placeholders | No dead forms
 
-## Decision Shortcuts
-- New project? → `_router.md` Path A → `SKILL_PROFILES.md` → pick profile
-- Bug fix? → `_router.md` Path C → skills 01, 07, 08 only
-- Design issue? → `_router.md` Path D → skills 01, 10, 11, 12
-- "What else?" → skill 14 (Idea Engine) → research + propose
+## Decision Shortcuts (14-category architecture)
+- New project? → All 14 categories loaded, reference 05/coolify, 06/domain-provisioning
+- Bug fix? → 07 Quality + 08 Deploy (load 08/gh-fix-ci submodule)
+- Design issue? → 10 Design + 11 Motion + 06/easter-eggs
+- "What else?" → 14 Idea Engine → research + propose
 
 ## Domain Due Diligence Shortcuts
 | Domain Type | Must-Have Before Building |
@@ -62,7 +62,6 @@ Images < 200KB WebP | No placeholders | No dead forms
 | Nonprofit | 501c3 verification display, donation receipts with EIN, state charity registration notice |
 
 ## Common Mistakes to Avoid
-- Loading all 58 skills for a simple fix (wastes 40K tokens)
 - Forgetting to purge CF cache after deploy (users see stale content)
 - Using `innerHTML` instead of `textContent` (XSS vulnerability)
 - Skipping Turnstile on forms (spam within hours)

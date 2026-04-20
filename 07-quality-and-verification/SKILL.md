@@ -1,20 +1,27 @@
 ---
-name: "Quality and Verification"
+name: "quality-and-verification"
 description: "5-level verification pyramid: static analysis, unit/integration tests, Playwright E2E (homepage-first at 6 breakpoints), AI-powered visual inspection, and post-deploy checks. 7-check quality gate, form testing matrix, security audits (CSP, OWASP), accessibility (WCAG AA), and GitHub CI/PR integration."
-layer: "product-compiler"
-canonical-owner-of:
-  - "zero-recommendations-gate"
-  - "quality-gate-7-checks"
-  - "verification-pyramid"
-  - "form-testing-matrix"
-  - "visual-inspection-protocol"
-context: "fork"
-allowed-tools: "Bash Read Glob Grep mcp__playwright__*"
+submodules:
+  - accessibility-gate.md
+  - performance-optimization.md
+  - security-hardening.md
+  - computer-use-automation.md
+  - chrome-and-browser-workflows.md
+  - completeness-verification.md
 ---
 
 # 07 — Quality and Verification
 
 > Test everything. Verify visually. Never ship what you haven't proven works.
+
+## Submodules
+
+- **accessibility-gate.md** — Automated WCAG AA accessibility audit via axe-core + Playwright on every deployment. Beautiful focus styling (2px solid cyan, 3px offset).
+- **performance-optimization.md** — Canonical owner of Core Web Vitals, JS/CSS budgets, image optimization, lazy loading, font loading strategy, preconnect/prefetch, code splitting, tree shaking, and compression.
+- **security-hardening.md** — Canonical owner of CSP headers, OWASP Top 10 prevention, Zod validation at all boundaries, Turnstile CAPTCHA integration, KV-based rate limiting, secret rotation, dependency scanning, and XSS/CSRF/injection prevention.
+- **computer-use-automation.md** — Desktop automation via Anthropic Computer Use MCP. Native macOS app control, visual QA workflows, screenshot-verify loops, cross-app orchestration.
+- **chrome-and-browser-workflows.md** — Browser automation for web app interaction, form filling, visual testing, and web scraping via Chrome MCP and Playwright MCP.
+- **completeness-verification.md** — Continuously loop through AI-powered visual inspection of every page, every breakpoint, every interaction state until zero remaining issues.
 
 ---
 
@@ -237,64 +244,12 @@ When GPT-4o Vision is available, submit screenshots for analysis against:
 
 ---
 
-## Security Checks
+## Security, Accessibility, Performance
 
-### Always-On Security Rules
-1. **CSP headers** — set Content-Security-Policy on every response
-2. **Input validation** — Zod on all external input at the boundary
-3. **No eval/innerHTML** — never use `eval()`, `innerHTML`, or `document.write()`
-4. **Auth verification** — middleware checks JWT on every protected route
-5. **Rate limiting** — KV-based counters on all public endpoints
-6. **Secrets management** — `wrangler secret put`, never in code or .env in repo
-7. **CORS** — explicit origins, never `*` in production
-8. **SQL injection** — parameterized queries only
-9. **XSS** — escape all user content in HTML output
-
-### Security Audit Quick Command
-```bash
-grep -rn 'eval\|innerHTML\|document\.write\|password.*=.*["\x27]' src/ --include="*.ts" --include="*.js"
-```
-
----
-
-## Accessibility Checks
-
-### Required
-- Skip-to-content link
-- All images have meaningful `alt` text
-- ARIA landmarks (header, nav, main, footer)
-- Focus rings on all interactive elements (3px solid cyan)
-- Color contrast 4.5:1 minimum for body text
-- Heading hierarchy (h1 → h2 → h3, no skipping)
-- Form labels associated with inputs
-- Keyboard navigation works for all interactions
-- `prefers-reduced-motion` respected
-
-### Testing
-```bash
-npx pa11y https://domain.com
-npx axe https://domain.com
-```
-
----
-
-## Performance Checks
-
-### Targets
-| Metric | Target |
-|--------|--------|
-| Lighthouse Performance | >= 90 |
-| LCP | < 2.5s |
-| FID/INP | < 100ms |
-| CLS | < 0.1 |
-| TTI | < 3s |
-| Bundle size (Worker) | < 1MB |
-| Image sizes | < 200KB each (WebP) |
-
-### Testing
-```bash
-npx lighthouse https://domain.com --output=json --output-path=lighthouse.json
-```
+See submodules for full details:
+- **security-hardening.md** — CSP, Zod, CORS, rate limiting, secrets, XSS/injection prevention
+- **accessibility-gate.md** — axe-core, focus rings, ARIA, contrast, keyboard nav, reduced-motion
+- **performance-optimization.md** — Core Web Vitals, bundle budgets, image compression, lazy loading
 
 ---
 
@@ -311,7 +266,7 @@ Before any deployment is considered complete:
 | 5 | Performance | Lighthouse >= 90 |
 | 6 | Accessibility | Skip link, ARIA, focus rings, 4.5:1 contrast |
 | 7 | Security | CSP set, no exposed secrets, Zod validation |
-| 8 | Web Property Completeness (skill 24) | Manifest has screenshots (wide+narrow form_factor), shortcuts have 96px icons, all infrastructure files exist (humans.txt, security.txt, browserconfig.xml, opensearch.xml), 4+ JSON-LD blocks validate (Organization, WebSite w/ SearchAction, WebPage, domain-specific), OG images exist at 1200x630, cross-site rel="alternate" links present |
+| 8 | Web Property Completeness (06/web-manifest) | Manifest has screenshots (wide+narrow form_factor), shortcuts have 96px icons, all infrastructure files exist (humans.txt, security.txt, browserconfig.xml, opensearch.xml), 4+ JSON-LD blocks validate (Organization, WebSite w/ SearchAction, WebPage, domain-specific), OG images exist at 1200x630, cross-site rel="alternate" links present |
 
 ---
 
@@ -437,7 +392,7 @@ multiple maps, high-res images), scores below 90 are EXPECTED and acceptable.
 The priority order is: multimedia richness > Lighthouse score.
 Report the score for tracking but never block a deploy for it.
 
-## SEO Audit (MANDATORY — skill 28)
+## SEO Audit (MANDATORY — 09/seo-keywords)
 Run on every deploy alongside the quality gate:
 ```typescript
 test('SEO audit', async ({ page }) => {
@@ -485,7 +440,7 @@ test('readability check', async ({ page }) => {
 });
 ```
 
-## Documentation Sync Check (skill 29)
+## Documentation Sync Check (09/documentation)
 After code changes, verify docs are current:
 - CLAUDE.md references no deleted files
 - README.md features list matches actual features

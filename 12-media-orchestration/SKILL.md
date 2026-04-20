@@ -1,13 +1,6 @@
 ---
-name: "Media Orchestration"
+name: "media-orchestration"
 description: "Section-by-section media planning and generation. Image generation (built-in + DALL-E fallback), logo/icon generation (Ideogram → favicon set), video generation (Sora), social preview images (OG 1200x630), stock photo curation (Unsplash, Pexels), critique/remix loops (max 3 rounds), asset compression pipeline, and media performance budgets."
-layer: "product-compiler"
-canonical-owner-of:
-  - "image-generation-pipeline"
-  - "video-generation-pipeline"
-  - "logo-and-icon-systems"
-  - "social-preview-images"
-  - "media-critique-loops"
 ---
 
 # 12 — Media Orchestration
@@ -349,7 +342,7 @@ Mood: [match product tone]
 
 ## Social Preview Images
 
-### PWA Screenshots (skill 24 — install.doctor standard)
+### PWA Screenshots (06/web-manifest — install.doctor standard)
 PWA manifest screenshots MUST be captured with Playwright against the live production URL — never use mockups or generated images. Two screenshots required:
 - **Wide** (1920x1080): `form_factor: "wide"` — desktop install UI
 - **Narrow** (390x844): `form_factor: "narrow"` — mobile install UI

@@ -1,20 +1,27 @@
 ---
-name: "Deploy and Runtime Verification"
+name: "deploy-and-runtime-verification"
 description: "MANDATORY deploy after every code change. Typecheck → deploy → purge CDN → E2E on production → visual verify → fix-forward loop. Third-party integration health checks, cross-browser smoke tests on first deploy, cache purge strategy, rollback procedures, and GitHub auto-configuration."
-layer: "product-compiler"
-canonical-owner-of:
-  - "deploy-and-verify-loop"
-  - "cache-purge-strategy"
-  - "production-verification"
-  - "rollback-decisions"
-  - "wrangler-configuration"
-context: "fork"
-allowed-tools: "Bash(wrangler *) Bash(curl *) Read"
+submodules:
+  - launch-day-sequence.md
+  - ci-cd-pipeline.md
+  - uptime-and-health.md
+  - changelog-and-releases.md
+  - backup-and-disaster-recovery.md
+  - gh-fix-ci.md
 ---
 
 # 08 — Deploy and Runtime Verification
 
 > Deploy after every code change. Verify live behavior. Never trust local-only testing.
+
+## Submodules
+
+- **launch-day-sequence.md** — The go-live checklist that runs after the first successful deploy: submit sitemap, unblock robots.txt, announce on social, send launch email, verify every link, run full quality gate.
+- **ci-cd-pipeline.md** — GitHub Actions for auto-deploy on push to main, E2E tests on PR, branch preview deploys. Includes Playwright in CI, Lighthouse audit, and auto-merge for passing PRs.
+- **uptime-and-health.md** — Health endpoints on every Worker, external uptime monitoring via free services (UptimeRobot, Better Stack). Public status page at /status.
+- **changelog-and-releases.md** — Auto-generate changelog from git commits using conventional commits format. Public /changelog page. GitHub Releases with release notes. Semantic versioning.
+- **backup-and-disaster-recovery.md** — Single-zip infrastructure restore plan: D1 database exports, R2 bucket sync, KV namespace dumps, wrangler.toml + secrets list, and a restore script.
+- **gh-fix-ci.md** — Debug or fix failing GitHub PR checks that run in GitHub Actions; inspect checks and logs, summarize failure context, draft a fix plan.
 
 ---
 
@@ -125,9 +132,9 @@ c.header('Cache-Control', 'no-store');
 [ ] OG meta tags present
 [ ] Favicon loads
 [ ] Analytics snippet fires
-[ ] ACCESSIBILITY: Playwright a11y tests pass (see skill 20)
+[ ] ACCESSIBILITY: Playwright a11y tests pass (see 07/accessibility)
 [ ] ACCESSIBILITY: skip link, landmarks, focus-visible, reduced-motion all present
-[ ] site.webmanifest validates with 0 Chrome DevTools warnings (skill 24)
+[ ] site.webmanifest validates with 0 Chrome DevTools warnings (06/web-manifest)
 [ ] PWA screenshots present (wide + narrow form_factor)
 [ ] humans.txt and .well-known/security.txt accessible (200 status)
 [ ] Cross-site alternate links verified (rel="alternate", JSON-LD sameAs)

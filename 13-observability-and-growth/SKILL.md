@@ -1,17 +1,21 @@
 ---
-name: "Observability and Growth"
+name: "observability-and-growth"
 description: "Full instrumentation from day one. GA4 via GTM (14-step automation), PostHog (product analytics, feature flags, A/B tests), Sentry (error tracking), Stripe (payment flows with branded checkout), Listmonk (newsletters on CF Containers), growth surfaces, event-driven funnels, and operational telemetry with health endpoints."
-layer: "capability-pack"
-canonical-owner-of:
-  - "analytics-instrumentation"
-  - "error-tracking-setup"
-  - "growth-surfaces"
-  - "experimentation-framework"
+submodules:
+  - stripe-billing.md
+  - analytics-configuration.md
+  - user-feedback-collection.md
 ---
 
 # 13 — Observability and Growth
 
 > Instrument everything. Measure what matters. Grow with evidence.
+
+## Submodules
+
+- **stripe-billing.md** — Stripe payments with sensible defaults: free tier + $50/mo pro for SaaS, or donation presets for nonprofits. Auto-creates Stripe Products, Prices, and checkout endpoints.
+- **analytics-configuration.md** — Canonical owner of GA4 setup (14-step automation), GTM container configuration, PostHog SDK integration, feature flags, A/B tests, event taxonomy, funnel definitions, and scroll/engagement tracking.
+- **user-feedback-collection.md** — In-app feedback widget: 5-star rating + text comment, stored in D1, reviewed at /admin/feedback. NPS survey at day 7 and day 30 via PostHog. Testimonial collection.
 
 ---
 
@@ -433,4 +437,4 @@ window.addEventListener('scroll', () => {
 5. Prompt user ONCE, store permanently
 
 ## Coolify / Postiz
-See skill 26 (Shared API Pool) and skill 27 (Social Automation).
+See 05/shared-api-pool (Shared API Pool) and 09/social-automation (Social Automation).

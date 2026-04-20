@@ -1,5 +1,39 @@
 # Skills System Changelog
 
+## 2026-04-20 — v5.1 14-Category Re-Architecture
+
+### Architecture
+- Consolidated 57 skills into 14 parent categories with submodule files
+- 44 child skills (15-57 + gh-fix-ci) moved as .md files into parent folders
+- All content preserved — zero data loss
+- Deleted stale: system-audit/, system-redesign/, .emdash/, migration scripts
+
+### Meta Files Updated
+- _router.md v2 (submodule-based routing, always-load-all-14)
+- MASTER_PROMPT.md v5.1 (14-category table, streamlined phases)
+- SKILL_PROFILES.md (submodule references instead of skill numbers)
+- QUICK_REF.md, CONVENTIONS.md, CLAUDE.md updated
+
+### Frontmatter
+- Cleaned all 14 parent SKILL.md files (name + description + submodules only)
+- Cleaned all 45 submodule files (removed layer, canonical-owner-of, triggers)
+
+### ChatGPT Data Integration
+- Processed 3,102 conversations (428MB) from ChatGPT export
+- 6 parallel analysis agents: tech, feedback, product, personal, design, AI workflow
+- Created 3 new memory files: communication rules, infrastructure patterns, AI workflow
+- Updated 8 existing memory files with quantified data
+- Updated rules: brian-preferences (95x "shorter" data), copy-writing, code-style
+- Updated skills: 05 (stack counts), 09 (brand voice), 10 (CSS patterns), 50 (service rankings)
+- Slimmed quality-metrics rule from 73 to 9 lines
+
+### Token Efficiency
+- Rules: 344 lines → 280 lines (saved ~64 lines loaded every prompt)
+- Skills: 57 discovered → 14 discovered (reduced auto-discovery overhead)
+- Omi MCP keys added to chezmoi store (get-secret working)
+
+---
+
 ## 2026-04-18 — v4.4 Self-Improving System Architecture
 
 ### Self-Improvement Loop (skill 01)

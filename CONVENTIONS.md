@@ -91,30 +91,40 @@ get-secret SECRET_NAME          # Primary (chezmoi, 182 encrypted secrets)
 | Mesh network | Headscale |
 | Backup | Proxmox Backup Server → R2 + Wasabi sync |
 
-## Self-Hosted Services
+## Self-Hosted Services (70+ on Coolify/Proxmox)
 
-| Service | URL | Purpose |
-|---------|-----|---------|
-| Authentik | authentik.megabyte.space | SSO identity provider |
-| Bolt | bolt.megabyte.space | AI website builder (bolt.diy) |
-| LiteLLM | ai.megabyte.space | AI gateway |
-| Coolify | coolify.megabyte.space | Docker management |
-| n8n | n8n.megabyte.space | Workflow automation |
-| Postiz | postiz.megabyte.space | Social media scheduling |
-| Chatwoot | chatwoot.megabyte.space | Customer support chat |
-| NocoDB | nocodb.megabyte.space | Database UI |
-| Firecrawl | firecrawl.megabyte.space | Web scraping |
-| Browserless | browserless.megabyte.space | Headless browser |
-| Healthchecks | healthchecks.megabyte.space | Uptime monitoring |
-| Netdata | netdata.megabyte.space | Server monitoring |
-| Listmonk | listmonk.megabyte.space | Newsletter/email marketing |
-| Dozzle | dozzle.megabyte.space | Container log viewer |
-| SFTPGo | sftpgo.megabyte.space | SFTP on ZFS |
-| Open WebUI | openwebui.megabyte.space | AI chat interface |
-| SearXNG | searxng.megabyte.space | Self-hosted search |
-| Sentry | sentry.megabyte.space | Error tracking |
-| PostHog | posthog.megabyte.space | Product analytics |
-| Grafana | grafana.megabyte.space | Metrics dashboards |
+| Service | URL | Purpose | Mentions |
+|---------|-----|---------|----------|
+| Coolify | coolify.megabyte.space | Docker orchestrator (THE hub) | 136 |
+| Authentik | authentik.megabyte.space | SSO identity provider | 64 |
+| Healthchecks | healthchecks.megabyte.space | Uptime/cron monitoring | 41 |
+| Open WebUI | openwebui.megabyte.space | AI chat interface | 38 |
+| Bolt.diy | bolt.megabyte.space | AI website builder | 35 |
+| Dify | dify.megabyte.space | AI application builder | 32 |
+| Postiz | postiz.megabyte.space | Social media scheduling | 32 |
+| n8n | n8n.megabyte.space | Workflow automation | 27 |
+| NocoDB | nocodb.megabyte.space | Database UI | 25 |
+| Home Assistant | (internal) | Smart home | 25 |
+| Windmill | windmill.megabyte.space | Developer automation | 24 |
+| Chatwoot | chatwoot.megabyte.space | Customer support chat | 18 |
+| Sentry | sentry.megabyte.space | Error tracking | 17 |
+| Netdata | netdata.megabyte.space | Server monitoring | 17 |
+| Firecrawl | firecrawl.megabyte.space | Web scraping | 17 |
+| Listmonk | listmonk.megabyte.space | Newsletter/email marketing | 15 |
+| Dozzle | dozzle.megabyte.space | Container log viewer | 11 |
+| PostHog | posthog.megabyte.space | Product analytics | 10 |
+| Browserless | browserless.megabyte.space | Headless browser | 9 |
+| SFTPGo | sftpgo.megabyte.space | SFTP on ZFS | 8 |
+| Grafana | grafana.megabyte.space | Metrics dashboards | 6 |
+| LiteLLM | ai.megabyte.space | AI gateway | 4 |
+| SearXNG | searxng.megabyte.space | Self-hosted search | 3 |
+| Backrest | backrest.megabyte.space | Restic backup management | - |
+| Code Server | code.megabyte.space | Cloud VS Code | - |
+| Directus | directus.megabyte.space | Headless CMS | - |
+| Langflow | langflow.megabyte.space | AI orchestration | - |
+| MetaMCP | metamcp.megabyte.space | MCP aggregation | - |
+| Plane | plane.megabyte.space | Project management | - |
+| Paymenter | pay.megabyte.space | Hosting billing | - |
 
 ## MCP Servers (All Configured in ~/.claude.json)
 

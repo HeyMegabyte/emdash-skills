@@ -1,88 +1,81 @@
-# Skill Router
+# Skill Router (v2 — 14-Category Architecture)
 
-Deterministic decision tree. Match task type first, then refine by file context.
+Deterministic decision tree. All 14 skills are always loaded — each contains submodules for specific capabilities.
 
-**LOADING POLICY: Be generous. At least 29 skills loaded at all times. Never leave more than half unloaded. When in doubt, load the skill.**
+**LOADING POLICY: All 14 categories are always active. Submodule .md files within each category folder provide specialized reference when needed.**
 
-## Always Active (load EVERY session — non-negotiable)
+## The 14 Categories (always loaded)
 
-01 Operating System, 05 Architecture, 06 Build Loop, 07 Quality, 08 Deploy,
-09 Brand/Content, 10 Design, 12 Media, 13 Observability, 20 Accessibility,
-24 Web Manifest, 28 SEO, 29 Documentation, 30 AI-Native, 32 Contact Forms,
-37 AI Search, 43 AI Chat, 44 Drizzle, 48 Empty States, 51 Wisdom,
-52 MCP Integrations, 53 Autonomous Orchestrator, 54 Computer Use,
-55 Browser Workflows, 56 Completeness Verification, 57 AI Technology
-CONVENTIONS.md, STYLE_GUIDES.md
+| # | Category | Submodules | Purpose |
+|---|----------|-----------|---------|
+| 01 | Operating System | ai-native-coding, autonomous-orchestrator | Policy, autonomy, parallelization |
+| 02 | Goal and Brief | — | Product thesis, domain inference |
+| 03 | Planning and Research | competitive-analysis | Research, decomposition, task graphs |
+| 04 | Preference and Memory | wisdom-and-human-psychology | VoC model, preferences, Omi integration |
+| 05 | Architecture and Stack | api-design, shared-api-pool, drizzle-orm, coolify-docker-proxmox, mcp-integrations, ai-technology | Stack decisions, CF architecture, infra |
+| 06 | Build and Slice Loop | easter-eggs, domain-provisioning, web-manifest, error-pages, contact-forms, blog-engine, onboarding, site-search, i18n, ai-chat, webhooks, admin, cmd-k, empty-states, notifications | Feature building, vertical slices |
+| 07 | Quality and Verification | accessibility, performance, security, computer-use, browser-workflows, completeness | Testing, a11y, security, visual QA |
+| 08 | Deploy and Runtime | launch-day, ci-cd, uptime-health, changelog, backup-recovery, gh-fix-ci | Deploy, verify, monitor, recover |
+| 09 | Brand and Content | email-templates, social-automation, seo-keywords, documentation-hygiene | Copy, SEO, brand, docs |
+| 10 | Experience and Design | — | Typography, color, layout, components |
+| 11 | Motion and Interaction | — | Animation, transitions, scroll effects |
+| 12 | Media Orchestration | — | Image/video generation, compression |
+| 13 | Observability and Growth | stripe-billing, analytics-config, user-feedback | Analytics, payments, growth |
+| 14 | Independent Idea Engine | — | Autonomous research, improvement proposals |
 
-**(26 skills + 2 shared files = always loaded, 45% of 58)**
+**Total: 14 skills + CONVENTIONS.md + STYLE_GUIDES.md**
 
-## By Task Type (ADD these to the always-active base)
+## By Task Type (submodules to reference)
 
-| Task | Add Skills | Total ~Loaded |
-|------|-----------|---------------|
-| New project (no code) | 02, 03, 15, 16, 17, 21, 22, 23, 25, 34 | 36 |
-| Build / implement feature | 11, 15, 21, 22, 23, 25, 33, 36, 45, 46, 47, 49 | 38 |
-| Fix / debug | gh-fix-ci | 27 |
-| Deploy only | 34 | 27 |
-| Full project / autonomous | ALL 58 skills | 58 |
-| Design / visual | 11, 15, 31 | 29 |
-| SEO / content | 33, 42 | 28 |
-| Billing / payments | 18, 45 | 28 |
-| Infrastructure | 50, 26 | 28 |
-| Testing / QA | 11 | 27 |
-| Visual QA / screenshots | 11 | 27 (+ spawn visual-qa agent) |
-| Desktop automation | (already have 54) | 26 (+ spawn computer-use-operator) |
-| Onboarding / UX | 36, 47, 49 | 29 |
-| i18n / localization | 42 | 27 |
-| Error handling | 31 | 27 |
+| Task | Key Submodules to Load |
+|------|----------------------|
+| New project | 05/coolify-docker-proxmox, 06/domain-provisioning, 06/web-manifest, 09/seo-keywords |
+| Build feature | 06/*, 05/api-design, 05/drizzle-orm |
+| Fix / debug | 08/gh-fix-ci |
+| Deploy | 08/launch-day, 08/ci-cd, 08/uptime-health |
+| Full project | ALL submodules across all 14 categories |
+| Design / visual | 10, 11, 06/easter-eggs, 06/custom-error-pages |
+| SEO / content | 09/seo-keywords, 09/documentation-hygiene, 06/blog-engine, 06/i18n |
+| Billing / payments | 13/stripe-billing, 06/webhook-system |
+| Infrastructure | 05/coolify-docker-proxmox, 05/shared-api-pool, 05/mcp-integrations |
+| Testing / QA | 07/accessibility, 07/performance, 07/security, 07/completeness |
 
-## By File Being Edited (ADD to current set)
+## By File Being Edited
 
-| File Pattern | Add Skills |
-|-------------|------------|
-| *.spec.ts, *.test.ts | (already have 07) |
-| wrangler.toml | (already have 05, 08) |
-| drizzle/*, schema.ts | (already have 44) |
-| *.css, *.scss | 11 |
-| /blog/*, /posts/* | 33 |
-| /admin/* | 46 |
-| /api/webhooks/* | 45 |
-| /api/stripe* | 18, 45 |
-| .github/workflows/* | 35, gh-fix-ci |
+| File Pattern | Relevant Submodule |
+|-------------|-------------------|
+| *.spec.ts, *.test.ts | 07 (core) |
+| wrangler.toml | 05 (core), 08 (core) |
+| drizzle/*, schema.ts | 05/drizzle-orm |
+| *.css, *.scss | 10, 11 |
+| /blog/*, /posts/* | 06/blog-engine |
+| /admin/* | 06/admin-dashboard |
+| /api/webhooks/* | 06/webhook-system |
+| /api/stripe* | 13/stripe-billing, 06/webhook-system |
+| .github/workflows/* | 08/ci-cd, 08/gh-fix-ci |
 
-## By Profile (from SKILL_PROFILES.md)
+## Parallel Agent Skill Distribution
 
-| Profile | Load ALL always-active + these |
-|---------|-------------------------------|
-| Marketing Site | 11, 15, 21, 22, 23, 25, 31, 33, 34, 42 (36 total) |
-| SaaS Application | ALL 58 skills |
-| Nonprofit / Donation | 11, 15, 18, 19, 21, 22, 23, 25, 31, 33, 34, 41, 42, 43 (40 total) |
-| API Service | 21, 22, 23, 25, 26, 38, 40, 45, 50 (35 total) |
-| Developer Tool / OSS | 21, 22, 23, 25, 33, 35, 39, 47 (34 total) |
-| Micro-SaaS | 11, 18, 21, 22, 23, 25, 31, 45 (34 total) |
+| Agent | Role | Categories |
+|-------|------|-----------|
+| Frontend | UI, design, motion | 01, 06, 09, 10, 11, 12 |
+| Backend | API, DB, auth, webhooks | 01, 05, 06, 07, 13 |
+| Content | Copy, SEO, blog, media | 01, 09, 12 |
+| Quality | Testing, a11y, visual QA | 01, 07, 08 |
+| Deploy | Ship, launch, social | 01, 08, 09 |
 
-## Parallel Agent Skill Distribution (Option C)
+## Computer Use & Browser Automation
 
-When spawning parallel agents, each gets its own context window:
+Submodules: 07/computer-use-automation, 07/chrome-and-browser-workflows
 
-| Agent | Role | Skills to Load |
-|-------|------|---------------|
-| Frontend | UI, design, motion | 01, 06, 09, 10, 11, 12, 15, 24, 28, 30, 31, 32, 42, 47, 48, 51 |
-| Backend | API, DB, auth, webhooks | 01, 05, 06, 07, 13, 18, 30, 37, 44, 45, 49, 52 |
-| Content | Copy, SEO, blog, media | 01, 09, 12, 28, 29, 33, 42, 51 |
-| Quality | Testing, a11y, visual QA | 01, 07, 08, 20, 30 |
-| Deploy | Ship, launch, social | 01, 08, 27, 34, 35, 38, 40, 52 |
+Tool priority:
+1. **Dedicated MCP** (Slack, Gmail, Stripe, GitHub) → Use first
+2. **Playwright MCP** → Web testing, forms, screenshots
+3. **Chrome MCP** → Web app interaction
+4. **Computer Use** → ONLY native macOS apps
 
-## Computer Use & Browser Automation (Skills 54-55)
+## Custom Agents (in ~/.claude/agents/)
 
-When computer-use or browser MCP is available:
-- **Dedicated MCP** (Slack, Gmail, Stripe, GitHub) → Use first, fastest
-- **Playwright MCP** → Web testing, forms, screenshots (Skill 55)
-- **Firecrawl MCP** → Web scraping, search, extraction (Skill 55)
-- **Chrome MCP** → Web app interaction when no dedicated MCP
-- **Computer Use** → ONLY native macOS apps (Finder, System Settings, Notes, Preview, Maps) (Skill 54)
-
-### Custom Agents (in ~/.claude/agents/)
 | Agent | Model | Use For |
 |-------|-------|---------|
 | deploy-verifier | sonnet | Post-deploy smoke tests at 6 breakpoints |
@@ -95,13 +88,10 @@ When computer-use or browser MCP is available:
 ## Prompt-to-Path Decision Tree
 
 ```
-Is this "build everything" or "full completion"?
-├── YES → Load ALL 58 skills. Spawn parallel agents. Cascade protocol.
-└── NO → Is this a NEW project (empty folder)?
-    ├── YES → Always-active (26) + New Project extras (36 total)
-    └── NO → Does it mention BUG or ERROR?
-        ├── YES → Always-active (26) + gh-fix-ci (27 total)
-        └── NO → Does it mention DESIGN or VISUAL?
-            ├── YES → Always-active (26) + 11, 15, 31 (29 total)
-            └── NO → Always-active (26) + task-specific (27-38 total)
+All 14 categories always loaded.
+├── Full project? → Load ALL submodules. Spawn parallel agents.
+├── New project? → Reference 05/coolify, 06/domain-provisioning, 06/web-manifest
+├── Bug/error? → Reference 08/gh-fix-ci
+├── Design? → Reference 10, 11, 06/easter-eggs
+└── Default → 14 categories sufficient for most tasks
 ```

@@ -1,13 +1,16 @@
 ---
-name: "Planning and Research"
+name: "planning-and-research"
 description: "Deep web research, competitor scanning, technology evaluation, and implementation planning. Decomposes work into vertical slices, identifies parallel workstreams, tracks assumptions with confidence levels, and designs the critical path for minimum wall-clock time."
-layer: "product-compiler"
-canonical-owner-of:
-  - "web-research-and-evidence"
-  - "technology-evaluation"
-  - "implementation-planning"
-  - "work-decomposition"
-  - "assumption-tracking"
+submodules:
+  - competitive-analysis.md
+---
+
+## Submodules
+
+| File | Description |
+|------|-------------|
+| competitive-analysis.md | Before building any product: WebSearch for 3-5 competitors, scrape their homepages and pricing pages, extract features, pricing tiers, design patterns, and copy tone. |
+
 ---
 
 # 03 — Planning and Research
@@ -27,9 +30,9 @@ canonical-owner-of:
 
 ### Aggressive API and Service Discovery
 During planning, scan for every possible integration:
-- Available MCP servers (skill 52)
-- Available API keys in the shared pool (skill 26)
-- Self-hosted services on Coolify (skill 50)
+- Available MCP servers (05/mcp-integrations)
+- Available API keys in the shared pool (05/shared-api-pool)
+- Self-hosted services on Coolify (05/coolify)
 - AI APIs that could enrich the product (OpenAI, Workers AI, Ideogram)
 - Communication APIs (Slack, Discord, Twilio) for notifications
 - Automation hooks (Zapier, n8n) for workflow connectivity

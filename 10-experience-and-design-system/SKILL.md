@@ -1,13 +1,6 @@
 ---
-name: "Experience and Design System"
+name: "experience-and-design-system"
 description: "Anti-AI-slop design system for distinctive, premium interfaces. Bold typography (Sora, Space Grotesk, JetBrains Mono), dark-first color system (#060610 bg, #00E5FF cyan), fluid type scale, layout patterns, component design with interaction affordances on everything, and responsive at 375px + 1280px. The Apple Test."
-layer: "product-compiler"
-canonical-owner-of:
-  - "typography-system"
-  - "color-system"
-  - "layout-patterns"
-  - "component-design"
-  - "anti-slop-enforcement"
 ---
 
 # 10 — Experience and Design System
@@ -20,7 +13,7 @@ canonical-owner-of:
 
 **Most AI-generated sites look generic — same layout, same gradients, same feel. Ours must not.** Every design decision should serve clarity, hierarchy, and emotional impact. The test is: would a professional designer ship this?
 
-## Brian's Refinement Direction (from 3,110 conversations)
+## Brian's Refinement Direction (from 3,102 conversations, 478 design-specific)
 
 The single most repeated design feedback across all history: **"Make it simpler."**
 
@@ -33,6 +26,30 @@ When iterating on any design:
 6. The final version should feel effortless and inevitable
 
 **"Cooler and catchier"** is the other perpetual request — but always within the constraint of simplicity. Cool ≠ complex. The coolest designs are often the simplest.
+
+## CSS Patterns (extracted from Brian's actual code)
+
+### Verified CSS Values
+- Background overlay: `rgba(0, 0, 0, 0.81)` — semi-transparent black over hero images
+- Text shadow on dark: `1px 1px 1px rgba(255,255,255,0.333)` for readability
+- Box shadow: `2px 2px 2px rgba(0,0,0,0.69)` — subtle depth on cards and hero sections
+- Border-radius: `5px` for interactive elements (buttons, inputs), `10px` for content containers
+- Never `0` (sharp corners), never fully rounded (pill shape)
+- Hero inner padding: `40px`
+- Max text width: `720px` (applied to `.hero-description`, `.lead`, newsletter wrappers)
+- Line height: `1.4` for body text (his standard)
+- Letter-spacing: `0.4px` (labels), `0.5px` (nav), `1px` (titles), `1.4px` (CTAs)
+- CTA text-transform: `uppercase` always
+- Button font-weight: `700` always (bold for all UI chrome)
+
+### Install Doctor Brand Blue
+- `#119eff` — used specifically in Install Doctor contexts (social images, featured graphics)
+- This is separate from the main Megabyte Labs brand colors
+
+### Design Quality Benchmarks
+- Reference premium SaaS (Linear, Notion, Stripe) for design quality, not consumer apps
+- "Pixel-perfect" and "best-in-class" are Brian's quality aspirations
+- Brian does design-in-code (CSS), not in Figma — CSS is the source of truth
 
 ---
 
@@ -375,7 +392,7 @@ input:focus, textarea:focus, select:focus {
 - Interaction affordances
 - Responsive design rules
 - Anti-slop design enforcement
-- Empty states and loading patterns (see skill 48 for full patterns)
+- Empty states and loading patterns (see 06/empty-states for full patterns)
 - Skeleton screens for all dynamic content
 - See STYLE_GUIDES.md for Material Design + CUBE CSS
 
@@ -405,38 +422,18 @@ Most AI-generated sites use the same fonts (Inter), same gradients, same layouts
 - Interactive product demos on-page increase conversion significantly vs static screenshots
 
 ### Bento Grid Layout (Source: SaaSFrame, Apple)
-```css
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-.bento-grid .featured {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-```
-Modular, self-contained feature cards. Each has icon + short copy + micro-animation. Reduces cognitive load.
+3-column CSS grid with `.featured` spanning 2 cols + 2 rows. Modular, self-contained feature cards: icon + short copy + micro-animation. Reduces cognitive load.
 
-### Dopamine Color System (Source: Webflow Trends 2026)
-Use 4-6 semantic hues instead of single-accent:
-```css
-:root {
-  --color-action: #00E5FF;   /* primary CTAs */
-  --color-energy: #FF6B35;   /* urgency, notifications */
-  --color-calm: #50AAE3;     /* secondary, links */
-  --color-success: #10b981;  /* confirmations */
-  --color-warning: #f59e0b;  /* caution states */
-}
-```
+### Semantic Color Naming (Source: Webflow Trends 2026)
+Name colors by function, not aesthetics: `--color-action` (CTAs), `--color-energy` (urgency), `--color-calm` (secondary), `--color-success`, `--color-warning`. Maps to brand palette defined in Color System above.
 
 ### Organic Layouts (Source: Gatitaa, Figma)
-Break rigid 12-column grids with overlapping elements, asymmetric placement, and layered graphics using CSS Grid with `grid-template-areas` and negative margins. Feels human-designed, not AI-templated.
+Break rigid 12-column grids with overlapping elements, asymmetric placement, and `grid-template-areas` + negative margins. Feels human-designed, not AI-templated.
 
 ### The TL;DR Experience (Source: Webflow Trends 2026)
-Present a complete summary/pitch-deck view above the fold with expandable sections below. Users who "get it" fast convert faster. Addresses declining attention spans.
+Complete summary/pitch-deck above the fold with expandable sections below. Users who "get it" fast convert faster.
 
-### Design Psychology (skill 51 — Wisdom Applied)
+### Design Psychology (04/wisdom — Wisdom Applied)
 
 **Golden Ratio Spacing (Da Vinci, Fibonacci):**
 ```css
@@ -461,78 +458,21 @@ Mathematically harmonious spacing that humans find inherently pleasing.
 
 ---
 
-### Enhancement: INP Optimization Patterns (Source: web.dev, April 2026)
+### Enhancement: INP Optimization (Source: web.dev, April 2026)
 
-Interaction to Next Paint (INP) is now a Core Web Vital. Target: under 200ms at the 75th percentile.
+INP is a Core Web Vital. Target: under 200ms at p75.
 
-**1. Break Up Event Callbacks**
-```javascript
-// BAD: Long synchronous handler
-button.addEventListener('click', () => {
-  updateUI();          // 50ms - user sees this
-  sendAnalytics();     // 100ms - user waits for this
-  updateLocalCache();  // 80ms - user waits for this too
-});
-
-// GOOD: Yield after visual update
-button.addEventListener('click', () => {
-  updateUI(); // Only the visual update blocks
-  setTimeout(() => { sendAnalytics(); updateLocalCache(); }, 0);
-});
-```
-
-**2. Use `content-visibility` for Off-Screen Elements**
-```css
-.below-fold-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-}
-```
-Lazily renders off-screen content, dramatically reducing interaction rendering cost.
-
-**3. Prevent Layout Thrashing**
-```javascript
-// BAD: read-write-read-write forces synchronous layout
-const h = el.offsetHeight; // read
-el.style.height = h + 10 + 'px'; // write
-const w = el.offsetWidth; // forced layout!
-
-// GOOD: batch reads, then batch writes
-const h = el.offsetHeight;
-const w = el.offsetWidth;
-requestAnimationFrame(() => {
-  el.style.height = h + 10 + 'px';
-  el.style.width = w + 10 + 'px';
-});
-```
-
-**4. Keep DOM Small**
-Target: under 1,500 DOM nodes. Large DOMs multiply rendering cost on every interaction. Flatten deeply nested structures. Use virtual scrolling for long lists.
-
-**5. Debounce/Throttle High-Frequency Handlers**
-```javascript
-// Throttle scroll handlers to 1 per frame
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => { handleScroll(); ticking = false; });
-    ticking = true;
-  }
-});
-```
+**Key techniques:**
+1. **Break up event callbacks** — only the visual update blocks the main thread; defer analytics/cache to `setTimeout(fn, 0)`
+2. **`content-visibility: auto`** on below-fold sections (with `contain-intrinsic-size`) to skip rendering off-screen content
+3. **Batch DOM reads then writes** — never interleave reads/writes (causes forced synchronous layout). Use `requestAnimationFrame` for write batches
+4. **Keep DOM small** — target under 1,500 nodes. Use virtual scrolling for long lists
+5. **Throttle high-frequency handlers** — `requestAnimationFrame` gate for scroll/resize handlers
 
 ---
 
-### Enhancement: "Handmade" Anti-AI-Slop Design (Source: NNGroup, April 2026)
+### Enhancement: "Handmade" Anti-AI-Slop (Source: NNGroup, April 2026)
 
-NNGroup research confirms: AI-fatigued users now actively prefer designs that look human-crafted. This validates our anti-slop principle with hard data.
-
-**Concrete techniques to signal "human-made":**
-- Organic layout breaks: intentional asymmetry, overlapping elements, broken grids
-- Hand-drawn accent elements: custom icons, brush-stroke dividers, sketch-style illustrations
-- Imperfect typography: slightly varied letter-spacing on display text, mixed serif/sans
-- Real photography over AI-generated stock (or clearly artistic AI imagery, not generic)
-- Visible craft details: custom cursor, unique scrollbar, bespoke loading animations
-- Purposeful motion: micro-interactions that respond to context, not generic fade-ins
+NNGroup confirms AI-fatigued users prefer human-crafted designs. Techniques: intentional asymmetry, custom icons/dividers, mixed serif/sans on display text, real photography over generic AI stock, bespoke micro-interactions, visible craft details (custom cursor, unique scrollbar).
 
 **The rule:** If a design could have been produced by typing "make me a modern website" into any AI builder, it fails.

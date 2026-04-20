@@ -1,13 +1,6 @@
 ---
-name: "Goal and Brief"
+name: "goal-and-brief"
 description: "Establish the project thesis before the first line of code. Infers product type from domain name, identifies target users and business model, maintains PROJECT_BRIEF.md as single source of truth, and evolves the brief across prompts without losing alignment."
-layer: "product-compiler"
-canonical-owner-of:
-  - "project-thesis"
-  - "product-type-inference"
-  - "target-user-identification"
-  - "business-model-inference"
-  - "brief-evolution"
 ---
 
 # 02 — Goal and Brief

@@ -1,18 +1,23 @@
 ---
-name: "Brand and Content System"
+name: "brand-and-content-system"
 description: "Extract real brands before inventing (Wayback Machine for rebuilds). Business-type inference for tone and style. Copy system with headline/CTA rules. Trust surfaces (testimonials, logos, stats). Legal pages. Information architecture. SEO content with structured data, meta tags, and sitemap. PDF and DOCX generation."
-layer: "product-compiler"
-canonical-owner-of:
-  - "brand-extraction"
-  - "copy-system-and-tone"
-  - "trust-surfaces"
-  - "legal-pages"
-  - "information-architecture"
+submodules:
+  - email-templates.md
+  - social-automation.md
+  - seo-and-keywords.md
+  - documentation-and-codebase-hygiene.md
 ---
 
 # 09 — Brand and Content System
 
 > Extract the real brand before inventing one. Write with clarity, proof, and purpose.
+
+## Submodules
+
+- **email-templates.md** — Branded HTML email templates for all transactional email: dark gradient header with logo, clean body, light footer. Sent via Resend with verified megabyte.space domain.
+- **social-automation.md** — Auto-post to social media via Postiz (self-hosted on Coolify) when significant updates are deployed. Generates platform-specific copy in Brian's voice.
+- **seo-and-keywords.md** — Full SEO engine: keyword research, competitor keyword analysis, per-page primary + longtail targeting, Yoast-level on-page checks, schema markup, internal linking, and programmatic SEO at scale.
+- **documentation-and-codebase-hygiene.md** — Keep the entire codebase in sync: README.md, CLAUDE.md, MEMORY.md, JSDoc/TypeDoc, code comments with references, and cross-project documentation. Remove stale code/comments.
 
 ---
 
@@ -25,7 +30,24 @@ canonical-owner-of:
 2. **Business strategy** — does this content support conversion through ethical psychology?
 3. **projectsites.dev reputation** — does this content make our ecosystem look world-class?
 
-### Psychology-Informed Content Strategy (skill 51)
+### Brian's Brand Voice (from 865 product conversations)
+- **Slogans:** "Open-Source Wizardry. 100% Wizardry. 0% Robes." | "Often imitated, never duplicated."
+- **Newsletter:** "Lab Insights Journal" | "Lab Notes Newsletter"
+- **Handle:** @HeyMegabyte on all platforms (@heymegabyteofficial on Instagram)
+- **Email:** hey@megabyte.space (general) | brian@megabyte.space (personal)
+- **Tone:** Professional but irreverent. "Hey" not "Hi." First-person from Megabyte Labs perspective.
+- **Emphasis patterns:** always "cross-platform" and "open-source" in product descriptions
+- **Install Doctor framing:** always "single command" or "one-liner"
+- **Hero tagline pattern:** "[Topic] **Innovation**" (e.g., "Automation Innovation")
+- **Footer CTA:** "Let's Talk" or "Get in Touch" (statistically best per Brian's research)
+- **Consulting rate:** $140/hr standard, $70/hr nonprofit (50% discount)
+- **Hosting rate:** $100/mo WordPress hosting
+
+### Social Presence
+@HeyMegabyte on: Facebook, GitHub, LinkedIn, Pinterest, Reddit, Telegram, Threads, Tumblr, Vimeo, WhatsApp, X/Twitter, YouTube
+YouTube playlist: "Megabyte Minis" | Dev.to organization | Patreon for donations
+
+### Psychology-Informed Content Strategy (04/wisdom)
 - **Reciprocity:** give genuine value in the content itself (teach, don't just market)
 - **Social proof:** place testimonials, stats, and logos near every conversion point
 - **Authority:** demonstrate expertise through depth, specificity, and real numbers
@@ -107,7 +129,7 @@ DO NOT:
 
 #### When there is NO website at all:
 Only then may you infer colors based on industry + AI suggestion:
-- Use Skill 51 (Wisdom) color psychology as guidance
+- Use 04/wisdom (Wisdom) color psychology as guidance
 - Generate 3 palette options and A/B test with GPT-4o vision on mockups
 - Document that colors are AI-generated, not extracted
 
@@ -351,7 +373,7 @@ Homepage
 - Document generation (PDF, DOCX)
 - See STYLE_GUIDES.md for Mailchimp + GOV.UK writing rules
 
-## Web Property Brand Consistency (skill 24)
+## Web Property Brand Consistency (06/web-manifest)
 
 Branding must be consistent across ALL web property files, not just visible pages:
 
@@ -373,10 +395,10 @@ Branding must be consistent across ALL web property files, not just visible page
 
 ---
 
-## SEO-Driven Content (skill 28 Integration)
+## SEO-Driven Content (09/seo-keywords Integration)
 
 ### Every Page Written Around Keywords
-1. Get target keywords from skill 28 research
+1. Get target keywords from 09/seo-keywords research
 2. Primary keyword in: title, H1, first paragraph, meta description
 3. Longtail phrases in: H2s, body paragraphs (1-2 per page)
 4. Semantic variations woven naturally throughout
@@ -426,52 +448,31 @@ Branding must be consistent across ALL web property files, not just visible page
 > Sharp. Punchy. Irreverent. Love-forward. No bullshit.
 
 ### Tone by Context
-
-| Context | Tone | Example |
-|---------|------|---------|
-| Nonprofit / Mission | Warm but direct, never preachy | "Your clean driveway feeds a family." |
-| SaaS / Developer | Technical but human, zero fluff | "Ship 3x faster. No config required." |
-| Landing page hero | Bold, benefit-first, urgent | "The same technology reshaping Wall Street, pointed at a soup kitchen." |
-| Error messages | Human, helpful, never blame user | "Something went wrong on our end. Try again?" |
-| Legal pages | Plain English, not legalese | Clear, honest, readable at 8th grade level |
+- **Nonprofit:** Warm but direct, never preachy. **SaaS:** Technical but human, zero fluff.
+- **Hero:** Bold, benefit-first, urgent. **Errors:** Human, helpful, never blame user.
+- **Legal:** Plain English, readable at 8th grade level.
 
 ### Microcopy Rules
-- Form labels: conversational ("Your email" not "Email Address")
-- Placeholders: example data ("jane@example.com")
-- Validation: friendly ("Looks like that email needs an @ symbol")
-- Success: celebratory ("You're in! Check your inbox.")
-- Loading: informative ("Setting up your account...")
+- Labels: conversational ("Your email" not "Email Address"). Placeholders: example data.
+- Validation: friendly ("Looks like that email needs an @"). Success: celebratory ("You're in!").
 
-### Good Examples (Brian's Voice)
+### Examples (Brian's Voice)
 - "The same technology reshaping Wall Street, pointed at a soup kitchen."
 - "One number. No hold music. No bureaucracy."
-- "Your clean driveway feeds a family."
-- "Even the machine has limits. But the mission doesn't."
 - "Built by one person. Powered by everything."
-- "Not a charity. A system that works."
 
-### Bad Examples (Anti-Patterns)
-- "Welcome to our innovative platform that leverages cutting-edge AI..." (corporate slop)
-- "Click here to learn more about our services" (generic, passive)
-- "We're excited to announce..." (empty filler)
+### Anti-Patterns (Never Use)
+- "Welcome to...", "Discover...", "Unleash...", "Revolutionize...", "Click here", "Submit", "Learn more"
+- Corporate slop: "innovative platform that leverages cutting-edge AI..."
+- Empty filler: "We're excited to announce..."
 
-### Anti-Pattern Words (Never Use)
-- "Welcome to...", "Discover...", "Unleash...", "Revolutionize..."
-- "Click here", "Submit", "Learn more"
-
-### Research-Backed Copy Principles
-
-#### Conversion (Source: CXL Institute, Copyhackers)
-- Headlines with numbers convert 36% better
-- Benefit-oriented headlines outperform feature-oriented by 28%
+### Conversion Research (CXL, Copyhackers, HBR)
+- Headlines with numbers convert 36% better; benefit-oriented outperform feature-oriented by 28%
 - Social proof near CTAs increases click-through 15-20%
 - Specificity builds trust: "$47/month" beats "affordable pricing"
+- Named individuals raise 2x more than statistics alone; show before -> after
 
-#### Emotional Drivers (Source: Harvard Business Review)
-- Stories with a named individual raise 2x more than statistics alone
-- Show the transformation: before -> after
-
-### Wisdom in Copy (skill 51)
+### Wisdom in Copy (04/wisdom)
 
 #### Servant Framing
 Write from the user's perspective, not ours:

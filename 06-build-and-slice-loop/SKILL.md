@@ -1,12 +1,44 @@
 ---
-name: "Build and Slice Loop"
+name: "build-and-slice-loop"
 description: "Implements features in vertical slices, always starting with homepage. Enforces anti-placeholder rules — no lorem ipsum, no TODO stubs, no gray boxes. Real content, real images, real interactions. TypeScript strict mode, Zod validation, and structured file organization."
-layer: "product-compiler"
-canonical-owner-of:
-  - "vertical-slice-planning"
-  - "anti-placeholder-enforcement"
-  - "implementation-standards"
-  - "content-generation-rules"
+submodules:
+  - easter-eggs.md
+  - domain-provisioning.md
+  - web-manifest-system.md
+  - custom-error-pages.md
+  - contact-forms-and-endpoints.md
+  - blog-and-content-engine.md
+  - onboarding-and-first-run.md
+  - site-search.md
+  - internationalization.md
+  - ai-chat-widget.md
+  - webhook-system.md
+  - admin-dashboard.md
+  - keyboard-shortcuts-and-command-palette.md
+  - empty-states-and-loading.md
+  - notification-system.md
+---
+
+## Submodules
+
+| File | Description |
+|------|-------------|
+| easter-eggs.md | Every website gets at least one hidden Easter egg via URL query parameter. Canvas-based, full-screen, dismissible, delightful. |
+| domain-provisioning.md | Auto-provision new domains with CF Worker, DNS, SSL, and a gorgeous animated placeholder page. |
+| web-manifest-system.md | Full PWA manifest with screenshots, shortcuts, sitemap.xml, robots.txt, humans.txt, security.txt, opensearch.xml, and comprehensive meta tags. |
+| custom-error-pages.md | Beautiful branded error pages for 404, 500, 503, and offline states. Dark theme, brand colors, helpful navigation. |
+| contact-forms-and-endpoints.md | Working contact form with Turnstile captcha, Zod validation, Resend email delivery, and 8-point form test matrix. |
+| blog-and-content-engine.md | SEO-driven blog system: markdown-to-HTML, RSS feed, reading time, social sharing, related posts, and seed post generation. |
+| onboarding-and-first-run.md | SaaS onboarding flows: welcome modal, guided tour, progress checklist, welcome email, activation tracking. |
+| site-search.md | Cloudflare AI Search-powered site search with hybrid semantic + keyword search, multi-tenant support, and Cmd+K modal UI. |
+| internationalization.md | Multi-language support via URL parameter or dropdown. Minimum English + Spanish. AI translates at deploy time. |
+| ai-chat-widget.md | Workers AI + Vectorize RAG chat widget trained on the service's own data. Auto-indexes all pages at deploy time. |
+| webhook-system.md | Consolidated webhook handling for Stripe, Clerk, GitHub. Signature verification, event routing, idempotency via D1 dedup. |
+| admin-dashboard.md | Lightweight /admin panel for content moderation and data review with bolt.diy editor integration. |
+| keyboard-shortcuts-and-command-palette.md | Full Cmd+K command palette like Linear/Notion. Keyboard shortcut overlay, keyboard-first navigation for power users. |
+| empty-states-and-loading.md | Every empty list prompts a meaningful first action. Skeleton screens for all loading states. |
+| notification-system.md | OneSignal web push notifications and in-app notification bell for SaaS products with unread count badge. |
+
 ---
 
 # 06 — Build and Slice Loop
@@ -22,7 +54,7 @@ canonical-owner-of:
 ### Strategic Slice Priorities
 Every slice should advance at least one of these goals:
 1. **End-user value** — does this slice make the user's life tangibly better?
-2. **Conversion psychology** — does this slice move users toward purchase/action? (skill 51)
+2. **Conversion psychology** — does this slice move users toward purchase/action? (04/wisdom)
 3. **Brand quality** — does this slice make projectsites.dev look world-class?
 
 ### AI-Enriched Slices
@@ -31,7 +63,7 @@ Every slice should ask: "Can AI make this better?"
 - Manual text → AI-generated alt text, meta descriptions, translations
 - Basic search → AI-powered semantic search (Vectorize + Workers AI)
 - Generic recommendations → AI-driven personalization
-- Manual support → AI chat widget (Workers AI RAG, skill 43)
+- Manual support → AI chat widget (Workers AI RAG, 06/ai-chat)
 - No video → AI-generated hero video (Sora 2, skill 12)
 
 ---
@@ -113,7 +145,7 @@ Unless explicitly directed otherwise, the first vertical slice is:
 ### Feature Implementation Pattern
 ```
 1. Write the E2E test first (what should the user see?)
-2. Build the data layer (Drizzle schema + migration — skill 44)
+2. Build the data layer (Drizzle schema + migration — 05/drizzle)
 3. Build the API endpoint (Hono route, Zod validation)
 4. Build the UI (page or component)
 5. Wire everything together
@@ -246,12 +278,12 @@ Every page gets relevant JSON-LD:
 [ ] Webhook handlers are idempotent (use idempotency keys; handle retries without duplicates)
 [ ] Graceful degradation for third-party failures (Stripe.js, Turnstile, analytics CDN)
 [ ] Deployed and verified live
-[ ] Skill 24 web property requirements met:
+[ ] 06/web-manifest web property requirements met:
     - site.webmanifest with screenshots (wide + narrow form_factor), shortcuts with 96px icons
     - humans.txt, .well-known/security.txt present
     - Cross-site alternate links and JSON-LD sameAs
     - All meta tags (og:*, twitter:*, msapplication-*, apple-mobile-web-app-*, color-scheme)
-[ ] MANDATORY EXIT GATE: Skill 56 visual verification passes on ALL pages affected by this slice.
+[ ] MANDATORY EXIT GATE: 07/completeness visual verification passes on ALL pages affected by this slice.
     Screenshot every affected page at 6 breakpoints → GPT-4o analysis → fix → re-verify.
     No slice is marked DONE until AI vision confirms zero issues.
 [ ] Feature Completeness Engine (FCE) scan returns zero findings on affected routes.
@@ -320,7 +352,7 @@ Every feature slice follows Red → Green → Refactor → Verify:
 4. Implement the minimum code to make it pass (Green)
 5. Refactor while keeping tests green
 6. Run FCE scan — zero findings required
-7. Run Skill 56 visual verification — verified required
+7. Run 07/completeness visual verification — verified required
 8. Deploy — only after all gates pass
 
 ### Continuous Self-Healing
@@ -411,10 +443,10 @@ Before implementing any feature, check if it already exists in another emdash pr
 ```
 
 Common reusable patterns across projects:
-- Contact form with Turnstile (skill 32 template)
-- Stripe checkout session (skill 18 template)
+- Contact form with Turnstile (06/contact-forms template)
+- Stripe checkout session (13/stripe-billing template)
 - Clerk auth middleware (skill 05 pattern)
-- Error pages (skill 31 template)
+- Error pages (06/custom-error-pages template)
 - Analytics setup (skill 13 pattern)
 - CSP headers (CONVENTIONS.md)
 

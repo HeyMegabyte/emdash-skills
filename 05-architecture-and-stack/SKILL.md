@@ -1,13 +1,26 @@
 ---
-name: "Architecture and Stack"
+name: "architecture-and-stack"
 description: "Cloudflare-first platform selection and architecture design. Decision trees for Workers, Pages, D1, R2, KV, Durable Objects, Queues, Vectorize. Default stack with override conditions. Auth via Clerk, data patterns, reliability structure, and complete API key reference."
-layer: "product-compiler"
-canonical-owner-of:
-  - "platform-selection"
-  - "architecture-patterns"
-  - "cloudflare-decision-trees"
-  - "auth-architecture"
-  - "data-architecture"
+submodules:
+  - api-design-and-documentation.md
+  - shared-api-pool.md
+  - drizzle-orm-and-migrations.md
+  - coolify-docker-proxmox.md
+  - mcp-and-cloud-integrations.md
+  - ai-technology-integration.md
+---
+
+## Submodules
+
+| File | Description |
+|------|-------------|
+| api-design-and-documentation.md | Hono RPC mode, error envelope format, rate limiting patterns, pagination, OpenAPI spec generation, and API versioning. |
+| shared-api-pool.md | Centralized API key pool shared across all Emdash projects. Auto-integrates PostHog, Sentry, Postiz, and all available services. |
+| drizzle-orm-and-migrations.md | Drizzle ORM as the database abstraction layer for D1 and Neon. Schema-first design with auto-generated migrations and type-safe queries. |
+| coolify-docker-proxmox.md | Orchestrate self-hosted services on Proxmox via Coolify API. Deploy Docker containers, manage env vars, provision new services. |
+| mcp-and-cloud-integrations.md | Connect all available MCP servers, cloud APIs, and SaaS integrations. Auto-discover secrets and promote aggressive AI API usage. |
+| ai-technology-integration.md | Latest AI APIs, models, and techniques for building AI-native products. GPT-4o vision, Workers AI edge inference, embeddings for RAG. |
+
 ---
 
 # 05 — Architecture and Stack
@@ -22,22 +35,41 @@ canonical-owner-of:
 
 ---
 
-## Default Stack
+## Default Stack (confirmed across 3,102 ChatGPT conversations with usage counts)
 
-| Need | Default | Override When |
-|------|---------|---------------|
-| **Hosting** | Cloudflare Workers + Pages | Never (hard constraint) |
-| **Backend** | Hono on Workers | Complex GraphQL needs → consider Yoga |
-| **Frontend (simple)** | Vanilla HTML/CSS/JS on Workers | More than 3 interactive pages |
-| **Frontend (complex)** | Angular 19 + Ionic + Nx | Simple marketing site |
-| **Database (simple)** | D1 (SQLite) | Joins > 3 tables, complex queries |
-| **Database (complex)** | Neon PostgreSQL | D1 is sufficient |
-| **Cache / Config** | Cloudflare KV | Need atomic operations → D1 |
-| **Object Storage** | Cloudflare R2 | S3-specific SDK requirement |
-| **Auth** | Clerk | Custom auth flow explicitly requested |
-| **Payments** | Stripe (+ Stripe Link) | Non-card payments, crypto |
-| **Email (transactional)** | Resend | Bulk sending → SendGrid/Listmonk |
-| **Email (marketing)** | Listmonk on CF Containers | Simple transactional only → Resend |
+| Need | Default | Mentions | Override When |
+|------|---------|----------|---------------|
+| **Hosting** | Cloudflare Workers + Pages | 289 convos | Never (hard constraint) |
+| **Backend** | Hono on Workers | explicit | Complex GraphQL needs → consider Yoga |
+| **Frontend (simple)** | Vanilla HTML/CSS/JS on Workers | - | More than 3 interactive pages |
+| **Frontend (complex)** | Angular 19 + Ionic + PrimeNG + Nx | 69+110 | Simple marketing site |
+| **Database (simple)** | D1 (SQLite) | 56 | Joins > 3 tables, complex queries |
+| **Database (complex)** | Neon PostgreSQL | 20 | D1 is sufficient |
+| **Cache / Config** | Cloudflare KV / Upstash Redis | 15 | Need atomic operations → D1 |
+| **Object Storage** | Cloudflare R2 | - | S3-specific SDK requirement |
+| **Auth (SaaS)** | Clerk | 3 | Custom auth flow explicitly requested |
+| **Auth (self-hosted)** | Authentik | 64 | Clerk for customer-facing |
+| **Payments** | Stripe (+ Stripe Link) | 20 | Non-card payments, crypto |
+| **Email (transactional)** | Resend | 4 | Bulk sending → Listmonk |
+| **Email (marketing)** | Listmonk on Coolify | 15 | Simple transactional only → Resend |
+| **Runtime** | Bun | 115 | Node.js for incompatible packages |
+| **Package Manager** | pnpm | 9 | Legacy projects on npm |
+| **Linting** | Biome | explicit | Never ESLint + Prettier |
+| **Testing** | Playwright + Vitest | 28 | Never Jest, never Cypress |
+| **Search** | CF AI Search / Meilisearch | 3 | Simple LIKE → D1 |
+| **Rich text editor** | Editor.js | new | - |
+| **File uploads** | Uppy | new | - |
+| **Data grids** | ag-grid | new | - |
+| **Notifications** | Novu | new | - |
+| **AI copilot** | CopilotKit | new | - |
+
+### Key Decision Reasoning (from ChatGPT conversations)
+- **Hono over NestJS:** Explicit directive Feb 2026: "Remove everything about NestJS and replace with Hono." Reason: Hono runs natively on CF Workers.
+- **Angular over React:** "My background mostly consists of Angular and Ionic." Also explored whether AI codes React better but stuck with Angular.
+- **Neon over Supabase:** Supabase pain: "$10/month per project" and "one project = one database." Neon: multiple databases, lower cost.
+- **Drizzle over Prisma:** Lighter, better edge support. Prisma too heavy for Workers.
+- **Biome over ESLint+Prettier:** Single tool, Rust-based, faster. Explicit rejection.
+- **Chezmoi over Ansible:** Migrated desktop provisioning 2024. Go-templates, YAML configs, git-native.
 | **Analytics** | GA4 via GTM + PostHog | Privacy-first → PostHog only |
 | **Error tracking** | Sentry | PostHog errors sufficient |
 | **Testing** | Playwright (E2E) + Vitest (unit) | — |
@@ -187,8 +219,8 @@ User → Clerk widget → JWT → Worker middleware verifies → proceed
 
 ## Data Architecture
 
-### ORM: Drizzle (Default — skill 44)
-Use Drizzle ORM for all database access. Schema defined in TypeScript, type-safe queries, auto-generated migrations via `drizzle-kit`. See skill 44 for full patterns.
+### ORM: Drizzle (Default — 05/drizzle)
+Use Drizzle ORM for all database access. Schema defined in TypeScript, type-safe queries, auto-generated migrations via `drizzle-kit`. See 05/drizzle for full patterns.
 
 ### D1 Schema Conventions (via Drizzle)
 - `id` — TEXT PRIMARY KEY (ULID for ordered inserts)
@@ -299,7 +331,7 @@ app.onError((err, c) => {
 - **Email:** blzalewski@gmail.com
 - **Account ID:** 84fa0d1b16ff8086dd958c468ce7fd59
 - **Zone (megabyte.space):** 75a6f8d5e441cd7124552976ba894f83
-- **API Token:** in shared key pool (skill 26)
+- **API Token:** in shared key pool (05/shared-api-pool)
 
 ### Deploy + Purge (ALWAYS together)
 ```bash

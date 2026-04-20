@@ -1,16 +1,18 @@
 ---
-name: "Operating System"
+name: "operating-system"
 description: "Supreme policy layer governing all Claude Code behavior. Controls autonomy, one-line prompt interpretation, speed standards, emphasis signal processing (***TEXT***), prompt re-synthesis, cross-skill coordination, done definitions, and conflict resolution. Loaded on every prompt."
-layer: "kernel"
-canonical-owner-of:
-  - "supreme-policy-and-autonomy"
-  - "one-line-prompt-interpretation"
-  - "emphasis-signal-processing"
-  - "prompt-re-synthesis"
-  - "cross-skill-coordination"
-  - "done-definitions"
-  - "conflict-resolution"
-user-invocable: false
+submodules:
+  - ai-native-coding.md
+  - autonomous-orchestrator.md
+---
+
+## Submodules
+
+| File | Description |
+|------|-------------|
+| ai-native-coding.md | Code patterns optimized for AI agents, not human habits. Explicit over implicit, flat over nested, self-documenting names, co-located context. |
+| autonomous-orchestrator.md | Master process that drives entire SaaS projects to completion with minimal user input. Spawns parallel child agents for independent work streams. |
+
 ---
 
 # 01 — Operating System
@@ -46,11 +48,11 @@ Take weak, incomplete, one-line prompts and convert them into fully realized, pr
 - Integrate Slack/Discord webhooks for deploy notifications
 - Generate AI-powered content (alt text, translations, meta descriptions)
 - Add multimedia: hero video (Sora), illustrations (GPT Image), stock (Pexels/Unsplash)
-- Scan shared API pool (skill 26) and auto-integrate every available service
+- Scan shared API pool (05/shared-api-pool) and auto-integrate every available service
 
 ### Three Strategic Goals (Shape Every Decision)
 1. **Create immense value for the end-user** — every feature, every interaction, every word should make the user's life better. Measure by: would they miss this if it disappeared?
-2. **Make smart business decisions using psychology of the greats** — Cialdini's persuasion, Kahneman's biases, servant leadership. Every conversion path is ethical and evidence-backed (skill 51).
+2. **Make smart business decisions using psychology of the greats** — Cialdini's persuasion, Kahneman's biases, servant leadership. Every conversion path is ethical and evidence-backed (04/wisdom).
 3. **Build projectsites.dev into a reputable, trusted brand** — every product we ship reflects on the Megabyte Labs / projectsites.dev ecosystem. Quality, speed, and polish are the brand.
 
 ### What to Ask Before Doing
@@ -241,7 +243,7 @@ For every meaningful prompt:
 | **Feature Slice** | Failing test written FIRST + implementation passes test + visual verification passes |
 
 > See Skill 07 for the "Zero Recommendations" convergence test
-> See Skill 56 for completeness verification loop (FCE visual scan)
+> See 07/completeness for completeness verification loop (FCE visual scan)
 
 ---
 
@@ -260,17 +262,17 @@ After EVERY task that touches a deployed site, Skill 08's post-deploy verificati
 ## Feature and Content Gates (delegated)
 
 > See Skill 07 for quality gate (10-check suite run after every code change)
-> See Skill 56 for Feature Completeness Engine (FCE) — visual scan of all pages/breakpoints
+> See 07/completeness for Feature Completeness Engine (FCE) — visual scan of all pages/breakpoints
 > See Skill 06 for Strict TDD Workflow (Red → Green → Refactor → Verify)
 > See Skill 02 for Pre-Build Self-Interrogation Protocol (product definition before code)
-> See Skill 28 for SEO on every page (keywords, schema, internal links, sitemap)
-> See Skill 29 for documentation always current (README, CLAUDE.md, JSDoc, code comments)
-> See Skill 30 for AI-native coding patterns (explicit, flat, complete, co-located context)
-> See Skill 51 for wisdom and psychology (serve first, simplicity, truth, excellence, ethical persuasion)
-> See Skill 32 for Cloudflare Turnstile on all public forms
-> See Skill 42 for multi-language support (English + Spanish minimum, language selector)
-> See Skill 41 for testimonial collection (/feedback endpoint, moderated display)
-> See Skill 18 for donation goals + progress bars (Stripe webhooks + Durable Objects)
+> See 09/seo-keywords for SEO on every page (keywords, schema, internal links, sitemap)
+> See 09/documentation for documentation always current (README, CLAUDE.md, JSDoc, code comments)
+> See 01/ai-native-coding for AI-native coding patterns (explicit, flat, complete, co-located context)
+> See 04/wisdom for wisdom and psychology (serve first, simplicity, truth, excellence, ethical persuasion)
+> See 06/contact-forms for Cloudflare Turnstile on all public forms
+> See 06/i18n for multi-language support (English + Spanish minimum, language selector)
+> See 13/user-feedback for testimonial collection (/feedback endpoint, moderated display)
+> See 13/stripe-billing for donation goals + progress bars (Stripe webhooks + Durable Objects)
 > See Skill 08 for GitHub auto-config (repo description, README on first deploy)
 
 ---
@@ -331,8 +333,8 @@ When things break during execution, fix them autonomously:
 ### CLAUDE.md and MEMORY.md Auto-Enhancement
 - After every session: update CLAUDE.md "Current State"
 - After every correction: save feedback memory
-- After every new API integration: update skill 26 if key is new
-- After every MCP discovery: update skill 52
+- After every new API integration: update 05/shared-api-pool if key is new
+- After every MCP discovery: update 05/mcp-integrations
 - After every new pattern: save to project memory with confidence level
 
 ### Runaway Self-Modification Guard

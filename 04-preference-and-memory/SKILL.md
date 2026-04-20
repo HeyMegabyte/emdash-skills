@@ -1,12 +1,18 @@
 ---
-name: "Preference and Memory"
+name: "preference-and-memory"
 description: "Captures and evolves user preferences with confidence levels. Maintains Voice of the Customer model with exact language, dissatisfaction and aspiration signals. Handles promotion/demotion of preferences, global vs project scoping, and Omi wearable data integration."
-layer: "product-compiler"
-canonical-owner-of:
-  - "voice-of-the-customer"
-  - "user-preference-capture"
-  - "preference-confidence-levels"
-  - "preference-scoping"
+submodules:
+  - wisdom-and-human-psychology.md
+  - brian-voc-data.md
+---
+
+## Submodules
+
+| File | Description |
+|------|-------------|
+| wisdom-and-human-psychology.md | Timeless principles from behavioral psychology, philosophy, and self-help classics applied to product building. Ethical persuasion only. |
+| brian-voc-data.md | Voice of the Customer data from 3,102 ChatGPT conversations — exact language, dissatisfaction signals, interaction velocity, prompt patterns. |
+
 ---
 
 # 04 — Preference and Memory
