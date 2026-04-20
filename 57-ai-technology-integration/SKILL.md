@@ -1,7 +1,14 @@
 ---
 name: "AI Technology Integration"
 description: "Latest AI APIs, models, and techniques for building AI-native products. GPT-4o vision for visual QA, Workers AI for edge inference, embeddings for RAG, structured outputs, image/video generation, speech, and the visual TDD loop."
-allowed-tools: Bash, Read, Write, Edit, mcp__playwright__*
+layer: "capability-pack"
+canonical-owner-of:
+  - "visual-tdd-loop"
+  - "gpt-4o-vision-analysis"
+  - "workers-ai-edge-inference"
+  - "rag-embedding-pipelines"
+  - "ai-cost-optimization"
+allowed-tools: "Bash, Read, Write, Edit, mcp__playwright__*"
 ---
 
 # AI Technology Integration

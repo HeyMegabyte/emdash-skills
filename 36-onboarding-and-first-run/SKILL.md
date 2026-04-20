@@ -1,6 +1,11 @@
 ---
 name: "Onboarding and First-Run"
 description: "SaaS onboarding flows: welcome modal, guided tour with tooltips, progress checklist, welcome email, activation tracking via PostHog. Reduces time-to-value for new users. Targets 20-40% activation rate. Use when building SaaS products with user accounts."
+layer: "capability-pack"
+canonical-owner-of:
+  - "onboarding-flows"
+  - "guided-tour"
+  - "activation-tracking"
 ---
 
 # Onboarding and First-Run

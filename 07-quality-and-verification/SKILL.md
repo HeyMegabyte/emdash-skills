@@ -1,7 +1,14 @@
 ---
 name: "Quality and Verification"
 description: "5-level verification pyramid: static analysis, unit/integration tests, Playwright E2E (homepage-first at 6 breakpoints), AI-powered visual inspection, and post-deploy checks. 7-check quality gate, form testing matrix, security audits (CSP, OWASP), accessibility (WCAG AA), and GitHub CI/PR integration."
-context: fork
+layer: "product-compiler"
+canonical-owner-of:
+  - "zero-recommendations-gate"
+  - "quality-gate-7-checks"
+  - "verification-pyramid"
+  - "form-testing-matrix"
+  - "visual-inspection-protocol"
+context: "fork"
 allowed-tools: "Bash Read Glob Grep mcp__playwright__*"
 ---
 

@@ -1,6 +1,13 @@
 ---
 name: "Media Orchestration"
 description: "Section-by-section media planning and generation. Image generation (built-in + DALL-E fallback), logo/icon generation (Ideogram → favicon set), video generation (Sora), social preview images (OG 1200x630), stock photo curation (Unsplash, Pexels), critique/remix loops (max 3 rounds), asset compression pipeline, and media performance budgets."
+layer: "product-compiler"
+canonical-owner-of:
+  - "image-generation-pipeline"
+  - "video-generation-pipeline"
+  - "logo-and-icon-systems"
+  - "social-preview-images"
+  - "media-critique-loops"
 ---
 
 # 12 — Media Orchestration

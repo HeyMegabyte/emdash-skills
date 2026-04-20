@@ -1,6 +1,12 @@
 ---
 name: "Autonomous Orchestrator"
 description: "Master process that drives entire SaaS projects to completion with minimal user input. Spawns parallel child agents for independent work streams. Makes all creative, technical, and architectural decisions autonomously. Continuously improves until the product exceeds competitors."
+layer: "product-compiler"
+canonical-owner-of:
+  - "parallel-agent-spawning"
+  - "self-healing-decision-trees"
+  - "task-graph-decomposition"
+  - "autonomous-decision-policy"
 ---
 
 # 53 — Autonomous Orchestrator

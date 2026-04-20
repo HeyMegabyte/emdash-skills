@@ -1,6 +1,13 @@
 ---
 name: "Experience and Design System"
 description: "Anti-AI-slop design system for distinctive, premium interfaces. Bold typography (Sora, Space Grotesk, JetBrains Mono), dark-first color system (#060610 bg, #00E5FF cyan), fluid type scale, layout patterns, component design with interaction affordances on everything, and responsive at 375px + 1280px. The Apple Test."
+layer: "product-compiler"
+canonical-owner-of:
+  - "typography-system"
+  - "color-system"
+  - "layout-patterns"
+  - "component-design"
+  - "anti-slop-enforcement"
 ---
 
 # 10 — Experience and Design System

@@ -1,6 +1,11 @@
 ---
 name: "Keyboard Shortcuts and Command Palette"
 description: "Full command palette (Cmd+K) like Linear/Notion for SaaS products. Keyboard shortcut overlay (press ? for help). Keyboard-first navigation for power users. Includes search integration (skill 37), quick actions, and theme toggle. Accessible, with ARIA roles and screen reader support."
+layer: "capability-pack"
+canonical-owner-of:
+  - "command-palette"
+  - "keyboard-shortcuts"
+  - "keyboard-first-navigation"
 ---
 
 # Keyboard Shortcuts and Command Palette

@@ -1,6 +1,11 @@
 ---
 name: "CI/CD Pipeline"
 description: "GitHub Actions for auto-deploy on push to main, E2E tests on PR, branch preview deploys. Not relied on (Brian deploys live from CLI), but set up for future users and as safety net. Includes Playwright in CI, Lighthouse audit, and auto-merge for passing PRs."
+layer: "capability-pack"
+canonical-owner-of:
+  - "github-actions-pipeline"
+  - "branch-preview-deploys"
+  - "ci-playwright-integration"
 ---
 
 # CI/CD Pipeline

@@ -1,7 +1,13 @@
 ---
 name: "Computer Use Automation"
 description: "Desktop automation via Anthropic Computer Use MCP. Native macOS app control, visual QA workflows, screenshot-verify loops, cross-app orchestration. Teaches Claude when and how to use Computer Use vs dedicated MCPs."
-allowed-tools: mcp__computer-use__*, Read, Bash
+layer: "capability-pack"
+canonical-owner-of:
+  - "computer-use-decision-making"
+  - "native-macos-app-control"
+  - "visual-qa-beyond-playwright"
+  - "cross-app-orchestration"
+allowed-tools: "mcp__computer-use__*, Read, Bash"
 ---
 
 # Computer Use Automation

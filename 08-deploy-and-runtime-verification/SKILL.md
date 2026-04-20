@@ -1,7 +1,14 @@
 ---
 name: "Deploy and Runtime Verification"
 description: "MANDATORY deploy after every code change. Typecheck → deploy → purge CDN → E2E on production → visual verify → fix-forward loop. Third-party integration health checks, cross-browser smoke tests on first deploy, cache purge strategy, rollback procedures, and GitHub auto-configuration."
-context: fork
+layer: "product-compiler"
+canonical-owner-of:
+  - "deploy-and-verify-loop"
+  - "cache-purge-strategy"
+  - "production-verification"
+  - "rollback-decisions"
+  - "wrangler-configuration"
+context: "fork"
 allowed-tools: "Bash(wrangler *) Bash(curl *) Read"
 ---
 

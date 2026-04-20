@@ -1,6 +1,13 @@
 ---
 name: "Planning and Research"
 description: "Deep web research, competitor scanning, technology evaluation, and implementation planning. Decomposes work into vertical slices, identifies parallel workstreams, tracks assumptions with confidence levels, and designs the critical path for minimum wall-clock time."
+layer: "product-compiler"
+canonical-owner-of:
+  - "web-research-and-evidence"
+  - "technology-evaluation"
+  - "implementation-planning"
+  - "work-decomposition"
+  - "assumption-tracking"
 ---
 
 # 03 — Planning and Research

@@ -1,6 +1,11 @@
 ---
 name: "Completeness Verification"
 description: "Continuously loop through AI-powered visual inspection of every page, every breakpoint, every interaction state until the AI finds zero remaining issues. This is the done detector that prevents premature completion."
+layer: "release-pipeline"
+canonical-owner-of:
+  - "feature-completeness-engine"
+  - "visual-convergence-loop"
+  - "done-detection"
 ---
 
 # Skill 56 — Completeness Verification Loop

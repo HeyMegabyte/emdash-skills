@@ -1,6 +1,15 @@
 ---
 name: "Operating System"
 description: "Supreme policy layer governing all Claude Code behavior. Controls autonomy, one-line prompt interpretation, speed standards, emphasis signal processing (***TEXT***), prompt re-synthesis, cross-skill coordination, done definitions, and conflict resolution. Loaded on every prompt."
+layer: "kernel"
+canonical-owner-of:
+  - "supreme-policy-and-autonomy"
+  - "one-line-prompt-interpretation"
+  - "emphasis-signal-processing"
+  - "prompt-re-synthesis"
+  - "cross-skill-coordination"
+  - "done-definitions"
+  - "conflict-resolution"
 user-invocable: false
 ---
 

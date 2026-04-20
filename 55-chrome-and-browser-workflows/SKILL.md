@@ -1,7 +1,13 @@
 ---
 name: "Chrome and Browser Workflows"
 description: "Browser automation for web app interaction, form filling, visual testing, and web scraping via Chrome MCP and Playwright MCP. Teaches the optimal tool for each browser task."
-context: fork
+layer: "capability-pack"
+canonical-owner-of:
+  - "browser-tool-selection"
+  - "playwright-e2e-workflows"
+  - "web-scraping-extraction"
+  - "chrome-devtools-profiling"
+context: "fork"
 allowed-tools: "Bash Read Glob Grep mcp__playwright__*"
 ---
 

@@ -1,6 +1,11 @@
 ---
 name: "Empty States and Loading"
 description: "Every empty list, dashboard, and data view prompts a meaningful first action — never shows 'No data.' Skeleton screens for all loading states. Consistent loading patterns across the app. Research says empty states are the #1 UX gap users notice in new products."
+layer: "capability-pack"
+canonical-owner-of:
+  - "empty-state-patterns"
+  - "skeleton-screens"
+  - "first-action-prompts"
 ---
 
 # Empty States and Loading

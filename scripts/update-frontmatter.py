@@ -2,11 +2,11 @@
 """
 Batch-update SKILL.md frontmatter to include layer and canonical-owner-of fields.
 Only modifies YAML frontmatter between --- delimiters. Does NOT touch content below.
+Uses no external dependencies (no PyYAML).
 """
 
 import os
 import re
-import yaml
 
 BASE_DIR = "/Users/apple/.agentskills"
 
@@ -429,79 +429,116 @@ def extract_skill_id(dirname):
     match = re.match(r'^(\d+)-', dirname)
     if match:
         return match.group(1)
-    # Non-numeric prefix (like gh-fix-ci)
     return dirname
 
 
-def parse_frontmatter(content):
-    """Parse YAML frontmatter from a markdown file. Returns (frontmatter_dict, rest_of_content)."""
-    if not content.startswith('---'):
+def split_frontmatter(content):
+    """Split content into (frontmatter_text, body_text) or (None, content) if no frontmatter."""
+    if not content.startswith('---\n') and not content.startswith('---\r\n'):
         return None, content
 
     # Find the closing ---
-    end_match = re.search(r'\n---\s*\n', content[3:])
-    if not end_match:
-        # Try end of file
-        end_match = re.search(r'\n---\s*$', content[3:])
-        if not end_match:
+    # Look for \n---\n or \n--- followed by end of string
+    match = re.search(r'\n---[ \t]*\n', content[4:])
+    if not match:
+        match = re.search(r'\n---[ \t]*$', content[4:])
+        if not match:
             return None, content
 
-    fm_text = content[4:3 + end_match.start()]
-    rest = content[3 + end_match.end():]
-
-    try:
-        fm = yaml.safe_load(fm_text)
-        if not isinstance(fm, dict):
-            return None, content
-        return fm, rest
-    except yaml.YAMLError:
-        return None, content
+    fm_text = content[4:4 + match.start()]
+    body = content[4 + match.end():]
+    return fm_text, body
 
 
-def serialize_frontmatter(fm):
-    """Serialize frontmatter dict back to YAML string between --- delimiters."""
-    # Custom ordering: name, description, layer, canonical-owner-of, then rest
-    ordered_keys = ['name', 'description', 'layer', 'canonical-owner-of']
-    other_keys = [k for k in fm if k not in ordered_keys]
+def parse_simple_yaml(text):
+    """Parse simple YAML frontmatter fields. Returns ordered list of (key, value) tuples."""
+    fields = []
+    lines = text.split('\n')
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not line.strip():
+            i += 1
+            continue
 
-    lines = ['---']
-    for key in ordered_keys:
-        if key in fm:
-            val = fm[key]
-            if key == 'canonical-owner-of' and isinstance(val, list):
-                lines.append(f'{key}:')
-                for item in val:
-                    lines.append(f'  - "{item}"')
-            elif isinstance(val, str) and ('"' in val or ':' in val or '#' in val or '\n' in val or val.startswith('{') or val.startswith('[')):
-                # Use double quotes for strings that need escaping
-                escaped = val.replace('\\', '\\\\').replace('"', '\\"')
-                lines.append(f'{key}: "{escaped}"')
-            elif isinstance(val, str):
-                lines.append(f'{key}: "{val}"')
-            elif isinstance(val, bool):
-                lines.append(f'{key}: {"true" if val else "false"}')
+        # Check for key: value pattern
+        match = re.match(r'^([a-zA-Z_-]+):\s*(.*)', line)
+        if match:
+            key = match.group(1)
+            val = match.group(2).strip()
+
+            # Check if this is a list (next lines start with  - )
+            if val == '' and i + 1 < len(lines) and re.match(r'^\s+-\s', lines[i + 1]):
+                # Multi-line list
+                items = []
+                i += 1
+                while i < len(lines) and re.match(r'^\s+-\s', lines[i]):
+                    item = re.sub(r'^\s+-\s*', '', lines[i]).strip()
+                    # Remove quotes
+                    if item.startswith('"') and item.endswith('"'):
+                        item = item[1:-1]
+                    elif item.startswith("'") and item.endswith("'"):
+                        item = item[1:-1]
+                    items.append(item)
+                    i += 1
+                fields.append((key, items))
+                continue
             else:
-                lines.append(f'{key}: {val}')
+                # Scalar value - remove quotes if present
+                if val.startswith('"') and val.endswith('"'):
+                    val = val[1:-1]
+                elif val.startswith("'") and val.endswith("'"):
+                    val = val[1:-1]
+                # Handle booleans
+                if val.lower() == 'true':
+                    fields.append((key, True))
+                elif val.lower() == 'false':
+                    fields.append((key, False))
+                else:
+                    fields.append((key, val))
+        i += 1
 
-    for key in other_keys:
-        val = fm[key]
-        if isinstance(val, str) and ('"' in val or ':' in val or '#' in val or '\n' in val or val.startswith('{') or val.startswith('[')):
-            escaped = val.replace('\\', '\\\\').replace('"', '\\"')
-            lines.append(f'{key}: "{escaped}"')
-        elif isinstance(val, str):
-            lines.append(f'{key}: "{val}"')
-        elif isinstance(val, bool):
-            lines.append(f'{key}: {"true" if val else "false"}')
-        elif isinstance(val, list):
+    return fields
+
+
+def has_field(fields, key):
+    """Check if a field exists in the parsed fields list."""
+    return any(k == key for k, v in fields)
+
+
+def serialize_fields(fields):
+    """Serialize fields list back to YAML frontmatter text."""
+    lines = ['---']
+    for key, val in fields:
+        if isinstance(val, list):
             lines.append(f'{key}:')
             for item in val:
-                if isinstance(item, str):
-                    lines.append(f'  - "{item}"')
-                else:
-                    lines.append(f'  - {item}')
+                lines.append(f'  - "{item}"')
+        elif isinstance(val, bool):
+            lines.append(f'{key}: {"true" if val else "false"}')
+        elif isinstance(val, str):
+            # Check if value needs quoting
+            needs_quotes = (
+                ':' in val or
+                '#' in val or
+                val.startswith('{') or
+                val.startswith('[') or
+                val.startswith('*') or
+                val.startswith('&') or
+                val.startswith('!') or
+                val.startswith('%') or
+                val.startswith('@') or
+                val.startswith('`') or
+                '\\' in val or
+                '\n' in val
+            )
+            if needs_quotes or '"' in val:
+                escaped = val.replace('\\', '\\\\').replace('"', '\\"')
+                lines.append(f'{key}: "{escaped}"')
+            else:
+                lines.append(f'{key}: "{val}"')
         else:
             lines.append(f'{key}: {val}')
-
     lines.append('---')
     return '\n'.join(lines)
 
@@ -511,39 +548,60 @@ def process_skill_file(filepath, skill_id):
     with open(filepath, 'r') as f:
         content = f.read()
 
-    fm, rest = parse_frontmatter(content)
-    if fm is None:
+    fm_text, body = split_frontmatter(content)
+    if fm_text is None:
         print(f"  SKIP (no valid frontmatter): {filepath}")
+        return False
+
+    fields = parse_simple_yaml(fm_text)
+    if not fields:
+        print(f"  SKIP (empty frontmatter): {filepath}")
         return False
 
     modified = False
 
     # Add layer if missing
-    if 'layer' not in fm:
+    if not has_field(fields, 'layer'):
         layer = LAYER_MAP.get(skill_id)
         if layer:
-            fm['layer'] = layer
+            # Insert after description (or after name if no description)
+            insert_idx = 0
+            for i, (k, v) in enumerate(fields):
+                if k == 'description':
+                    insert_idx = i + 1
+                    break
+                elif k == 'name':
+                    insert_idx = i + 1
+            fields.insert(insert_idx, ('layer', layer))
             modified = True
             print(f"  + layer: {layer}")
         else:
             print(f"  WARN: no layer mapping for skill ID '{skill_id}'")
 
     # Add canonical-owner-of if missing
-    if 'canonical-owner-of' not in fm:
+    if not has_field(fields, 'canonical-owner-of'):
         ownership = CANONICAL_OWNERSHIP.get(skill_id)
         if ownership:
-            fm['canonical-owner-of'] = ownership
+            # Insert after layer (or after description if no layer)
+            insert_idx = len(fields)
+            for i, (k, v) in enumerate(fields):
+                if k == 'layer':
+                    insert_idx = i + 1
+                    break
+                elif k == 'description':
+                    insert_idx = i + 1
+            fields.insert(insert_idx, ('canonical-owner-of', ownership))
             modified = True
             print(f"  + canonical-owner-of: {len(ownership)} concepts")
         else:
             print(f"  WARN: no ownership data for skill ID '{skill_id}'")
 
     if not modified:
-        print(f"  SKIP (already has layer + canonical-owner-of): {filepath}")
+        print(f"  SKIP (already has layer + canonical-owner-of)")
         return False
 
-    # Write back
-    new_content = serialize_frontmatter(fm) + '\n' + rest
+    # Rebuild the file
+    new_content = serialize_fields(fields) + '\n' + body
     with open(filepath, 'w') as f:
         f.write(new_content)
 
@@ -573,6 +631,8 @@ def main():
                 skipped += 1
         except Exception as e:
             print(f"  ERROR: {e}")
+            import traceback
+            traceback.print_exc()
             errors += 1
 
     print(f"\n{'='*60}")

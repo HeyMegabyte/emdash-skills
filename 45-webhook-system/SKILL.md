@@ -1,6 +1,12 @@
 ---
 name: "Webhook System"
 description: "Consolidated webhook handling for Stripe, Clerk, GitHub, and custom events. Signature verification, event routing, idempotency via D1 dedup table, retry-safe handlers, and outbound webhook dispatch. Every integration uses webhooks — this skill standardizes the pattern."
+layer: "capability-pack"
+canonical-owner-of:
+  - "webhook-signature-verification"
+  - "event-routing"
+  - "idempotency-dedup"
+  - "outbound-webhook-dispatch"
 ---
 
 # Webhook System

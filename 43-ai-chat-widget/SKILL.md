@@ -1,6 +1,11 @@
 ---
 name: "AI Chat Widget"
 description: "MANDATORY on every service/product. Workers AI + Vectorize RAG chat widget trained on the service's own data and context. Auto-indexes all pages into vector store at deploy time. Floating chat bubble, dark theme, streaming responses. Free on CF Workers AI free tier."
+layer: "capability-pack"
+canonical-owner-of:
+  - "ai-chat-implementation"
+  - "rag-chat-widget"
+  - "vectorize-auto-indexing"
 ---
 
 # AI Chat Widget

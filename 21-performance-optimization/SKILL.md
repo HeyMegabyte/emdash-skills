@@ -1,6 +1,6 @@
 ---
 name: "Performance Optimization"
-layer: release-pipeline
+layer: product-compiler
 description: "Canonical owner of Core Web Vitals, JS/CSS budgets, image optimization, lazy loading, font loading strategy, preconnect/prefetch, code splitting, tree shaking, and compression. Ensures every deploy meets performance thresholds before shipping."
 triggers:
   task-types: [build, fix, deploy]

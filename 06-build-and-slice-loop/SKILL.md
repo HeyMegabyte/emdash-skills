@@ -1,6 +1,12 @@
 ---
 name: "Build and Slice Loop"
 description: "Implements features in vertical slices, always starting with homepage. Enforces anti-placeholder rules — no lorem ipsum, no TODO stubs, no gray boxes. Real content, real images, real interactions. TypeScript strict mode, Zod validation, and structured file organization."
+layer: "product-compiler"
+canonical-owner-of:
+  - "vertical-slice-planning"
+  - "anti-placeholder-enforcement"
+  - "implementation-standards"
+  - "content-generation-rules"
 ---
 
 # 06 — Build and Slice Loop

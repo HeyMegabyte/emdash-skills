@@ -1,6 +1,12 @@
 ---
 name: "Stripe Billing"
 description: "Stripe payments with sensible defaults: free tier + $50/mo pro for SaaS, or donation presets ($10/$25/$50/$100/$250/$500) for nonprofits styled like givedirectly.org. Auto-creates Stripe Products, Prices, and checkout endpoints. Brand-matched checkout with Stripe Link for one-click payments. Donation goals with real-time progress bars via Durable Objects."
+layer: "capability-pack"
+canonical-owner-of:
+  - "stripe-product-creation"
+  - "checkout-flow"
+  - "donation-presets"
+  - "subscription-management"
 ---
 
 # Stripe Billing

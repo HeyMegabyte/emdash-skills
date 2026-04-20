@@ -1,6 +1,11 @@
 ---
 name: "Social Automation"
 description: "Auto-post to social media via Postiz (self-hosted on Coolify) when significant updates are deployed. Supports X/Twitter, LinkedIn, Reddit, GitHub, Threads, Facebook, TikTok, Pinterest, and more. Generates platform-specific copy in Brian's voice, includes OG images, verifies posts rendered correctly via Playwright."
+layer: "capability-pack"
+canonical-owner-of:
+  - "social-media-automation"
+  - "postiz-integration"
+  - "platform-specific-copy"
 ---
 
 # Social Automation via Postiz

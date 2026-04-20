@@ -1,7 +1,12 @@
 ---
 name: "Uptime and Health"
 description: "Health endpoints on every Worker, external uptime monitoring via free services (UptimeRobot, Better Stack). Public status page at /status. Cron-based self-checks. Let external services handle alerting — we just expose the endpoints and set up the monitors."
-model: haiku
+layer: "capability-pack"
+canonical-owner-of:
+  - "health-endpoints"
+  - "uptime-monitoring-setup"
+  - "status-page"
+model: "haiku"
 ---
 
 # Uptime and Health

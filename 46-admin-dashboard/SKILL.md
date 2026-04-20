@@ -1,6 +1,11 @@
 ---
 name: "Admin Dashboard"
 description: "Lightweight /admin panel for content moderation and data review. Embedded bolt.diy editor (editor.projectsites.dev) iframe for code management. D1-backed with basic auth or Clerk. Manages testimonials, feedback, blog posts, newsletter subscribers, and webhook logs. Not a full CMS — just enough to moderate and review."
+layer: "capability-pack"
+canonical-owner-of:
+  - "admin-dashboard"
+  - "content-moderation-ui"
+  - "bolt-diy-editor-integration"
 ---
 
 # Admin Dashboard

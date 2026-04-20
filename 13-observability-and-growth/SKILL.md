@@ -1,6 +1,12 @@
 ---
 name: "Observability and Growth"
 description: "Full instrumentation from day one. GA4 via GTM (14-step automation), PostHog (product analytics, feature flags, A/B tests), Sentry (error tracking), Stripe (payment flows with branded checkout), Listmonk (newsletters on CF Containers), growth surfaces, event-driven funnels, and operational telemetry with health endpoints."
+layer: "capability-pack"
+canonical-owner-of:
+  - "analytics-instrumentation"
+  - "error-tracking-setup"
+  - "growth-surfaces"
+  - "experimentation-framework"
 ---
 
 # 13 — Observability and Growth

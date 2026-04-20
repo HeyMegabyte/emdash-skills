@@ -1,6 +1,12 @@
 ---
 name: "MCP and Cloud Integrations"
 description: "Connect all available MCP servers, cloud APIs, and SaaS integrations. Auto-discover secrets from shared pool, Coolify, and local configs. Integrate Slack, Discord, Twilio, Zapier, Cal.com, and all de-facto standard services. Promote aggressive use of AI APIs (OpenAI, Workers AI, Ideogram) and multimedia APIs for rich product experiences."
+layer: "capability-pack"
+canonical-owner-of:
+  - "mcp-server-discovery"
+  - "cloud-service-integration"
+  - "ai-api-usage-strategy"
+  - "cross-service-orchestration"
 ---
 
 # MCP and Cloud Integrations

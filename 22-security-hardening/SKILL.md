@@ -1,6 +1,6 @@
 ---
 name: "Security Hardening"
-layer: release-pipeline
+layer: capability-pack
 description: "Canonical owner of CSP headers, OWASP Top 10 prevention, Zod validation at all boundaries, Turnstile CAPTCHA integration, KV-based rate limiting, secret rotation, dependency scanning, and XSS/CSRF/injection prevention. Every deploy is secure by default."
 triggers:
   task-types: [build, fix, security]

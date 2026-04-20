@@ -1,6 +1,13 @@
 ---
 name: "Brand and Content System"
 description: "Extract real brands before inventing (Wayback Machine for rebuilds). Business-type inference for tone and style. Copy system with headline/CTA rules. Trust surfaces (testimonials, logos, stats). Legal pages. Information architecture. SEO content with structured data, meta tags, and sitemap. PDF and DOCX generation."
+layer: "product-compiler"
+canonical-owner-of:
+  - "brand-extraction"
+  - "copy-system-and-tone"
+  - "trust-surfaces"
+  - "legal-pages"
+  - "information-architecture"
 ---
 
 # 09 — Brand and Content System

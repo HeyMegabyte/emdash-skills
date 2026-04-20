@@ -1,6 +1,12 @@
 ---
 name: "Preference and Memory"
 description: "Captures and evolves user preferences with confidence levels. Maintains Voice of the Customer model with exact language, dissatisfaction and aspiration signals. Handles promotion/demotion of preferences, global vs project scoping, and Omi wearable data integration."
+layer: "product-compiler"
+canonical-owner-of:
+  - "voice-of-the-customer"
+  - "user-preference-capture"
+  - "preference-confidence-levels"
+  - "preference-scoping"
 ---
 
 # 04 — Preference and Memory
