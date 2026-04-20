@@ -1,13 +1,13 @@
 {
-  "name": "claude-code",
+  "name": "claude-skills",
   "description": "14-category autonomous product-building OS for Claude Code. Converts one-line prompts into production-ready products on Cloudflare Workers with Angular, Hono, D1, Stripe, and 58 submodule capabilities.",
   "version": "6.0.0",
   "author": {
     "name": "Brian Zalewski",
     "url": "https://megabyte.space"
   },
-  "homepage": "https://github.com/megabytespace/claude-code",
-  "repository": "https://github.com/megabytespace/claude-code",
+  "homepage": "https://github.com/megabytespace/claude-skills",
+  "repository": "https://github.com/megabytespace/claude-skills",
   "license": "MIT",
   "keywords": [
     "autonomous",
