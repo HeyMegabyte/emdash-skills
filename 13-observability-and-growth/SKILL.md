@@ -37,9 +37,27 @@ Get key, extract brand, configure branding (logo/colors), create products/prices
 ## Listmonk
 CF Worker proxy, CF Container (Listmonk), Neon PostgreSQL. API: POST /api/subscribers, /api/campaigns. Newsletter in footer.
 
-## Growth (every product)
+## Growth (every product — distribution > technology)
 Newsletter, social sharing (OG+buttons), SEO, social proof, CTA optimization, referral links, blog+RSS.
 Event flow: visit/page_view, CTA/cta_click, signup/welcome email, feature/feature_used, limit/upgrade_prompt, upgrade/onboarding.
+
+### Viral Loop Engineering (K≥0.20)
+Embed product branding in every output (shared links, exports, collaborative actions). 100 users→124 across two referral cycles with zero paid acquisition. Every shared artifact = free impression.
+
+### Programmatic SEO
+Generate landing pages targeting bottom-of-funnel keywords (5-10x higher conversion than top-of-funnel). Build interconnected topic clusters. AI researches keywords, generates pages, optimizes metadata, builds internal links — fully autonomous. Compounds 3-5 years.
+
+### Pricing Psychology
+Outcome-first ("Save 10hrs/week" > feature list, 34% conversion boost). Three tiers max (4+ reduces conversion 31%). Highlight recommended tier. Decoy middle option boosts premium 35-50%. Display highest price first (anchoring). Frame per-outcome: "$0.33/user/day."
+
+### Hybrid Pricing (2026 standard)
+43% of SaaS uses hybrid (base subscription + usage fees). 38% higher revenue growth. Structure: fixed monthly + per-unit beyond included allowance. Budget predictability + usage upside.
+
+### Product-Led Sales Hybrid
+Self-serve onboarding for majority. AI monitors usage signals. High-value expansion intent (team growth, feature ceiling, API spikes) → auto-trigger: personalized upgrade recommendation + ROI calculator pre-filled with their data. PLG = 2x growth, 50% lower CAC.
+
+### Launch Day Sequence
+Product Hunt + HN + X + LinkedIn simultaneous. PH rewards engagement signals (comments, maker replies) > raw upvotes. First 3 hours critical. Pre-launch: 5-email waitlist sequence (problem→solution→proof→access→launch). Target: 500-1000 signups day one.
 
 ## A/B Testing
 `posthog.getFeatureFlag('exp')` then track conversion. One per page, min 100 conversions, document hypothesis.
