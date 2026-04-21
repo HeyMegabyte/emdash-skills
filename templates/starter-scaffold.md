@@ -10,6 +10,15 @@ Deploy this skeleton on first prompt. Folder name = domain. All bindings pre-wir
 ## File Structure
 
 ```
+├── .claude/
+│   ├── settings.json         # Project-level permissions, hooks, env
+│   ├── CLAUDE.md             # Project architecture, conventions, product brief
+│   └── rules/
+│       ├── api-design.md     # Path-scoped: src/routes/**
+│       └── testing.md        # Path-scoped: tests/**
+├── .mcp.json                 # Project MCP servers (if any beyond global)
+├── .gitignore                # Includes: .claude/settings.local.json, CLAUDE.local.md
+├── SPEC.md                   # Acceptance criteria (generated from brief)
 ├── src/
 │   ├── index.ts              # Hono app entry, middleware stack, routes
 │   ├── routes/
