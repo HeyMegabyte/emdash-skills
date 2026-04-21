@@ -73,28 +73,10 @@ DONE only when: all tests pass + GPT-4o zero issues + prod verified
 Never stop without production proof. No screenshot = not verified.
 
 ### Value Extraction (runs on EVERY prompt, even non-code prompts)
-Scan prompt and route to the RIGHT config level:
-
-**Global (~/.claude/, ~/.agentskills/) — applies to ALL projects:**
-- Universal behavior correction → ~/.claude/rules/
-- Tech preference → memory/tech_preferences_confirmed.md
-- Design/brand feedback → skill 10
-- Repeated pattern (3x+) → promote to skill submodule
-- "Always/never" that's universal → ~/.claude/rules/
-
-**Project (./.claude/) — applies to THIS project only:**
-- Project architecture decision → ./CLAUDE.md
-- Project convention → ./.claude/rules/ (use `paths:` frontmatter for file-scoped rules)
-- New requirement → ./SPEC.md + E2E test
-- Project-specific setting → ./.claude/settings.json (team) or ./.claude/settings.local.json (personal)
-
-**Config hierarchy:** managed > user ~/.claude/ > project ./.claude/settings.json > ./.claude/settings.local.json
-**CLAUDE.md hierarchy:** managed > user > project > project-local. Project overrides global for that project.
-**Path-scoped rules:** `.claude/rules/api.md` with `paths: ["src/api/**"]` loads only when touching API files.
-
-**New project auto-scaffold:** CLAUDE.md + .claude/settings.json + .claude/rules/ + SPEC.md + E2E tests.
-
-Write updates at same compression density as existing files. Dense tokens, no prose wrappers.
+Scan prompt: corrections→memory | "always/never"→rules | tech→prefs | design→skill 10 | requirement→SPEC+test | silence→confirmed | 3x repeat→promote to skill.
+Route: universal→~/.claude/ | project-specific→./.claude/ (path-scoped `paths:` frontmatter). Config: managed>user>project>local. Project CLAUDE.md>global.
+New projects auto-scaffold: .claude/settings.json + CLAUDE.md + .claude/rules/ + SPEC.md + E2E tests.
+Write at same compression density as existing files.
 
 ### Ralph Loop (full-app autonomous builds)
 1. Generate SPEC.md: all features as acceptance criteria
