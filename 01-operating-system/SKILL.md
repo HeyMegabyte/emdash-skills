@@ -76,7 +76,7 @@ Never stop without production proof. No screenshot = not verified.
 Scan prompt: corrections→memory | "always/never"→rules | tech→prefs | design→skill 10 | requirement→SPEC+test | silence→confirmed | 3x repeat→promote to skill.
 Route: universal→~/.claude/ | project-specific→./.claude/ (path-scoped `paths:` frontmatter). Config: managed>user>project>local. Project CLAUDE.md>global.
 New projects auto-scaffold: .claude/settings.json + CLAUDE.md + .claude/rules/ + SPEC.md + E2E tests.
-Write at same compression density as existing files.
+Write at same compression density as existing files. Before writing ANY skill/rule file: read 5 lines of target, match that exact style. Rules=pipe-delimited one-liners. Skills=dense fragments with →|abbreviations. NEVER verbose tables, bullet lists, prose wrappers, or full sentences where fragments work. Violating this wastes tokens on every future prompt load.
 
 ### Ralph Loop (full-app autonomous builds)
 1. Generate SPEC.md: all features as acceptance criteria
