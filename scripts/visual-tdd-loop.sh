@@ -1,18 +1,15 @@
 #!/bin/bash
 # Visual TDD Loop: Screenshot → GPT-4o Vision Analysis → Fix → Redeploy → Repeat
 # Usage: ./visual-tdd-loop.sh <URL> [max_iterations]
-#
-# Requires: OPENAI_API_KEY in .env.local
-# Outputs: screenshots to .playwright-screenshots/, analysis to stdout
 
 set -euo pipefail
+source "$HOME/.claude/hooks/style.sh" 2>/dev/null || true
 
 URL="${1:?Usage: visual-tdd-loop.sh <URL> [max_iterations]}"
 MAX_ITER="${2:-5}"
 SCREENSHOT_DIR=".playwright-screenshots"
 ENV_LOCAL="/Users/apple/emdash-projects/worktrees/rare-chefs-film-8op/.env.local"
 
-# Load API key
 if [ -f "$ENV_LOCAL" ]; then
   OPENAI_API_KEY=$(grep '^OPENAI_API_KEY=' "$ENV_LOCAL" | cut -d= -f2)
 fi
@@ -29,7 +26,7 @@ BREAKPOINTS=(
   "1920:1080:Desktop"
 )
 
-screenshot_all_breakpoints() {
+screenshotAllBreakpoints() {
   local iter=$1
   for bp in "${BREAKPOINTS[@]}"; do
     IFS=: read -r w h name <<< "$bp"
@@ -40,7 +37,7 @@ screenshot_all_breakpoints() {
   done
 }
 
-analyze_screenshot() {
+analyzeScreenshot() {
   local image_path=$1
   local base64_image
   base64_image=$(base64 -i "$image_path")
@@ -54,49 +51,55 @@ analyze_screenshot() {
       \"messages\": [{
         \"role\": \"user\",
         \"content\": [
-          {\"type\": \"text\", \"text\": \"You are a senior UI/UX engineer doing visual QA. Analyze this screenshot for defects. Report ONLY actual problems — not subjective preferences. Check for: layout breaks, text overflow, broken images, misalignment, poor contrast, missing content, horizontal scroll on mobile, buttons too small for touch (<44px), broken responsive design. Format: JSON array of objects with fields: severity (critical/high/medium), element (what's broken), description (what's wrong), fix (how to fix it). Return empty array [] if no issues found.\"},
+          {\"type\": \"text\", \"text\": \"Senior UI/UX engineer visual QA. Report ONLY actual problems. Check: layout breaks, text overflow, broken images, misalignment, poor contrast, missing content, horizontal scroll, touch targets <44px. Format: JSON array [{severity,element,description,fix}]. Return [] if clean.\"},
           {\"type\": \"image_url\", \"image_url\": {\"url\": \"data:image/png;base64,$base64_image\"}}
         ]
       }]
     }" | python3 -c "import sys,json; r=json.load(sys.stdin); print(r['choices'][0]['message']['content'])" 2>/dev/null
 }
 
-echo "=== Visual TDD Loop: $URL ==="
-echo "Max iterations: $MAX_ITER"
-echo ""
+emdash_header "🔍 Visual TDD Loop" "$(gum style --foreground "$BLUE" "$URL  •  max $MAX_ITER iterations")"
 
 for ((i=1; i<=MAX_ITER; i++)); do
-  echo "--- Iteration $i ---"
-  echo "Screenshotting at 6 breakpoints..."
-  screenshot_all_breakpoints "$i"
+  gum style --foreground "$CYAN" --bold "━━━ Iteration $i/$MAX_ITER ━━━" >&2
+
+  emdash_spin "Screenshotting at 6 breakpoints..." screenshotAllBreakpoints "$i"
 
   ALL_CLEAN=true
   for bp in "${BREAKPOINTS[@]}"; do
     IFS=: read -r w h name <<< "$bp"
     SCREENSHOT="${SCREENSHOT_DIR}/iter${i}-${name}.png"
     if [ -f "$SCREENSHOT" ]; then
-      echo "Analyzing ${name} (${w}x${h})..."
-      RESULT=$(analyze_screenshot "$SCREENSHOT")
+      RESULT=$(analyzeScreenshot "$SCREENSHOT")
       if [ "$RESULT" != "[]" ] && [ -n "$RESULT" ]; then
-        echo "ISSUES at ${name}:"
-        echo "$RESULT"
+        gum log -sl warn "Issues at $name (${w}x${h})"
+        echo "$RESULT" | python3 -c "
+import json, sys
+try:
+  issues = json.loads(sys.stdin.read())
+  for issue in issues:
+    sev = issue.get('severity','?')
+    elem = issue.get('element','?')
+    desc = issue.get('description','?')
+    print(f'  {sev.upper():8s} {elem}: {desc}')
+except: pass
+" >&2
         ALL_CLEAN=false
       else
-        echo "  ${name}: CLEAN"
+        emdash_success "$name (${w}x${h})"
       fi
     fi
   done
 
   if $ALL_CLEAN; then
-    echo ""
-    echo "=== ALL BREAKPOINTS CLEAN at iteration $i ==="
+    gum style --foreground "#2ECC40" --border-foreground "#2ECC40" --border rounded --padding "0 2" \
+      "✅ ALL BREAKPOINTS CLEAN" "Iteration $i — zero issues found" >&2
     exit 0
   fi
 
-  echo ""
-  echo "Issues found. Fix and redeploy, then re-run or continue to iteration $((i+1))."
-  echo ""
+  gum log -sl warn "Issues found. Fix and redeploy before iteration $((i+1))." >&2
 done
 
-echo "=== Max iterations ($MAX_ITER) reached. Manual review needed. ==="
+gum style --foreground "#FF4136" --border-foreground "#FF4136" --border rounded --padding "0 2" \
+  "⚠️  Max iterations ($MAX_ITER) reached" "Manual review needed" >&2
 exit 1
