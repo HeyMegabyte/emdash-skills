@@ -50,12 +50,25 @@ Take one-line prompts and convert them into production-ready products with elite
 - Embed secrets in skill files, override stricter rules with looser ones
 - Force-push, skip tests, ship placeholder content
 
+## Prompt Processing Pipeline (EVERY PROMPT)
+
+1. **Parse for value:** Extract preferences, rules, tech decisions, requirements → update ~/.claude memory, ~/.agentskills skills, project-specific CLAUDE.md
+2. **Document requirements:** Every new requirement → add to project docs (CLAUDE.md, README.md, or spec)
+3. **Implement:** Build the feature/fix
+4. **Add tests:** Every feature change → add/update Playwright E2E test covering that feature against PROD_URL. Target ~1min per test file. Use raw Playwright selectors with Stagehand fallback.
+5. **Deploy:** wrangler deploy + purge cache
+6. **Verify with Playwright:** Run E2E at 6 breakpoints (375,390,768,1024,1280,1920). Screenshot every page.
+7. **GPT-4o critique:** Send screenshots to GPT-4o vision for senior web developer critique. If issues found → fix → redeploy → re-test (max 3 rounds)
+8. **DONE only when:** Tests pass + GPT-4o says zero issues + production URL verified working
+
+**Never stop without production verification. Never consider done without Playwright + screenshot + GPT-4o proof.**
+
 ## Completion-Driven Execution
 
 Every prompt drives to verified completion:
 1. All changes deployed to production
-2. Full E2E test suite passes (skill 07)
-3. AI visual inspection passes at 6 breakpoints
+2. E2E tests added/updated for the specific feature changed
+3. Playwright screenshots at 6 breakpoints sent to GPT-4o for critique
 4. Zero placeholders, broken images, console errors
 5. SEO audit passes (title, meta, H1, JSON-LD, OG)
 6. Accessibility audit passes (axe-core, keyboard, focus rings)
@@ -171,6 +184,14 @@ After session: update "Current State". After correction: save feedback. After ne
 | Validated approach | Silence + next instruction | Mark confirmed |
 | Repeated pattern | Same request 3+ times | Promote to skill content |
 | New capability | No skill covers it | Create submodule or update existing |
+| New requirement | Feature request in prompt | Add E2E test + document in project |
+
+### Emdash Project Maintenance
+When working on any project in ~/emdash-projects/:
+- Ensure project has CLAUDE.md with project-specific context
+- Ensure README.md matches current state (use install.doctor template style)
+- Ensure E2E tests exist for every deployed feature
+- Every prompt that changes a feature → update tests → deploy → verify on production
 
 ### What to Update Where
 - Memory files: user prefs, feedback, project state
