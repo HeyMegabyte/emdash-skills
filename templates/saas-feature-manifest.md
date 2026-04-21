@@ -191,12 +191,16 @@ Check each item as acceptance criteria. Each unchecked item = a failing test = n
 - [ ] Locale-aware dates, numbers, currency
 - [ ] RTL support detection
 
-## 17. Search
+## 17. Search (Cloudflare AI Search)
 - [ ] Cmd+K command palette (Linear/Notion style)
 - [ ] Keyboard shortcut overlay (press ? for help)
 - [ ] Full-text search across user data
-- [ ] AI-powered semantic search (CF AI Search or Vectorize)
+- [ ] CF AI Search: hybrid semantic + keyword, auto-indexed at deploy
+- [ ] Multi-tenant via metadata filtering (folder-prefix per tenant)
+- [ ] Shard strategy for >10K tenants (multiple AI Search instances by cohort)
+- [ ] Built-in MCP endpoint for AI agent consumption
 - [ ] Recent searches, keyboard navigation
+- [ ] Search analytics (top queries, zero-result queries → feed to content team)
 
 ## 18. Error Handling
 - [ ] Custom 404 page (branded, helpful navigation)
@@ -264,8 +268,60 @@ Check each item as acceptance criteria. Each unchecked item = a failing test = n
 - [ ] Rollback procedure documented
 - [ ] Data retention policy
 
+## 26. Workflow Orchestration (Inngest)
+- [ ] Inngest SDK integrated with Hono on CF Workers (`@inngest/sdk` cloudflare export)
+- [ ] Durable step functions for multi-step workflows (each step survives timeouts)
+- [ ] Onboarding sequence (welcome email → day 3 tip → day 7 NPS → day 14 upgrade prompt)
+- [ ] Billing retry workflow (payment failed → retry day 1 → retry day 3 → warn → cancel day 7)
+- [ ] Webhook processing pipeline (receive → validate → route → handle → acknowledge)
+- [ ] Scheduled tasks (daily digest, weekly report, monthly cleanup)
+- [ ] Event-driven architecture (user.signup → trigger onboarding + analytics + welcome email)
+- [ ] Dead letter queue for failed events
+- [ ] Inngest dashboard for monitoring workflows (or admin panel integration)
+
+## 27. Competitive Intelligence (Firecrawl)
+- [ ] Auto-scrape 3-5 competitors before building (via firecrawl.megabyte.space)
+- [ ] Extract: features, pricing tiers, design patterns, copy tone, tech stack
+- [ ] Comparison table generated in SPEC.md
+- [ ] Design inspiration screenshots captured and stored
+- [ ] SEO keyword gaps identified (competitor keywords we're missing)
+- [ ] Feature gap analysis (what competitors have that we don't)
+
+## 28. Testing & QA (Stagehand + Playwright)
+- [ ] Raw Playwright selectors for all predictable elements (data-testid, role, text)
+- [ ] Stagehand act()/extract()/observe() as fallback for dynamic content
+- [ ] Stagehand observe() runs AFTER Playwright tests: autonomous QA discovery (finds bugs not explicitly tested)
+- [ ] Each test file ~1 minute, runs against PROD_URL
+- [ ] 6 breakpoints: 375, 390, 768, 1024, 1280, 1920
+- [ ] Screenshots at every breakpoint → GPT-4o vision critique
+- [ ] axe-core accessibility audit in every test run
+- [ ] Console error assertion (zero tolerance)
+- [ ] Network request monitoring (no 4xx/5xx on page load)
+- [ ] Visual regression baseline (screenshot diff on subsequent deploys)
+- [ ] Form test matrix: valid/invalid/empty/XSS/SQL injection/boundary values/file upload/timeout
+
+## 29. Pre-Build Research Phase
+- [ ] Domain name → infer product type, target users, business model
+- [ ] Web search: 3-5 competitors identified and scraped (skill 03 + Firecrawl)
+- [ ] Keyphrase research: holy-grail keyword + 2 longtail per page
+- [ ] Design inspiration: screenshot 2-3 best competitor landing pages
+- [ ] Feature matrix: what competitors have → what we need → what differentiates us
+- [ ] SPEC.md generated from manifest + competitor analysis + domain inference
+- [ ] progress.md initialized with all ACs unchecked
+
+## 30. Autonomous Build Loop
+- [ ] Ralph Loop: pick next AC → failing test → implement → deploy → verify → mark done
+- [ ] Context >60%: save progress.md → commit → spawn fresh agent to continue
+- [ ] After each slice: deploy immediately (don't batch)
+- [ ] After all ACs: run completeness-checker agent (mandatory)
+- [ ] After completeness: run idea engine (skill 14) for improvements
+- [ ] Implement all HIGH-confidence recommendations automatically
+- [ ] Present MEDIUM-confidence recommendations for approval
+- [ ] Final GPT-4o critique at all breakpoints
+- [ ] DONE: all ACs pass + completeness-checker approves + GPT-4o zero issues + zero recommendations
+
 ---
 
-**Total: 25 categories, ~200 acceptance criteria.**
+**Total: 30 categories, ~250 acceptance criteria.**
 Each unchecked item = a Playwright test that must pass on production.
-DONE = all checked + GPT-4o zero issues + zero recommendations.
+DONE = all checked + GPT-4o zero issues + zero recommendations + completeness-checker approves.
