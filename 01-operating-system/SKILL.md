@@ -5,6 +5,7 @@ submodules:
   - ai-native-coding.md
   - autonomous-orchestrator.md
   - one-line-saas.md
+  - architecture-thought-loop.md
 ---
 
 ## Submodules
@@ -13,6 +14,7 @@ submodules:
 |------|-------------|
 | ai-native-coding.md | Code patterns optimized for AI agents, not human habits. Explicit over implicit, flat over nested, self-documenting names, co-located context. |
 | autonomous-orchestrator.md | Master process that drives entire SaaS projects to completion with minimal user input. Spawns parallel child agents for independent work streams. |
+| architecture-thought-loop.md | 30-point recursive thinking checklist: pre-mortem, inversion, MECE, state machines, error-first, cost modeling, STRIDE, parallel paths. Fractalated — each point spawns sub-analysis. |
 
 # 01 — Operating System
 

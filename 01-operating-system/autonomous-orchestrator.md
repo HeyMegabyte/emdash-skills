@@ -36,6 +36,15 @@ Orchestrator scans this inventory BEFORE planning. For every task: "Which combin
 ## Master Process Flow
 ```
 1. ANALYZE — read context (CLAUDE.md, package.json, code), identify current vs desired state, research competitors, generate task list
+1.5. ***ARCHITECTURE THOUGHT LOOP*** — run 01/architecture-thought-loop.md (30-point checklist):
+   Phase 0: pre-mortem, inversion, boundary, constraints, competitive snapshot
+   Phase 1: user stories, MECE decomposition, user journey, data flow, state machines
+   Phase 2: API-first contract, error-first design, 3 parallel paths, reversibility check
+   Phase 3: simplicity audit (remove 30%), performance budget, STRIDE threat model
+   Phase 4: content-first copy, SEO keyword research
+   Phase 5: cost model, failure modes, migration paths, integration mapping
+   Phase 6: five whys, second-order effects, delete test
+   ~22 min of thinking saves 22 hours of rework. Skip NOTHING.
 2. PLAN — group into parallel streams, identify dependencies, create execution order
 3. EXECUTE (parallel) — spawn agents, build completely, make creative decisions inline, deploy continuously
 4. VERIFY — E2E tests, Lighthouse, a11y (axe-core), responsive check (6 breakpoints)
