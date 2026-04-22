@@ -1,0 +1,7 @@
+{
+  "typescript": {
+    "command": "npx",
+    "args": ["vtsls", "--stdio"],
+    "filePatterns": ["*.ts", "*.tsx"]
+  }
+}

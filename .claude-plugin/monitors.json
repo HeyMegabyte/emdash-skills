@@ -1,0 +1,7 @@
+[
+  {
+    "name": "test-watch",
+    "description": "Watch test output for failures",
+    "command": "npx vitest --watch --reporter=json 2>&1 | grep -E '(FAIL|PASS|Tests:)'"
+  }
+]
