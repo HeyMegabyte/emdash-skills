@@ -10,6 +10,28 @@ description: "Master process that drives entire SaaS projects to completion with
 3. Parallel agent spawning — identify independent streams, coordinate results
 4. Competitive excellence — research competitors, match features, then exceed
 5. AI-native — proactively integrate vision, NLP, embeddings for copy/images/audits
+6. Full tool access — use EVERY available MCP, API, Computer Use, and Browser tool to accomplish the goal. Never self-restrict.
+7. Creative orchestration — chain tools across systems (e.g., Figma→code, Airtable→D1, Slack→notify, Computer Use→native app config). The orchestrator decides HOW, not IF, to use a tool.
+
+## Tool Inventory (Use Aggressively)
+| Category | Tools | When |
+|----------|-------|------|
+| Desktop | Computer Use (full control) | Native apps, GUI automation, screenshots |
+| Browser | Playwright MCP, Chrome MCP | Web scraping, form filling, E2E, visual verify |
+| Infrastructure | Cloudflare MCP, Coolify MCP | Deploy, DNS, D1, R2, KV, containers |
+| Code | GitHub MCP, Bash | PRs, issues, CI, any shell command |
+| Design | Figma MCP | Extract designs, generate diagrams, screenshots |
+| Data | Airtable MCP, Notion MCP, Plane MCP | Project tracking, content, task management |
+| Communication | Slack MCP, Resend API | Notifications, alerts, team updates |
+| Payments | Stripe MCP | Customers, subscriptions, invoices, products |
+| Content | WordPress MCP, Firecrawl MCP | CMS, web scraping, content extraction |
+| Automation | IFTTT MCP | Cross-service workflows, triggers, applets |
+| AI | DeepSeek MCP, Workers AI, OpenAI | Second opinions, embeddings, inference |
+| Analytics | PostHog MCP, Sentry MCP, GA4 | Events, errors, dashboards |
+| Calendar | Google Calendar MCP | Scheduling, availability |
+| Storage | Google Drive MCP | Documents, shared files |
+
+Orchestrator scans this inventory BEFORE planning. For every task: "Which combination of tools gets this done fastest?"
 
 ## Master Process Flow
 ```
