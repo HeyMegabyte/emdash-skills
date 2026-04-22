@@ -12,7 +12,7 @@ All 14 categories always loaded. Submodules provide specialized reference.
 | 04 | Preference and Memory | wisdom-and-human-psychology |
 | 05 | Architecture and Stack | api-design, shared-api-pool, drizzle-orm, coolify-docker-proxmox, mcp-integrations, ai-technology, clerk-auth, inngest-jobs |
 | 06 | Build and Slice Loop | easter-eggs, domain-provisioning, web-manifest, error-pages, contact-forms, blog-engine, onboarding, site-search, i18n, ai-chat, webhooks, admin, cmd-k, empty-states, notifications |
-| 07 | Quality and Verification | accessibility, performance, security, computer-use, browser-workflows, completeness, visual-inspection, tdd, testing-matrices, adversarial |
+| 07 | Quality and Verification | accessibility, performance, security, computer-use, browser-workflows, completeness, visual-inspection, tdd, testing-matrices, adversarial, visual-regression, contract-testing, slop-detection, eval-driven-dev |
 | 08 | Deploy and Runtime | launch-day, ci-cd, uptime-health, changelog, backup-recovery, gh-fix-ci |
 | 09 | Brand and Content | email-templates, social-automation, seo-keywords, documentation-hygiene |
 | 10 | Experience and Design | — |
@@ -34,7 +34,7 @@ All 14 categories always loaded. Submodules provide specialized reference.
 | SEO/content | 09/seo-keywords, 09/documentation-hygiene, 06/blog-engine, 06/i18n |
 | Billing | 13/stripe-billing, 06/webhook-system, 05/inngest-jobs |
 | Infrastructure | 05/coolify, 05/shared-api-pool, 05/mcp-integrations |
-| Testing/QA | 07/accessibility, 07/performance, 07/security, 07/completeness |
+| Testing/QA | 07/accessibility, 07/performance, 07/security, 07/completeness, 07/visual-regression, 07/contract-testing, 07/slop-detection, 07/eval-driven-dev |
 
 ## By File Pattern
 
