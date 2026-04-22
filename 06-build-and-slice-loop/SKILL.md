@@ -17,6 +17,12 @@ submodules:
   - keyboard-shortcuts-and-command-palette.md
   - empty-states-and-loading.md
   - notification-system.md
+  - file-uploads-and-storage.md
+  - rich-text-editor.md
+  - data-tables.md
+  - realtime-and-websockets.md
+  - copilot-and-ai-features.md
+  - notification-center.md
 ---
 
 ## Submodules
@@ -38,6 +44,12 @@ submodules:
 | keyboard-shortcuts-and-command-palette.md | Cmd+K palette like Linear/Notion, keyboard overlay. |
 | empty-states-and-loading.md | Empty lists prompt first action. Skeleton screens for all loading. |
 | notification-system.md | OneSignal push + in-app bell with unread badge. |
+| file-uploads-and-storage.md | Uppy + R2: resumable uploads, presigned URLs, Angular wrapper, file validation. |
+| rich-text-editor.md | Editor.js + Angular: block JSON, plugins, D1 storage, server-side rendering. |
+| data-tables.md | AG Grid: server-side pagination, filtering, sorting, infinite scroll, CSV/Excel export. |
+| realtime-and-websockets.md | Durable Objects WebSocket: presence, typing, cursors, hibernation API. |
+| copilot-and-ai-features.md | CopilotKit + Workers AI: in-app AI, actions, embeddings, CoAgents. |
+| notification-center.md | Novu multi-channel: in-app bell, push, email (Resend), SMS, digest/batching. |
 
 # 06 — Build and Slice Loop
 

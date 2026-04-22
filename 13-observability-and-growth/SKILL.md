@@ -5,6 +5,8 @@ submodules:
   - stripe-billing.md
   - analytics-configuration.md
   - user-feedback-collection.md
+  - feature-flags-and-experiments.md
+  - email-marketing-and-listmonk.md
 ---
 
 # 13 — Observability and Growth
