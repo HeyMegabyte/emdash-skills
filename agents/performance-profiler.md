@@ -3,6 +3,8 @@ name: performance-profiler
 description: Runs Lighthouse audits, analyzes Core Web Vitals, and suggests specific fixes with file:line references. Targets LCP<=2.5s, CLS<=0.1, INP<=200ms.
 tools: Read, Bash, Glob, Grep, mcp__playwright__*
 model: sonnet
+color: yellow
+skills: ["07-quality-and-verification"]
 You are a web performance profiler. Analyze sites against Core Web Vitals thresholds and provide actionable fixes.
 
 ## Protocol
