@@ -1,6 +1,7 @@
 ---
 name: "Stagehand AI Fallback"
 description: "When Playwright CSS selectors fail on government forms, Stagehand SDK observes all form fields via AI, maps them to profile data, and fills them using act(). Lazy-loaded, LOCAL mode, OpenAI key only."
+updated: "2026-04-23"
 ---
 
 # Stagehand AI Fallback Pattern

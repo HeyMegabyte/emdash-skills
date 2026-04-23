@@ -1,6 +1,7 @@
 ---
 name: "Eval-Driven Development"
 description: "LLM-as-judge pattern for automated quality evaluation. Generate output → score with Haiku → pass/fail threshold. Eval types: code quality, copy quality, design fidelity, SEO compliance. ~$0.01/eval. Vitest integration."
+updated: "2026-04-23"
 ---
 
 # Eval-Driven Development

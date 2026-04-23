@@ -1,6 +1,7 @@
 ---
 name: "spec-driven-development"
 description: "Spec-first autonomous development loop. Every feature starts with acceptance criteria that become tests. Progress persists across context compaction. AI cannot stop until all criteria pass on production."
+updated: "2026-04-23"
 ---
 
 # Spec-Driven Development

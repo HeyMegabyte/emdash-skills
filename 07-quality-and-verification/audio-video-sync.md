@@ -1,6 +1,7 @@
 ---
 name: "Audio-Video Sync for Form Evidence"
 description: "Merge real-time phone call audio with Playwright form submission recordings via ffmpeg. Creates synchronized evidence videos proving what was submitted during live calls."
+updated: "2026-04-23"
 ---
 
 # Audio-Video Sync Pattern
