@@ -1,12 +1,13 @@
 ---
 name: "brand-and-content-system"
-description: "Extract real brands before inventing (Wayback Machine for rebuilds). Business-type inference for tone and style. Copy system with headline/CTA rules. Trust surfaces (testimonials, logos, stats). Legal pages. Information architecture. SEO content with structured data, meta tags, and sitemap. PDF and DOCX generation. Anti-AI-slop detection, microcopy system, machine-readable brand docs (DESIGN.md), W3C DTCG tokens, programmatic SEO page types, GEO/AI search optimization."
+description: "Extract real brands (Wayback for rebuilds). Copy system, headline/CTA rules, trust surfaces, legal pages, SEO+structured data, anti-AI-slop detection, microcopy, DESIGN.md, W3C DTCG tokens, pSEO page types, GEO/AI search."
+version: "2.0.0"
+updated: "2026-04-23"
 submodules:
   - email-templates.md
   - social-automation.md
   - seo-and-keywords.md
   - documentation-and-codebase-hygiene.md
-updated: "2026-04"
 ---
 
 # 09 — Brand and Content System

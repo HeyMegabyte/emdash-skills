@@ -67,4 +67,4 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 
 ## Agent Library
 
-`~/.claude/agents/`: `architect`|`code-simplifier`|`completeness-checker`|`computer-use-operator`|`deploy-verifier`|`security-reviewer`|`seo-auditor`|`test-writer`|`visual-qa`|`dependency-auditor`|`meta-orchestrator`|`migration-agent`|`content-writer`|`performance-profiler`|`incident-responder`|`accessibility-auditor`|`cost-estimator`|`changelog-generator`
+`~/.agentskills/agents/`: `architect`|`code-simplifier`|`completeness-checker`|`computer-use-operator`|`deploy-verifier`|`security-reviewer`|`seo-auditor`|`test-writer`|`visual-qa`|`dependency-auditor`|`meta-orchestrator`|`migration-agent`|`content-writer`|`performance-profiler`|`incident-responder`|`accessibility-auditor`|`cost-estimator`|`changelog-generator`

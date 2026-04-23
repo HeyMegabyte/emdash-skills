@@ -1,6 +1,8 @@
 ---
 name: "preference-and-memory"
 description: "Captures and evolves user preferences with confidence levels. Maintains Voice of the Customer model with exact language, dissatisfaction and aspiration signals. Handles promotion/demotion, global vs project scoping, auto memory system, and Omi wearable data integration."
+version: "2.0.0"
+updated: "2026-04-23"
 submodules:
   - wisdom-and-human-psychology.md
   - brian-voc-data.md

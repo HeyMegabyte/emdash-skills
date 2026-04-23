@@ -1,6 +1,8 @@
 ---
 name: "architecture-and-stack"
-description: "Cloudflare-first platform selection and architecture design. Decision trees for Workers, Pages, D1, R2, KV, Durable Objects, Queues, Vectorize, Containers, Dynamic Workers, Sandboxes, Flagship, Agent Memory, Workflows v2, Email Service. Default stack with override conditions. Auth via Clerk, data patterns, reliability structure, and complete API key reference."
+description: "Cloudflare-first platform selection. Decision trees for Workers, D1, R2, KV, DO, Queues, Vectorize, Containers, Sandboxes, Flagship, Agent Memory, Workflows v2. Default stack, override conditions, auth, data patterns, reliability."
+version: "2.0.0"
+updated: "2026-04-23"
 submodules:
   - api-design-and-documentation.md
   - shared-api-pool.md

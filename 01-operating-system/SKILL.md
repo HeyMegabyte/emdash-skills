@@ -1,6 +1,8 @@
 ---
 name: "operating-system"
-description: "Supreme policy layer governing all Claude Code behavior. Controls autonomy, one-line prompt interpretation, speed standards, emphasis signal processing (***TEXT***), prompt re-synthesis, cross-skill coordination, done definitions, and conflict resolution. Loaded on every prompt."
+description: "Supreme policy layer governing all Claude Code behavior. Autonomy, one-line prompt interpretation, speed standards, emphasis signal processing, cross-skill coordination, done definitions, conflict resolution. Loaded every prompt."
+version: "2.0.0"
+updated: "2026-04-23"
 effort: high
 model: inherit
 submodules:

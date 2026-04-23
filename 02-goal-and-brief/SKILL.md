@@ -1,6 +1,8 @@
 ---
 name: "goal-and-brief"
-description: "Establish project thesis before the first line of code. Infers product type from domain name, folder name, README, or package.json. Identifies target users, business model, programmatic SEO strategy, and AI-native development approach. Maintains PROJECT_BRIEF.md as single source of truth. Evolves brief across prompts without losing alignment."
+description: "Establish project thesis before first code. Infer product type from domain/folder/README. Identify users, business model, pSEO strategy, AI-native dev approach. Maintain PROJECT_BRIEF.md as source of truth."
+version: "2.0.0"
+updated: "2026-04-23"
 effort: medium
 model: sonnet
 ---
