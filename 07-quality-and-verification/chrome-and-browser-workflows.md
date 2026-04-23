@@ -2,6 +2,7 @@
 name: "Chrome and Browser Workflows"
 description: "Browser automation for web app interaction, form filling, visual testing, and web scraping via Chrome MCP and Playwright MCP. Teaches the optimal tool for each browser task."
 allowed-tools: "Bash Read Glob Grep mcp__playwright__*"
+updated: "2026-04-23"
 ---
 # Chrome and Browser Workflows
 ## Tool Selection for Browser Tasks

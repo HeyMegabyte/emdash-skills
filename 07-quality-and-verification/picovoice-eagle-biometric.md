@@ -1,6 +1,7 @@
 ---
 name: "Picovoice Eagle Voice Biometric"
 description: "Tier-2 voice biometric using @picovoice/eagle-node. On-device, zero-network, free tier. Sits between ONNX ECAPA-TDNN (tier-1) and MFCC cosine (tier-3) in the verification chain."
+updated: "2026-04-23"
 ---
 
 # Picovoice Eagle Voice Biometric Pattern

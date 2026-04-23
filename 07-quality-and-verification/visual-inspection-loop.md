@@ -1,5 +1,7 @@
 ---
 name: "Visual Inspection Loop"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "Screenshot → GPT-4o Vision (temp:0, JSON, evidence fields) → Fix → Re-Screenshot → Verify. Three-round max. Dual strategy: vision for aesthetics, axe-core for a11y."
 ---
 

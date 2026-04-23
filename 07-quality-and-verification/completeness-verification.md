@@ -1,6 +1,8 @@
 ---
 name: "Completeness Verification"
-description: "Continuously loop through AI-powered visual inspection of every page, every breakpoint, every interaction state until the AI finds zero remaining issues. This is the done detector that prevents premature completion."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "AI-powered visual inspection loop across every page/breakpoint/state until GPT-4o finds zero issues. Done detector that prevents premature completion. 5-pass protocol."
 ---
 
 # Completeness Verification Loop

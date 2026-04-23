@@ -1,6 +1,7 @@
 ---
 name: "Testing Matrices"
-description: "Auto-generated test templates for payment flows, email deliverability, graceful degradation, form validation, breakpoint coverage, and content integrity checks."
+description: "Auto-generated test templates for payment flows, Stripe webhooks, email, graceful degradation, form validation, breakpoint coverage, and content integrity."
+updated: "2026-04-23"
 ---
 # Testing Matrices
 ## Payment Flow Testing Matrix (auto-generate for every Stripe integration)
@@ -49,6 +50,31 @@ const BREAKPOINTS = [
   { name: 'Laptop', width: 1280, height: 720 },
   { name: 'Desktop', width: 1920, height: 1080 },
 ];
+```
+
+## Stripe Webhook Event Testing Matrix
+For every Stripe integration, verify these webhook events are handled correctly (no mocks — use Stripe CLI `stripe trigger`):
+
+| Event | Expected behavior | Test |
+|-------|-------------------|------|
+| `checkout.session.completed` | Create subscription record, send welcome email | `stripe trigger checkout.session.completed` |
+| `invoice.payment_succeeded` | Renew access, update `renewedAt` | `stripe trigger invoice.payment_succeeded` |
+| `invoice.payment_failed` | Send dunning email, flag account | `stripe trigger invoice.payment_failed` |
+| `customer.subscription.deleted` | Revoke access, send cancellation email | `stripe trigger customer.subscription.deleted` |
+| `customer.subscription.updated` | Update plan tier, adjust features | `stripe trigger customer.subscription.updated` |
+| `charge.refunded` | Revoke access if full refund, partial note | `stripe trigger charge.refunded` |
+| `payment_intent.payment_failed` | Show card decline UI, clear pending state | `stripe trigger payment_intent.payment_failed` |
+
+```typescript
+// tests/stripe-webhooks.spec.ts — idempotency test (send same event twice)
+test('webhook idempotency — duplicate event creates no duplicate record', async () => {
+  const event = await stripe.events.retrieve('evt_test_xxxx'); // real test event
+  await fetch(`${PROD_URL}/api/webhooks/stripe`, { method:'POST', headers:{'stripe-signature': sig}, body: JSON.stringify(event) });
+  const count1 = await db.select({ count: sql`count(*)` }).from(subscriptions).where(eq(subscriptions.stripeEventId, event.id));
+  await fetch(`${PROD_URL}/api/webhooks/stripe`, { method:'POST', headers:{'stripe-signature': sig}, body: JSON.stringify(event) }); // duplicate
+  const count2 = await db.select({ count: sql`count(*)` }).from(subscriptions).where(eq(subscriptions.stripeEventId, event.id));
+  expect(count1[0].count).toBe(count2[0].count); // idempotent
+});
 ```
 
 ## Content Integrity Checks

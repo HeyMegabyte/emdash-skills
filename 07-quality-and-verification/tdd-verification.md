@@ -1,5 +1,7 @@
 ---
 name: "TDD Verification"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "Full-application test user simulation. 10-point journey test that proves everything works. Completion-driven execution workflow and assumption protocol for blocking decisions."
 ---
 # TDD Verification (Test User Simulation)
