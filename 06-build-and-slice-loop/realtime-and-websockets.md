@@ -1,6 +1,8 @@
 ---
 name: "Realtime and WebSockets"
-description: "Cloudflare Durable Objects for WebSocket-based realtime features. DO class with session handling, broadcast, presence tracking, typing indicators, live cursors. Client reconnection with exponential backoff. Hibernation API for cost optimization on idle connections."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "Cloudflare Durable Objects for WebSocket-based realtime features. DO class with session handling, broadcast, presence tracking, typing indicators, live cursors. Client reconnection with exponential backoff. Hibernation API for cost optimization. 32 MiB WebSocket message size limit."
 ---
 
 # Realtime and WebSockets
@@ -130,21 +132,23 @@ export { realtime };
 
 ## Client Reconnection with Exponential Backoff
 ```typescript
-// realtime.service.ts
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+// realtime.service.ts — Angular 20 signals
+import { Injectable, OnDestroy, signal, computed } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class RealtimeService implements OnDestroy {
   private ws: WebSocket | null = null;
-  private messages$ = new Subject<unknown>();
   private reconnectAttempt = 0;
   private maxReconnect = 5;
   private destroyed = false;
 
-  connect(roomId: string, userId: string, name: string): Observable<unknown> {
+  readonly connected = signal(false);
+  readonly lastMessage = signal<unknown>(null);
+  readonly presence = signal<Array<{ userId: string; name: string }>>([]);
+  readonly userCount = computed(() => this.presence().length);
+
+  connect(roomId: string, userId: string, name: string): void {
     this.doConnect(roomId, userId, name);
-    return this.messages$.asObservable();
   }
 
   send(msg: unknown): void {
@@ -156,6 +160,7 @@ export class RealtimeService implements OnDestroy {
   disconnect(): void {
     this.destroyed = true;
     this.ws?.close();
+    this.connected.set(false);
   }
 
   ngOnDestroy(): void { this.disconnect(); }
@@ -166,14 +171,17 @@ export class RealtimeService implements OnDestroy {
 
     this.ws = new WebSocket(url);
 
-    this.ws.onopen = () => { this.reconnectAttempt = 0; };
+    this.ws.onopen = () => { this.reconnectAttempt = 0; this.connected.set(true); };
 
     this.ws.onmessage = (e) => {
       const msg = JSON.parse(e.data);
-      if (msg.type !== 'pong') this.messages$.next(msg);
+      if (msg.type === 'pong') return;
+      this.lastMessage.set(msg);
+      if (msg.users) this.presence.set(msg.users);
     };
 
     this.ws.onclose = () => {
+      this.connected.set(false);
       if (this.destroyed || this.reconnectAttempt >= this.maxReconnect) return;
       const delay = Math.min(1000 * 2 ** this.reconnectAttempt, 30000);
       this.reconnectAttempt++;

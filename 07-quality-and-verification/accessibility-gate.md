@@ -1,11 +1,13 @@
 ---
 name: "Accessibility Gate"
-description: "Automated WCAG AA accessibility audit via axe-core + Playwright on every deployment. Beautiful focus styling (2px solid cyan, 3px offset). Checks: skip-to-content link, alt text, input labels, 4.5:1 contrast, keyboard navigation, ARIA landmarks, lang attribute, prefers-reduced-motion, and screen reader compatibility."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "WCAG 2.2 AA via axe-core v4.11.3 + Playwright. 9 new SC: focus-not-obscured, target-size 24px, accessible-auth, consistent-help, redundant-entry, dragging-movements, focus-appearance. ADA Title II: 2027 (large) / 2028 (small). WCAG 3.0 awareness (174 requirements, 2028-2030)."
 ---
 
 # Accessibility Gate
 
-WCAG AA minimum on every project. 1 in 4 US adults has disability. 71% leave inaccessible sites. ADA lawsuits up 320%. Accessible sites rank higher (semantic HTML, alt text). Brian's ethos: sites must be usable by everyone.
+WCAG 2.2 AA minimum on every project. 1 in 4 US adults has disability. 71% leave inaccessible sites. 5,000+ ADA lawsuits in 2025 (37% YoY increase). Accessible sites rank higher (semantic HTML, alt text). Brian's ethos: sites must be usable by everyone.
 
 ## Automated Audit (EVERY Deploy)
 ```typescript
@@ -22,7 +24,9 @@ for (const bp of BREAKPOINTS) {
   test(`a11y audit at ${bp.name}`, async ({ page }) => {
     await page.setViewportSize({ width: bp.width, height: bp.height });
     await page.goto('/');
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
     expect(results.violations).toHaveLength(0);
   });
 }

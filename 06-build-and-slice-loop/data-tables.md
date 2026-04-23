@@ -1,13 +1,15 @@
 ---
 name: "Data Tables"
-description: "AG Grid (ag-grid-angular) for complex data tables with server-side row model, Hono API pagination, column definitions, filtering, sorting, cell renderers, infinite scroll for 100K+ rows, and CSV/Excel export. Covers Angular standalone integration and virtual scrolling."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "AG Grid (ag-grid-angular) for complex data tables with server-side row model, Hono API pagination, column definitions, filtering, sorting, cell renderers, infinite scroll for 100K+ rows, and CSV/Excel export. Angular 20 standalone + signals integration."
 ---
 
 # Data Tables
 ## Angular AG Grid Setup
 ```typescript
 // data-table.component.ts
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, signal, viewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GridReadyEvent, IServerSideDatasource, IServerSideGetRowsParams, GridApi } from 'ag-grid-community';
 import { ModuleRegistry } from 'ag-grid-community';
@@ -20,6 +22,7 @@ ModuleRegistry.registerModules([ServerSideRowModelModule, CsvExportModule, Excel
   selector: 'app-data-table',
   standalone: true,
   imports: [AgGridAngular],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="toolbar">
       <input type="text" placeholder="Search..." (input)="onSearch($event)" />
@@ -29,7 +32,7 @@ ModuleRegistry.registerModules([ServerSideRowModelModule, CsvExportModule, Excel
     <ag-grid-angular
       style="width: 100%; height: 600px;"
       class="ag-theme-alpine-dark"
-      [columnDefs]="columnDefs"
+      [columnDefs]="columnDefs()"
       [defaultColDef]="defaultColDef"
       [rowModelType]="'serverSide'"
       [pagination]="true"
@@ -40,9 +43,9 @@ ModuleRegistry.registerModules([ServerSideRowModelModule, CsvExportModule, Excel
     />
   `,
 })
-export class DataTableComponent implements OnInit {
-  @Input() endpoint = '/api/data';
-  @Input() columnDefs: ColDef[] = [];
+export class DataTableComponent {
+  readonly endpoint = input('/api/data');
+  readonly columnDefs = input<ColDef[]>([]);
 
   defaultColDef: ColDef = {
     sortable: true,
@@ -52,23 +55,20 @@ export class DataTableComponent implements OnInit {
     minWidth: 100,
   };
 
-  private gridApi!: GridApi;
-
-  ngOnInit(): void {}
+  private gridApi = signal<GridApi | undefined>(undefined);
 
   onGridReady(params: GridReadyEvent): void {
-    this.gridApi = params.api;
-    const datasource = this.createDatasource();
-    params.api.setGridOption('serverSideDatasource', datasource);
+    this.gridApi.set(params.api);
+    params.api.setGridOption('serverSideDatasource', this.createDatasource());
   }
 
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.gridApi.setGridOption('quickFilterText', value);
+    this.gridApi()?.setGridOption('quickFilterText', value);
   }
 
-  exportCsv(): void { this.gridApi.exportDataAsCsv(); }
-  exportExcel(): void { this.gridApi.exportDataAsExcel(); }
+  exportCsv(): void { this.gridApi()?.exportDataAsCsv(); }
+  exportExcel(): void { this.gridApi()?.exportDataAsExcel(); }
 
   private createDatasource(): IServerSideDatasource {
     const endpoint = this.endpoint;
