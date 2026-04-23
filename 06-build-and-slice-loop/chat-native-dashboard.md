@@ -1,6 +1,8 @@
 ---
 name: "Chat-Native Dashboard"
-description: "ChatGPT-style three-column layout as primary interface for all service apps. Login=dashboard with blur overlay. Chat is the operating system — every feature accessible through conversation + inline widgets."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "ChatGPT-style three-column layout as primary interface for all service apps. Login=dashboard with blur overlay. Chat is the operating system — every feature accessible through conversation + inline widgets. CF Agents SDK AIChatAgent for stateful sessions."
 ---
 
 # Chat-Native Dashboard Pattern

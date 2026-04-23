@@ -1,5 +1,7 @@
 ---
 name: "Microcopy Library"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "Canonical brand-voice microcopy dictionary. Eliminates generic AI copy ('An error occurred', 'Submit', 'Loading...') with punchy, irreverent, on-brand alternatives. Covers buttons, errors, empty states, loading, success, tooltips, forms, confirmations, 404, and auth flows."
 ---
 

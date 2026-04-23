@@ -1,5 +1,7 @@
 ---
 name: "Domain Provisioning"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "Auto-provision new domains with CF Worker, DNS, SSL, and a gorgeous animated placeholder — NOT a boring 'coming soon.' Full dark theme with gradient mesh, animated orbs, newsletter signup, meta tags, favicon set, Easter egg, multi-language support, and Megabyte Labs branding. Triggers when new project folder appears."
 ---
 

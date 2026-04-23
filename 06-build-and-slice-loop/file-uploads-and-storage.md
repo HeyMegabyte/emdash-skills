@@ -1,6 +1,8 @@
 ---
 name: "File Uploads and Storage"
-description: "Uppy (@uppy/core, @uppy/dashboard, @uppy/tus, @uppy/aws-s3) with Cloudflare R2 for resumable file uploads. Angular wrapper component, presigned URL generation via Hono Worker, file validation, progress tracking, and R2 bucket configuration. Covers tus protocol for large files and S3-compatible direct upload."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "Uppy (@uppy/core, @uppy/dashboard, @uppy/tus, @uppy/aws-s3) with Cloudflare R2 for resumable file uploads. Angular 20 wrapper component with signals, presigned URL generation via Hono Worker, file validation, progress tracking, and R2 bucket configuration."
 ---
 
 # File Uploads and Storage

@@ -1,5 +1,7 @@
 ---
 name: "Contact Forms and Endpoints"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "Every site gets a working contact form with Turnstile captcha, Zod validation, Resend email delivery, success/error/loading states, and 8-point form test matrix. Auto-creates the /api/contact endpoint, form HTML, and Playwright tests. No form is ever a dead end."
 ---
 

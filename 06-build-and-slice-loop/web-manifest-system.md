@@ -1,5 +1,7 @@
 ---
 name: "Web Manifest System"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "MANDATORY: Every site gets full PWA manifest with screenshots, shortcuts (96px icons), display_override, edge_side_panel. Plus sitemap.xml, robots.txt, humans.txt, security.txt, opensearch.xml, browserconfig.xml. Comprehensive meta tags (copyright, HandheldFriendly, format-detection, color-scheme). Cross-site linking via rel=alternate. Per-page OG images. JSON-LD rich snippets. All files regenerated on every deploy."
 ---
 

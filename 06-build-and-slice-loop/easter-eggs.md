@@ -1,5 +1,7 @@
 ---
 name: "Easter Eggs"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "MANDATORY: Every website gets at least one hidden Easter egg via URL query parameter. Canvas-based, full-screen, dismissible, delightful. AI chooses what — creative, contextually appropriate, and genuinely fun. Includes QR code flyer generation at /flyer.pdf."
 ---
 

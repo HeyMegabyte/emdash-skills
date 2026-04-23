@@ -1,6 +1,8 @@
 ---
 name: "Site Search"
-description: "Cloudflare AI Search-powered site search for projectsites.dev: hybrid semantic + keyword search, multi-tenant via folder-prefix filtering or dedicated namespaces, built-in MCP endpoint for AI agents, Cmd+K modal UI, and auto-indexing at deploy time."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "Cloudflare AI Search (formerly AutoRAG): hybrid semantic + keyword search, dynamic instances, relevance boosting, multi-tenant via folder-prefix filtering or dedicated namespaces, built-in MCP endpoint for AI agents, Cmd+K modal UI, auto-indexing at deploy."
 ---
 
 # Site Search (Cloudflare AI Search)

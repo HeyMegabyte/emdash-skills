@@ -1,6 +1,8 @@
 ---
 name: "Webhook System"
-description: "Consolidated webhook handling for Stripe, Clerk, GitHub, and custom events. Signature verification, event routing, idempotency via D1 dedup table, retry-safe handlers, and outbound webhook dispatch. Every integration uses webhooks — this skill standardizes the pattern."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "Consolidated webhook handling for Stripe, Clerk, GitHub, and custom events. Signature verification, event routing, idempotency via D1 dedup table (batch API, no BEGIN), retry-safe handlers, Drizzle v1 + RQBv2, and outbound webhook dispatch."
 ---
 
 # Webhook System

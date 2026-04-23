@@ -1,5 +1,7 @@
 ---
 name: "Blog and Content Engine"
+version: "2.0.0"
+updated: "2026-04-23"
 description: "SEO-driven blog system on Cloudflare Workers: markdown-to-HTML rendering, RSS feed, reading time, social sharing, related posts, categories, pagination. Every post targets a longtail keyword. Generates 3-5 seed posts on first build for immediate SEO value. Stored in D1 or as static markdown files."
 ---
 

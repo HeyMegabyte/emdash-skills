@@ -1,6 +1,8 @@
 ---
 name: "Copilot and AI Features"
-description: "CopilotKit for AI-powered UX with useCopilotReadable, useCopilotAction, CopilotTextarea, and CoAgents. Workers AI for edge inference and embeddings. Patterns for in-app AI assistants, AI-assisted text input, context-aware suggestions, and intelligent automation."
+version: "2.0.0"
+updated: "2026-04-23"
+description: "CopilotKit for AI-powered UX with useCopilotReadable, useCopilotAction, CopilotTextarea, and CoAgents. Workers AI for edge inference and embeddings. CF Agents SDK with AIChatAgent for stateful AI. Patterns for in-app AI assistants, AI-assisted text input, context-aware suggestions, and intelligent automation."
 ---
 
 # Copilot and AI Features

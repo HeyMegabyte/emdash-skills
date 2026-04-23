@@ -185,7 +185,7 @@ async function seed(db: DrizzleD1Database) {
 ```
 
 ## Neon (PostgreSQL) Variant
-When D1 isn't enough (complex joins, full-text search, > 5GB):
+When D1 isn't enough (complex joins, full-text search, > 1TB, RLS):
 
 ```typescript
 import { drizzle } from 'drizzle-orm/neon-http';
@@ -195,4 +195,12 @@ const sql = neon(env.DATABASE_URL);
 const db = drizzle(sql, { schema });
 ```
 
-Schema uses `pgTable` instead of `sqliteTable`, `serial` instead of manual IDs, and `timestamp` instead of `text` for dates.
+Schema uses `pgTable` instead of `sqliteTable`, identity columns (not serial) for IDs, and `timestamp` instead of `text` for dates. Use `$inferSelect`/`$inferInsert` for type derivation. Zod integration via `createInsertSchema`/`createSelectSchema`.
+
+## D1 Notes (2026)
+- Global read replication (beta): routes reads to nearest replica, reduces latency 40-60%
+- Storage: 1TB per account (paid), Time Travel 30-day PIT recovery
+- PRAGMA optimize support for query performance
+- Does NOT support BEGIN transactions — use batch API instead
+- Prepared statements for repeated queries
+- node:fs and Web File System APIs now available in Workers

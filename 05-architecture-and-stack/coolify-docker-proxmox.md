@@ -143,20 +143,22 @@ curl -s "$COOLIFY_URL/services/{service_id}" \
 | Need | Use Cloudflare | Use Coolify |
 |------|---------------|-------------|
 | API endpoints | Workers (Hono) | — |
-| Static sites | Pages | — |
-| SQLite database | D1 | — |
+| Static sites | Workers Static Assets | — |
+| SQLite database | D1 (1TB, global replicas) | — |
 | Object storage | R2 | — |
 | Key-value cache | KV | — |
 | Stateful connections | Durable Objects | — |
-| Docker containers | CF Containers | Coolify (more control) |
+| Docker containers | CF Containers (GA, DO-based) | Coolify (more control, custom networking) |
+| Sandboxed execution | CF Sandboxes (GA) or Dynamic Workers | — |
 | PostgreSQL | Neon (managed) | Coolify (self-hosted) |
-| Long-running processes | Queues + Workers | Coolify |
-| Full-stack apps (Django, Rails, etc.) | — | Coolify |
-| Services needing persistent disk | — | Coolify |
-| Services needing > 128MB RAM | — | Coolify |
-| Custom networking | — | Coolify |
+| Long-running processes | Workflows v2 + Queues | Coolify |
+| Full-stack apps (Django, Rails, etc.) | CF Containers | Coolify (existing infra) |
+| Services needing persistent disk | CF Containers | Coolify |
+| Services needing > 128MB RAM | CF Containers | Coolify |
+| Custom networking | CF Mesh | Coolify (complex VLAN) |
+| Email marketing | CF Email Service (beta) | Listmonk on Coolify |
 
-**Rule:** Default to Cloudflare. Use Coolify only when CF genuinely can't handle it.
+**Rule:** Default to Cloudflare. CF Containers GA eliminates most Coolify use cases for new projects. Use Coolify for existing 70+ services and complex self-hosted stacks.
 
 ## Docker Compose Patterns
 ### Simple Service

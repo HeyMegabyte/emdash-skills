@@ -1,11 +1,11 @@
 ---
 name: "CF Auto-Provision"
-description: "Single-function project bootstrap via Cloudflare MCP. One call provisions D1 database, KV namespaces (cache + rate limit), R2 bucket, DNS records, Worker routes, and generates wrangler.toml with all bindings. Integrates Clerk, Stripe, PostHog, and Sentry project creation."
+description: "Single-function project bootstrap via Cloudflare MCP + cf CLI (~3000 API ops). One call provisions D1 database (global read replication), KV namespaces (cache + rate limit), R2 bucket, DNS records, Worker routes, Flagship project, and generates wrangler.jsonc with all bindings. Integrates Clerk, Stripe, PostHog, and Sentry project creation."
 ---
 
 # CF Auto-Provision
 
-One function bootstraps an entire project on Cloudflare. No manual dashboard clicking. Provisions all primitives, generates config, integrates third-party services.
+One function bootstraps an entire project on Cloudflare. No manual dashboard clicking. Provisions all primitives, generates config, integrates third-party services. Use `cf` CLI (unified, ~3000 API ops) or CF MCP (Code Mode, 2 tools + <1K tokens).
 
 ## Function Signature
 
@@ -108,57 +108,26 @@ For saas type, add: *.{domain}/*
 
 ### 6. Wrangler.toml Generation
 
-```toml
-name = "{project}-worker"
-main = "src/index.ts"
-compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
-
-[vars]
-ENVIRONMENT = "production"
-VERSION = "0.1.0"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "{project}-db"
-database_id = "{d1-id}"
-
-[[kv_namespaces]]
-binding = "CACHE"
-id = "{cache-kv-id}"
-
-[[kv_namespaces]]
-binding = "RATE_LIMIT"
-id = "{ratelimit-kv-id}"
-
-[[r2_buckets]]
-binding = "STORAGE"
-bucket_name = "{project}-storage"
-
-[triggers]
-crons = ["0 */6 * * *"]
-
-# SaaS type adds:
-# [[durable_objects.bindings]]
-# name = "REALTIME"
-# class_name = "RealtimeRoom"
-#
-# [[queues.producers]]
-# binding = "QUEUE"
-# queue = "{project}-queue"
-#
-# [[queues.consumers]]
-# queue = "{project}-queue"
-# max_batch_size = 10
-# max_retries = 3
-
-[site]
-bucket = "./public"
-
-# Custom domain routing
-# routes = [
-#   { pattern = "{domain}", custom_domain = true }
-# ]
+```jsonc
+// wrangler.jsonc (preferred over .toml since 2025)
+{
+  "name": "{project}-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": { "ENVIRONMENT": "production", "VERSION": "0.1.0" },
+  "d1_databases": [{ "binding": "DB", "database_name": "{project}-db", "database_id": "{d1-id}" }],
+  "kv_namespaces": [
+    { "binding": "CACHE", "id": "{cache-kv-id}" },
+    { "binding": "RATE_LIMIT", "id": "{ratelimit-kv-id}" }
+  ],
+  "r2_buckets": [{ "binding": "STORAGE", "bucket_name": "{project}-storage" }],
+  "ai": { "binding": "AI" },
+  "triggers": { "crons": ["0 */6 * * *"] },
+  "assets": { "directory": "./public" }
+  // SaaS type adds: durable_objects, queues, vectorize bindings
+  // Agent type adds: agents SDK + Agent Memory bindings
+}
 ```
 
 ## Third-Party Integration

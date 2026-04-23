@@ -1,12 +1,12 @@
 ---
 name: "Background Jobs and Workflows"
-description: "Inngest for durable background jobs on CF Workers. Event-driven architecture, scheduled tasks, retry logic, fan-out patterns, and step functions. Covers Stripe webhook processing, email sequences, data sync, and long-running workflows. Also: CF Cron Triggers for simple schedules, CF Queues for high-throughput."
+description: "Inngest for durable background jobs on CF Workers. CF Workflows v2 (rearchitected control plane, higher concurrency). Event-driven architecture, scheduled tasks, retry logic, fan-out patterns, and step functions. Covers Stripe webhook processing, email sequences, data sync, D1→R2 backups, and long-running workflows. Also: CF Cron Triggers (250 paid), CF Queues for high-throughput."
 ---
 
 # Background Jobs and Workflows
 
 ## Decision Tree
-Simple schedule (health check, cache warm) → CF Cron Triggers. High-throughput fire-and-forget (analytics, logs) → CF Queues. Durable multi-step (onboarding, billing sync, email drip) → Inngest. Stateful long-running (AI agent, workflow builder) → CF Workflows v2 or DO.
+Simple schedule (health check, cache warm) → CF Cron Triggers (5 free, 250 paid). High-throughput fire-and-forget (analytics, logs) → CF Queues. Durable multi-step (onboarding, billing sync, email drip) → Inngest. Stateful long-running (AI agent, workflow builder) → CF Workflows v2 (rearchitected control plane, higher concurrency+creation rate) or DO. D1→R2 daily backup → CF Workflows + Cron Trigger. Agent orchestration → CF Agents SDK (Project Think, Fibers for crash-survivable execution).
 
 ## Inngest on CF Workers
 
