@@ -1,6 +1,8 @@
 ---
 name: "Uptime and Health"
-description: "Health endpoints on every Worker, external uptime monitoring via free services (UptimeRobot, Better Stack). Public status page at /status. Cron-based self-checks. Let external services handle alerting — we just expose the endpoints and set up the monitors."
+version: "1.2.0"
+updated: "2026-04-23"
+description: "Health endpoints on every Worker (/health + /health/deep), external monitoring (UptimeRobot, Better Stack), /status page, cron self-check with Resend alert escalation."
 ---
 
 # Uptime and Health

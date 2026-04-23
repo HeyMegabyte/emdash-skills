@@ -1,8 +1,8 @@
 ---
 name: "experience-and-design-system"
-version: "2.0"
+version: "2.1.0"
 updated: "2026-04-23"
-description: "Anti-AI-slop design system for distinctive, premium interfaces. Bold typography (Sora, Space Grotesk, JetBrains Mono), dark-first color system (#060610 bg, #00E5FF cyan), fluid type scale with clamp(), CSS architecture with cascade layers + native nesting + container queries, W3C DTCG design tokens, OKLCH color, and interaction affordances on everything. The Apple Test."
+description: "Anti-AI-slop design system for distinctive, premium interfaces. Bold typography, dark-first #060610, fluid clamp() type, cascade layers + native nesting + container queries, OKLCH color, @starting-style, View Transitions API, DTCG tokens."
 submodules:
   - design-tokens.md
 ---
@@ -77,7 +77,7 @@ Cards: bg-card, border-subtle, 12px radius, hover: border-hover+shadow-glow. But
 cursor:pointer, hover state, focus-visible (3px cyan, 2px offset), active (scale 0.98), transition (0.2s color, 0.1s transform). WCAG 2.2: min 24x24px targets, focus not obscured by sticky headers, dragging alternatives required, accessible auth (support password managers).
 
 ## Motion (CSS-Native 2026)
-View Transitions API (baseline all browsers Oct 2025): `view-transition-name:match-element` auto-names. Scroll-driven animations: `animation-timeline:scroll()|view()`, off main thread, `animation-range:entry 0% cover 50%`. `@starting-style` for entering elements. Container scroll-state queries: `@container scroll-state(stuck:top)`. `::scroll-button()`/`::scroll-marker` for scroll UI. `prefers-reduced-motion` on ALL animations (mandatory).
+View Transitions API (baseline all browsers Oct 2025): `@view-transition { navigation: auto; }` for full-page. Named: `view-transition-name: match-element` (Chrome 137+) auto-assigns from element identity — no manual names for list items. Nested groups (Chrome 140+) for clipping/3D. `<300ms total. Scroll-driven: `animation-timeline: scroll(root block)` | `animation-timeline: view()`, off main thread, `animation-range: entry 0% cover 50%`. `@starting-style` for DOM-insert animations (modals, toasts, drawers) — replaces JS add-class-on-mount. Container scroll-state: `@container scroll-state(stuck: top)` for sticky headers, `@container scroll-state(snapped: x)` for carousels. `::scroll-button()` / `::scroll-marker` for scroll UI (Chrome 135+). `prefers-reduced-motion` on ALL animations (mandatory — see skill 11).
 
 ## Responsive
 Mobile 375px: no h-scroll, 44px targets, readable, hamburger, full-width buttons. Desktop 1280px: centered, multi-column, hover states, 65ch max. 6 breakpoints: 375,390,768,1024,1280,1920.

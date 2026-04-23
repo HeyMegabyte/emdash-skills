@@ -1,6 +1,8 @@
 ---
 name: "Launch Day Sequence"
-description: "The go-live checklist that runs after the first successful deploy: submit sitemap to Google Search Console, unblock robots.txt, announce on social via Postiz, send launch email via Listmonk, verify every link, run full quality gate, set up uptime monitoring. Ensures nothing is forgotten on launch day."
+version: "1.1.0"
+updated: "2026-04-23"
+description: "Go-live checklist: sitemap → GSC, robots.txt unblock, Postiz social, Resend launch email, full quality gate, uptime monitoring setup. Nothing forgotten."
 ---
 
 # Launch Day Sequence

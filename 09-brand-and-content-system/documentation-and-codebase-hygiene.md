@@ -1,6 +1,8 @@
 ---
 name: "Documentation and Codebase Hygiene"
-description: "Keep the entire codebase in sync: README.md (install.doctor template with divider PNGs, shields.io badges), CLAUDE.md, MEMORY.md, JSDoc/TypeDoc, code comments with references, and cross-project documentation. Remove stale code/comments. Style READMEs with branded dividers and status buttons. Runs continuously."
+version: "1.1.0"
+updated: "2026-04-23"
+description: "Keep codebase in sync: README (install.doctor template, shields.io badges), CLAUDE.md, MEMORY.md, JSDoc/TypeDoc, stale code removal. Stale docs = bugs. Runs continuously."
 ---
 
 # Documentation and Codebase Hygiene

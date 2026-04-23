@@ -1,6 +1,8 @@
 ---
 name: "Changelog and Releases"
-description: "Auto-generate changelog from git commits using conventional commits format. Public /changelog page. GitHub Releases with release notes. Semantic versioning. Announce significant releases via social (skill 27). Keep users informed about what changed."
+version: "1.1.0"
+updated: "2026-04-23"
+description: "Auto-generate changelog from conventional commits. Public /changelog page, GitHub Releases, semver rules, social announcement on minor+ releases."
 ---
 
 # Changelog and Releases

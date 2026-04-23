@@ -1,6 +1,8 @@
 ---
 name: "Font Subsetting"
-description: "Subset fonts to Latin+common symbols via glyphhanger, self-host on R2 as WOFF2. Covers Sora, Space Grotesk, JetBrains Mono. Preload critical fonts, font-display:swap, @fontsource alternative. Total font budget ≤100KB."
+version: "1.1.0"
+updated: "2026-04-23"
+description: "glyphhanger → WOFF2 → R2 self-host. Sora, Space Grotesk, JetBrains Mono subset to Latin+common. Preload critical, font-display:swap. Budget ≤100KB."
 ---
 
 # Font Subsetting

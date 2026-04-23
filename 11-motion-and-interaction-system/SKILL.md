@@ -1,7 +1,8 @@
 ---
 name: "motion-and-interaction-system"
-description: "Meaning-first animation with 3-tier motion hierarchy. Transition grammar, CSS-native scroll-driven animations (off main thread), View Transitions API (Baseline Oct 2025), @starting-style enter patterns, container scroll-state queries, hover/focus/active states on every element, skeleton loading, mandatory prefers-reduced-motion, transform/opacity-only discipline, anti-slop: no uniform fade-ins. Includes Playwright animation tests."
+version: "2.1.0"
 updated: "2026-04-23"
+description: "Meaning-first animation with 3-tier hierarchy. CSS scroll-driven (animation-timeline: scroll()), View Transitions API, @starting-style DOM-insert, container scroll-state queries, prefers-reduced-motion mandatory on all animations."
 ---
 
 # 11 — Motion and Interaction System

@@ -1,6 +1,8 @@
 ---
 name: "SEO and Keywords"
-description: "Full SEO engine: keyword research via free/cheap APIs, competitor keyword analysis, per-page primary + longtail targeting, Yoast-level on-page checks, schema markup, internal linking, and programmatic SEO at scale on Cloudflare Workers. Every page ranks for a holy-grail keyword plus 1-2 longtail phrases. Runs on every build."
+version: "1.2.0"
+updated: "2026-04-23"
+description: "Full SEO engine: keyword research, competitor analysis, per-page primary+longtail targeting, Yoast-level checks, schema markup, internal linking, pSEO at scale. Runs every build."
 ---
 
 # SEO and Keywords
