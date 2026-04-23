@@ -93,7 +93,7 @@ File ownership: frontend owns `src/app/`, backend owns `src/api/`. Test agents n
 
 When any computer-use tools are in the deferred list: load ALL in single call — `{ query: "computer-use", max_results: 30 }`. Never load individual tools one-by-one (wastes one round-trip per tool). Same pattern for any deferred tool set: bulk-search by server name prefix, not `select:` for individuals.
 
-Custom agents from `~/.claude/agents/`: deploy-verifier, security-reviewer, test-writer, seo-auditor, visual-qa, computer-use-operator.
+Custom agents from `~/.agentskills/agents/`: deploy-verifier, security-reviewer, test-writer, seo-auditor, visual-qa, computer-use-operator.
 
 ## Completion Criteria
 - All features implemented (no stubs/TODOs)
