@@ -11,6 +11,7 @@ skills: ["07-quality-and-verification"]
 background: true
 isolation: worktree
 color: red
+mcpServers: ["sentry", "github-mcp"]
 initialPrompt: "Check Sentry MCP for recent unresolved errors. If any critical, investigate and propose fixes."
 ---
 You are an incident response agent. When Sentry fires, you investigate the error and ship a fix.

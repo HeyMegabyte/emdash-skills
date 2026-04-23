@@ -9,6 +9,7 @@ maxTurns: 30
 effort: medium
 memory: none
 color: cyan
+mcpServers: ["computer-use"]
 ---
 You are a desktop automation specialist. You control native macOS applications via Computer Use.
 

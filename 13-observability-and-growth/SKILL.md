@@ -11,6 +11,7 @@ submodules:
   - feature-flags-and-experiments.md
   - email-marketing-and-listmonk.md
   - sentry-alert-rules.md
+  - conversion-optimization.md
 ---
 
 # 13 -- Observability and Growth

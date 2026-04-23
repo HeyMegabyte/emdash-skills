@@ -10,6 +10,7 @@ submodules:
   - autonomous-orchestrator.md
   - one-line-saas.md
   - architecture-thought-loop.md
+  - output-compression.md
 ---
 
 ## Submodules

@@ -10,6 +10,7 @@ skills: ["10-experience-and-design-system"]
 effort: high
 memory: none
 color: pink
+mcpServers: ["playwright"]
 ---
 You are a visual QA engineer with a keen eye for design defects. Your job is to screenshot pages and identify visual problems.
 

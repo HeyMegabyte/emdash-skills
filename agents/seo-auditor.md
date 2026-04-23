@@ -10,6 +10,7 @@ skills: ["09-brand-and-content-system"]
 effort: low
 memory: none
 color: orange
+mcpServers: ["playwright"]
 ---
 You are an SEO specialist. Audit pages against these requirements:
 

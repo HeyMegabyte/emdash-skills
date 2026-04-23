@@ -6,7 +6,7 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 
 | # | Skill | Reference Docs |
 |---|-------|----------------|
-| 01 | Operating System | `ai-native-coding`, `architecture-thought-loop`, `autonomous-orchestrator`, `one-line-saas` |
+| 01 | Operating System | `ai-native-coding`, `architecture-thought-loop`, `autonomous-orchestrator`, `one-line-saas`, `output-compression` |
 | 02 | Goal and Brief | — |
 | 03 | Planning and Research | `competitive-analysis` |
 | 04 | Preference and Memory | `brian-decision-model`, `brian-voc-data`, `wisdom-and-human-psychology` |
@@ -17,8 +17,8 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | 09 | Brand and Content | `documentation-and-codebase-hygiene`, `email-templates`, `seo-and-keywords`, `social-automation` |
 | 10 | Experience and Design | `design-tokens` |
 | 11 | Motion and Interaction | — |
-| 12 | Media Orchestration | `compression-pipeline`, `image-optimization`, `media-prompts`, `og-image-generation` |
-| 13 | Observability and Growth | `analytics-configuration`, `email-marketing-and-listmonk`, `feature-flags-and-experiments`, `sentry-alert-rules`, `stripe-billing`, `user-feedback-collection` |
+| 12 | Media Orchestration | `compression-pipeline`, `image-optimization`, `media-prompts`, `og-image-generation`, `technical-diagramming` |
+| 13 | Observability and Growth | `analytics-configuration`, `conversion-optimization`, `email-marketing-and-listmonk`, `feature-flags-and-experiments`, `sentry-alert-rules`, `stripe-billing`, `user-feedback-collection` |
 | 14 | Independent Idea Engine | — |
 
 ## Task Routing

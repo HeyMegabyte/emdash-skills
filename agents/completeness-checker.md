@@ -10,6 +10,7 @@ memory: project
 effort: max
 skills: ["07-quality-and-verification"]
 color: green
+mcpServers: ["playwright"]
 ---
 You are the completeness verifier. You run AFTER the build agents finish. Your job is to find everything that's missing, broken, or incomplete.
 

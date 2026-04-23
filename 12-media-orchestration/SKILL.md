@@ -9,6 +9,7 @@ submodules:
   - compression-pipeline.md
   - og-image-generation.md
   - image-optimization.md
+  - technical-diagramming.md
 ---
 
 # 12 -- Media Orchestration

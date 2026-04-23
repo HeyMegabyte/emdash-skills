@@ -16,7 +16,7 @@
 <br/>
 
 <div align="center">
-  <code>14 categories</code> · <code>89 reference docs</code> · <code>18 agents</code> · <code>13 templates</code>
+  <code>14 categories</code> · <code>92 reference docs</code> · <code>18 agents</code> · <code>13 templates</code>
 </div>
 
 <br/>
@@ -83,7 +83,7 @@ git clone https://github.com/megabytespace/claude-skills ~/.agentskills
           │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐       │
           │   │ 01  │→ │ 02  │→ │ 03  │→ │ 04  │       │
           │   │ OS  │  │Brief│  │Plan │  │Pref │       │
-          │   │  4  │  │  0  │  │  1  │  │  3  │       │
+          │   │  5  │  │  0  │  │  1  │  │  3  │       │
           │   └─────┘  └─────┘  └─────┘  └─────┘       │
           │                                               │
           │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐       │
@@ -95,13 +95,13 @@ git clone https://github.com/megabytespace/claude-skills ~/.agentskills
           │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐       │
           │   │ 09  │→ │ 10  │→ │ 11  │→ │ 12  │       │
           │   │Brand│  │ UX  │  │Motn │  │Media│       │
-          │   │  4  │  │  1  │  │  0  │  │  4  │       │
+          │   │  4  │  │  1  │  │  0  │  │  5  │       │
           │   └─────┘  └─────┘  └─────┘  └─────┘       │
           │                                               │
           │          ┌─────┐  ┌─────┐                    │
           │          │ 13  │→ │ 14  │                    │
           │          │Grow │  │Ideas│                    │
-          │          │  6  │  │  0  │                    │
+          │          │  7  │  │  0  │                    │
           │          └─────┘  └─────┘                    │
           │                                               │
           │   Numbers = reference docs per category       │
@@ -110,7 +110,7 @@ git clone https://github.com/megabytespace/claude-skills ~/.agentskills
 
 | # | Category | Docs | What It Handles |
 |--:|----------|:----:|-----------------|
-| 01 | **Operating System** | 4 | Core policy, autonomy, parallelization, AI-native coding patterns |
+| 01 | **Operating System** | 5 | Core policy, autonomy, parallelization, AI-native coding, output compression |
 | 02 | **Goal & Brief** | — | Product thesis from a domain name, business model inference |
 | 03 | **Planning & Research** | 1 | Competitive analysis, task decomposition, parallel workstreams |
 | 04 | **Preference & Memory** | 3 | Voice of Customer data, user preferences, behavioral psychology |
@@ -121,8 +121,8 @@ git clone https://github.com/megabytespace/claude-skills ~/.agentskills
 | 09 | **Brand & Content** | 4 | SEO engine, copy system, email templates, social automation |
 | 10 | **Design System** | 1 | Anti-slop design, dark-first, bold typography, CSS architecture |
 | 11 | **Motion & Interaction** | — | Scroll-driven animations, View Transitions, reduced-motion |
-| 12 | **Media Orchestration** | 4 | Image/video generation, AI prompts, compression, OG previews |
-| 13 | **Growth & Observability** | 6 | Stripe billing, analytics, Sentry alerts, email, experiments |
+| 12 | **Media Orchestration** | 5 | Image/video generation, AI prompts, compression, OG previews, diagramming |
+| 13 | **Growth & Observability** | 7 | Stripe billing, analytics, Sentry alerts, email, experiments, CRO |
 | 14 | **Idea Engine** | — | Autonomous research, evidence-backed improvement proposals |
 
 ## Agents
@@ -233,7 +233,7 @@ Every deploy must clear all gates. No exceptions. No overrides.
 
 ## Task Routing
 
-The router loads the smallest useful subset per task — never the full 89 docs. See [`_router.md`](_router.md) for the complete routing table.
+The router loads the smallest useful subset per task — never the full 92 docs. See [`_router.md`](_router.md) for the complete routing table.
 
 | When you say... | Skills loaded |
 |-----------------|---------------|

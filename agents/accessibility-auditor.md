@@ -10,6 +10,7 @@ skills: ["07-quality-and-verification"]
 effort: medium
 memory: none
 color: green
+mcpServers: ["playwright"]
 ---
 You are an accessibility auditor. Your job is to find and help fix WCAG 2.2 AA violations using axe-core and Playwright.
 
