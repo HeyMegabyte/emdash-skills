@@ -1,6 +1,8 @@
 ---
 name: "Backup and Disaster Recovery"
-description: "Single-zip infrastructure restore plan: D1 database exports, R2 bucket sync, KV namespace dumps, wrangler.toml + secrets list, and a restore script that rebuilds everything from one archive. Cron-based automated backups to R2. Recovery runbook for when things go wrong."
+version: "1.2.0"
+updated: "2026-04-23"
+description: "Single-zip restore plan: D1 Time Travel (30-day) + D1→R2 export, KV dump, wrangler.toml + secrets list. Cron-based automated backups. Recovery runbook."
 ---
 
 # Backup and Disaster Recovery

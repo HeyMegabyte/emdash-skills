@@ -1,6 +1,8 @@
 ---
 name: "Design Tokens"
-description: "Auto-generated design tokens from Emdash brand colors (#060610, #00E5FF, #50AAE3, #7C3AED). HSL color scales (50-950), 4px-base spacing, modular type scale (1.25 ratio), shadow and radius scales. CSS custom properties + typed TypeScript constants. Dark-first with light overrides."
+version: "1.2.0"
+updated: "2026-04-23"
+description: "Emdash brand tokens (#060610/#00E5FF/#50AAE3/#7C3AED). HSL scales 50-950, 4px spacing, 1.25 type scale, W3C DTCG JSON format. CSS custom properties + TypeScript constants. Dark-first with light overrides."
 ---
 
 # Design Tokens

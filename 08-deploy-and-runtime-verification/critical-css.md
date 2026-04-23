@@ -1,6 +1,8 @@
 ---
 name: "Critical CSS Extraction"
-description: "Inline above-fold CSS at build time using critters (Google). Renders pages headlessly, extracts critical CSS, inlines in <style>, defers rest. Angular CLI integration (built-in since v13), Hono SSR manual extraction, paired with font preloading for fastest first paint. LCP target ≤2.5s."
+version: "1.1.0"
+updated: "2026-04-23"
+description: "Inline above-fold CSS via critters at build time. Angular CLI built-in (v13+), Hono SSR manual. Pairs with font preloading. LCP target ≤2.5s."
 ---
 
 # Critical CSS Extraction
