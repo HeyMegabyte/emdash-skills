@@ -16,7 +16,7 @@
 <br/>
 
 <div align="center">
-  <code>14 categories</code> · <code>92 reference docs</code> · <code>18 agents</code> · <code>13 templates</code>
+  <code>14 categories</code> · <code>91 reference docs</code> · <code>18 agents</code> · <code>12 templates</code>
 </div>
 
 <br/>
@@ -231,9 +231,21 @@ Every deploy must clear all gates. No exceptions. No overrides.
 | `semgrep-rules/` | Custom Semgrep rules for codebase enforcement |
 | `task-graph.json` | Parallelizable task decomposition |
 
+## Tools
+
+| Script | Purpose |
+|--------|---------|
+| `bin/emdash-quick-lint` | Staged-file linting (ESLint+Prettier+ShellCheck) |
+| `bin/emdash-secret-scan` | Pre-commit secret detection via `detect-secrets` |
+| `bin/emdash-cost-check` | Quick Cloudflare cost estimate from wrangler.toml |
+| `scripts/discover-secrets.sh` | Inventory all available API keys across sources |
+| `scripts/gpt4o-vision-analyze.sh` | GPT-4o screenshot analysis for visual QA |
+| `scripts/validate-skills.sh` | Cross-reference validation for skill files |
+| `scripts/visual-tdd-loop.sh` | Automated screenshot→fix→verify loop |
+
 ## Task Routing
 
-The router loads the smallest useful subset per task — never the full 92 docs. See [`_router.md`](_router.md) for the complete routing table.
+The router loads the smallest useful subset per task — never the full 91 docs. See [`_router.md`](_router.md) for the complete routing table.
 
 | When you say... | Skills loaded |
 |-----------------|---------------|

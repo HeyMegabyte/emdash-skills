@@ -22,11 +22,11 @@ Ambiguous: Angular+auth+billing=SaaS | `wrangler.toml`+minimal routes=Marketing 
 
 ## SaaS Application
 
-Core + refs (load first): `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `drizzle-orm-and-migrations`, `mcp-and-cloud-integrations` | `06/admin-dashboard`, `ai-chat-widget`, `data-tables`, `empty-states-and-loading`, `file-uploads-and-storage`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `onboarding-and-first-run`, `realtime-and-websockets`, `rich-text-editor`, `site-search`, `webhook-system` | `07/accessibility-gate`, `performance-optimization`, `security-hardening` | `08/ci-cd-pipeline`, `backup-and-disaster-recovery`, `uptime-and-health` | `09/documentation-and-codebase-hygiene`, `seo-and-keywords` | `13/analytics-configuration`, `feature-flags-and-experiments`, `stripe-billing`, `user-feedback-collection`
+Core + refs (load first): `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `drizzle-orm-and-migrations`, `mcp-and-cloud-integrations` | `06/admin-dashboard`, `ai-chat-widget`, `data-tables`, `empty-states-and-loading`, `file-uploads-and-storage`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `onboarding-and-first-run`, `realtime-and-websockets`, `rich-text-editor`, `site-search`, `webhook-system` | `07/accessibility-gate`, `performance-optimization`, `security-hardening` | `08/ci-cd-pipeline`, `backup-and-disaster-recovery`, `uptime-and-health` | `09/documentation-and-codebase-hygiene`, `seo-and-keywords` | `13/analytics-configuration`, `conversion-optimization`, `feature-flags-and-experiments`, `stripe-billing`, `user-feedback-collection`
 
 ## Micro-SaaS
 
-Trimmed SaaS: `05/api-design-and-documentation`, `auth-and-session-management`, `drizzle-orm-and-migrations` | `06/contact-forms-and-endpoints`, `custom-error-pages`, `file-uploads-and-storage`, `notification-center`, `site-search`, `webhook-system` | `07/performance-optimization`, `security-hardening` | `09/seo-and-keywords` | `13/email-marketing-and-listmonk`, `feature-flags-and-experiments`, `stripe-billing`
+Trimmed SaaS: `05/api-design-and-documentation`, `auth-and-session-management`, `drizzle-orm-and-migrations` | `06/contact-forms-and-endpoints`, `custom-error-pages`, `file-uploads-and-storage`, `notification-center`, `site-search`, `webhook-system` | `07/performance-optimization`, `security-hardening` | `09/seo-and-keywords` | `13/conversion-optimization`, `email-marketing-and-listmonk`, `feature-flags-and-experiments`, `stripe-billing`
 
 ## Nonprofit
 

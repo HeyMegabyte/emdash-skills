@@ -7,6 +7,7 @@ model: haiku
 permissionMode: plan
 maxTurns: 15
 effort: low
+skills: ["05-architecture-and-stack"]
 memory: none
 color: orange
 ---

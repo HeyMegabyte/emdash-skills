@@ -6,6 +6,7 @@ model: haiku
 permissionMode: auto
 maxTurns: 10
 effort: low
+skills: ["08-deploy-and-runtime-verification"]
 memory: none
 background: true
 color: blue

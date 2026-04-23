@@ -2,6 +2,7 @@
 name: "UI Completeness Sweep"
 description: "Playwright + GPT-4o vision sweep that finds incomplete UI: disabled buttons, empty states, Coming soon, placeholder images, broken links, unfinished forms, missing error states. Runs BEFORE declaring done. Blocks completion until zero findings."
 updated: "2026-04-23"
+related: visual-inspection-loop.md (3-round per-page vision), completeness-verification.md (5-pass full-project)
 ---
 
 # UI Completeness Sweep (***MANDATORY BEFORE DONE***)

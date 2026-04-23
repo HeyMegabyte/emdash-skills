@@ -6,7 +6,8 @@ disallowedTools: Write, Edit
 model: sonnet
 permissionMode: plan
 maxTurns: 20
-effort: medium
+effort: high
+skills: ["07-quality-and-verification"]
 memory: none
 color: orange
 ---

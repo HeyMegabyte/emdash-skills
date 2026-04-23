@@ -3,6 +3,7 @@ name: "Completeness Verification"
 version: "2.0.0"
 updated: "2026-04-23"
 description: "AI-powered visual inspection loop across every page/breakpoint/state until GPT-4o finds zero issues. Done detector that prevents premature completion. 5-pass protocol."
+related: visual-inspection-loop.md (3-round per-page), ui-completeness-sweep.md (pre-done placeholder detection)
 ---
 
 # Completeness Verification Loop

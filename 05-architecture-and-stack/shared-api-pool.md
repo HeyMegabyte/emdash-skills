@@ -26,7 +26,7 @@ Cross-machine sync: `chezmoi apply` on any new machine → all 185 secrets avail
 ## Available Keys by Category
 
 ### AI/ML (11 keys)
-OPENAI_API_KEY→GPT/DALL-E/Whisper | ANTHROPIC_API_KEY→Claude | GEMINI_API_KEY→Gemini | DEEPSEEK_API_KEY→DeepSeek V3/R1 | DEEPGRAM_API_KEY→STT ($200 free) | ELEVENLABS_API_KEY→TTS/voice clone | REPLICATE_API_TOKEN→any ML model | MISTRAL_API_KEY→open-weight LLMs | CEREBRAS_API_KEY→fast inference | BASETEN_API_KEY→model hosting | CARTESIA_API_KEY→voice AI
+OPENAI_API_KEY→GPT Image 1.5/Whisper (DALL-E deprecated May 2026) | ANTHROPIC_API_KEY→Claude | GEMINI_API_KEY→Gemini | DEEPSEEK_API_KEY→DeepSeek V3/R1 | DEEPGRAM_API_KEY→STT ($200 free) | ELEVENLABS_API_KEY→TTS/voice clone | REPLICATE_API_TOKEN→any ML model | MISTRAL_API_KEY→open-weight LLMs | CEREBRAS_API_KEY→fast inference | BASETEN_API_KEY→model hosting | CARTESIA_API_KEY→voice AI
 **Missing (sign up):** GROQ_API_KEY (fastest, free 30rpm) | TOGETHER_API_KEY ($5 free) | FIREWORKS_AI_API_KEY ($1 free) | COHERE_API_KEY (free embeddings) | STABILITY_API_KEY (25 free/day) | PERPLEXITY_API_KEY | FAL_AI_API_KEY | ASSEMBLYAI_API_KEY ($50 free) | LUMA_API_KEY | SUNO_API_KEY
 
 ### Communication (12 keys)

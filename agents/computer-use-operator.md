@@ -6,7 +6,8 @@ disallowedTools: Write, Edit
 model: sonnet
 permissionMode: auto
 maxTurns: 30
-effort: medium
+effort: high
+skills: ["07-quality-and-verification"]
 memory: none
 color: cyan
 mcpServers: ["computer-use"]

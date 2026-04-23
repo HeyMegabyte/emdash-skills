@@ -7,7 +7,7 @@ model: haiku
 permissionMode: plan
 maxTurns: 20
 skills: ["07-quality-and-verification"]
-effort: medium
+effort: low
 memory: none
 color: green
 mcpServers: ["playwright"]
