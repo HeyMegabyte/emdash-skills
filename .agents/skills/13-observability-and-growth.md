@@ -36,6 +36,8 @@ posthog.init(key, { api_host: 'https://posthog.megabyte.space', capture_pageview
 ```
 Events: page_view, cta_click, form_submit, signup_start/complete, feature_used, upgrade_click, error_displayed. Naming: snake_case, present-tense verbs. Consistent IDs across platforms. Prefer server-side event logging. Reverse proxy to bypass ad blockers.
 
+**PostHog AI (2026):** In-app AI chat connected to product data — queries data, creates insights, writes SQL, creates feature flags, edits filters via natural language. **LLM analytics** for AI-native teams: track token usage, model performance, prompt latency. **Data warehouse** with 36 managed sources (Stripe, HubSpot, Salesforce, etc.) — query across product + billing + CRM data in one place.
+
 **Feature flags best practices:** phased rollout 1%→10%→50%→100% with cohorts. Positive booleans (`is_premium_user` not `is_not_premium_user`). Target <20-30 active flags per service (>50 = flag sprawl). Flag at 100% with no targeting = remove and hardcode. Sticky flags for experiment consistency. Integration with product analytics = see feature impact on conversion/retention/revenue directly.
 
 ## Sentry

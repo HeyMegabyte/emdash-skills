@@ -40,8 +40,11 @@ Submodules: accessibility-gate (axe-core v4.11, WCAG 2.2 AA, focus-not-obscured,
 L5: Post-Deploy (08). L4: Visual (screenshots+AI). L3: E2E (Playwright v1.59+). L2: Integration (API/DB). L1: Static (lint/typecheck).
 Every code change: L1-L3. Every deploy: L4-L5.
 
-### Playwright AI Agents (v1.59+)
+### Playwright AI Agents (v1.59.1+)
 Planner: explores app, designs test plans from natural language. Generator: creates executable test code. Healer: auto-fixes broken tests. Pattern: static specs for stable tests, AI agents for flaky/new. Run agents only on failed tests in second pass (70% token savings).
+
+### Playwright v1.59.1 New APIs
+`page.screencast({ path })` — video recording with action annotations and real-time frame capture (video receipts for CI). `browser.bind()` — connect to running browser instances. `page.consoleMessages()`/`page.pageErrors()`/`page.requests()` — snapshot-in-time accessors (no event listeners needed). `await using` async disposables for auto-cleanup. Trace CLI for agent-driven test analysis.
 
 ### MCP-Based Testing
 Playwright MCP operates on accessibility tree, not screenshots. Returns structured snapshots: role hierarchy, names, states. Target "Role: button, Name: Checkout" — 10x more stable than CSS selectors. AOM-reasoning > DOM-scraping.
