@@ -6,6 +6,10 @@ metadata:
   updated: "2026-04-23"
   effort: "high"
   model: "inherit"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - ai-native-coding.md
   - autonomous-orchestrator.md

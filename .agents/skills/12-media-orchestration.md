@@ -5,6 +5,10 @@ metadata:
   version: "2.1.0"
   updated: "2026-04-23"
   context: "fork"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - media-prompts.md
   - compression-pipeline.md

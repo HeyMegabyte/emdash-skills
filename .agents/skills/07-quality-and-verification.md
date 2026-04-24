@@ -5,6 +5,10 @@ metadata:
   version: "2.0.0"
   updated: "2026-04-23"
   token_budget: "5K"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - accessibility-gate.md
   - performance-optimization.md

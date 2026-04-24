@@ -4,6 +4,10 @@ description: "Extract real brands (Wayback for rebuilds). Copy system, headline/
 metadata:
   version: "2.1.0"
   updated: "2026-04-23"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - email-templates.md
   - social-automation.md
