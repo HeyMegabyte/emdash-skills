@@ -130,6 +130,16 @@ jobs:
       - name: Generate .github/copilot-instructions.md
         run: sed 's/for Cursor/for GitHub Copilot/' .cursorrules > .github/copilot-instructions.md
 
+      - name: Generate editor-specific files
+        run: |
+          sed 's/for Cursor/for Amazon Q/' .cursorrules > .amazonq/rules/cloudflare-workers-hono-angular-saas.md
+          mkdir -p .amazonq/rules
+          sed 's/for Cursor/for Amazon Q/' .cursorrules > .amazonq/rules/cloudflare-workers-hono-angular-saas.md
+          sed 's/for Cursor/for Zed/' .cursorrules > .rules
+          mkdir -p .junie
+          sed 's/for Cursor/for JetBrains Junie/' .cursorrules > .junie/guidelines.md
+          sed 's/for Cursor/for Augment Code/' .cursorrules > .augment-guidelines
+
       - name: Generate llms-full.txt
         run: |
           {
@@ -144,6 +154,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md .github/copilot-instructions.md llms-full.txt
+          git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md .github/copilot-instructions.md llms-full.txt .amazonq/ .rules .junie/ .augment-guidelines
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true

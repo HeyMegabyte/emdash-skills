@@ -245,7 +245,9 @@ Skill locations: managed > personal `~/.claude/skills/` > project `.claude/skill
 
 ## Claude Code — Hooks
 
-32 event types | 5 handler types: command/http/mcp_tool/prompt/agent | Exit 0=success | Exit 2=blocking error fed to Claude | Other non-zero=non-blocking | Hooks > CLAUDE.md (deterministic vs advisory) | `CLAUDE_ENV_FILE` available on SessionStart/CwdChanged/FileChanged only | asyncRewake: runs background, wakes Claude on exit 2 | Events: SubProcess (credential scrubbing), MCPElicitation, Elicitation, ElicitationResult, StopFailure, PermissionRequest, PermissionDenied (return `retry:true` for Claude to try alternate approach), PostToolUseFailure, PostToolBatch, InstructionsLoaded, ConfigChange, WorktreeCreate, WorktreeRemove, PostCompact | `type: "mcp_tool"` chains MCP operations from hook handlers without Bash | Conditional `if` field (v2.1.85): permission-rule syntax e.g. `"if": "Bash(git commit *)"` scopes handlers to specific commands
+28 event types | 5 handler types: command/http/mcp_tool/prompt/agent | Exit 0=success | Exit 2=blocking error fed to Claude | Other non-zero=non-blocking | Hooks > CLAUDE.md (deterministic vs advisory) | `CLAUDE_ENV_FILE` available on SessionStart/CwdChanged/FileChanged only | asyncRewake: runs background, wakes Claude on exit 2
+Events (28): SessionStart|SessionEnd|InstructionsLoaded|UserPromptSubmit|UserPromptExpansion|PreToolUse|PostToolUse (includes `duration_ms`)|PostToolUseFailure|PostToolBatch|PermissionRequest|PermissionDenied (`retry:true` for alternate approach)|Stop|StopFailure|SubagentStart|SubagentStop|TaskCreated|TaskCompleted|CwdChanged|FileChanged|ConfigChange|PreCompact (can block)|PostCompact|Notification|TeammateIdle|WorktreeCreate|WorktreeRemove|Elicitation|ElicitationResult
+`type: "mcp_tool"` chains MCP operations from hook handlers without Bash | Conditional `if` field: permission-rule syntax e.g. `"if": "Bash(git commit *)"` scopes handlers to specific commands | Plugin skills support frontmatter-defined hooks
 
 ## Claude Code — Settings Precedence
 
@@ -263,11 +265,20 @@ Built-in subagents: `Explore` (Haiku, read-only codebase exploration), `Plan` (r
 
 ## Claude Code — Slash Commands
 
-Built-in: /help, /clear, /compact, /status, /login, /logout, /config, /permissions, /sandbox, /hooks, /agents, /memory, /cost, /fast, /model, /plan, /bug, /vim | /ultrareview (deep code review) | /ultraplan (comprehensive planning) | /tui (terminal UI mode) | /theme (color theme) | /loop (repeat prompt/command on interval) | /recap (conversation summary) | /focus (narrow context) | /less-permission-prompts (reduce confirmations)
+Built-in: /help, /clear, /compact, /status, /login, /logout, /config, /permissions, /sandbox, /hooks, /agents, /memory, /cost, /fast, /model, /plan, /bug, /vim | /ultrareview (deep multi-agent code review) | /ultraplan (comprehensive planning) | /tui (terminal UI mode) | /theme (custom themes, `~/.claude/themes/` JSON) | /loop (repeat prompt/command on interval) | /recap (conversation summary) | /focus (narrow context) | /less-permission-prompts (reduce confirmations) | /plugin (install/marketplace/tag) | /usage (merged cost+stats) | /doctor (config diagnostics, duplicate MCP detection) | /fork (branch conversation) | /export (save transcript) | /remote-control (claude.ai sync) | /team-onboarding (ramp-up guide from project context)
 
-## Claude Managed Agents API
+## Claude Code — Plugins
 
-`POST /v1/agents` (create persistent agent), `POST /v1/sessions` (stateful conversations), `POST /v1/environments` (sandboxed execution). Agent Memory GA (Apr 23 2026): managed persistent memory across sessions. `ant` CLI (Apr 8 2026): new CLI for Anthropic API (`ant agent create`, `ant session run`). Use for: multi-turn stateful agents, persistent tool-using agents, customer-facing AI features.
+`/plugin` command (public beta). Structure: `.claude-plugin/plugin.json` + `commands/`|`agents/`|`skills/`|`hooks/`|`themes/`|`monitors/`|`.mcp.json`|`.lsp.json`|`bin/`|`settings.json`. Install: `/plugin marketplace add user/repo`. `claude plugin tag` creates release git tags. Marketplaces are git repos with `marketplace.json` — no centralized registry. `blockedMarketplaces`/`strictKnownMarketplaces` for policy. Plugin monitors: `monitors/monitors.json` auto-armed at session start. Plugin `bin/` added to Bash PATH automatically.
+
+## Claude Code — Key Env Vars
+
+`CLAUDE_CODE_EFFORT_LEVEL` (low/medium/high/max/auto) | `CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY` (default 10) | `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | `CLAUDE_CODE_FORK_SUBAGENT` | `ENABLE_PROMPT_CACHING_1H` (2x cost) | `FORCE_PROMPT_CACHING_5M` (1.25x cost) | `CLAUDE_CODE_RESUME_THRESHOLD_MINUTES` | `CLAUDE_CODE_ENABLE_AWAY_SUMMARY` | `CLAUDE_CODE_COORDINATOR_MODE` | `TRACEPARENT` (W3C, injected into Bash subprocesses for distributed tracing)
+
+## Claude Agent SDK
+
+Renamed from "Claude Code SDK". Python: `SessionStore` protocol (5 methods), top-level `skills` option. TypeScript: `agentProgressSummaries` for periodic AI-generated subagent progress, `taskBudget` for token-paced tool use. Both: distributed tracing via `TRACEPARENT`/`TRACESTATE`, parallel MCP reconnection.
+`POST /v1/agents` (create persistent agent), `POST /v1/sessions` (stateful conversations), `POST /v1/environments` (sandboxed execution). Agent Memory GA (Apr 23 2026): managed persistent memory across sessions. `ant` CLI (Apr 8 2026): `ant agent create`, `ant session run`.
 
 ## MCP Streamable HTTP
 
