@@ -247,6 +247,42 @@ curl "https://sentry.megabyte.space/api/0/projects/{org}/{project}/rules/" \
   -H "Authorization: Bearer $SENTRY_AUTH_TOKEN"
 ```
 
+## Sentry SDK Setup (v10.50+ — Hono + Bun)
+```typescript
+// src/instrument.ts — dedicated @sentry/hono/bun entry point (Apr 2026)
+import * as Sentry from '@sentry/hono/bun';
+
+Sentry.init({
+  dsn: 'https://KEY@sentry.megabyte.space/ID',
+  environment: 'production',
+  tracesSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+  release: env.VERSION,
+  integrations: [
+    Sentry.viewHierarchyIntegration(), // v10.50: DOM capture on error
+  ],
+});
+
+// Apply to Hono app
+import { sentryMiddleware } from '@sentry/hono';
+app.use('*', sentryMiddleware());
+```
+
+### DO Alarm Tracing (v10.49)
+```typescript
+// Durable Object alarms auto-traced by Sentry v10.49+
+// No extra config — alarm() calls get spans + error capture
+```
+
+### WorkerEntrypoint Support (v10.48)
+```typescript
+// Service bindings auto-instrumented via WorkerEntrypoint class
+// import { WorkerEntrypoint } from 'cloudflare:workers';
+// Sentry traces cross-worker calls automatically
+```
+
+Minimum version: `@sentry/hono@10.50.0` + `@sentry/bun@10.50.0`. Replaces `toucan-js` for new projects.
+
 ## Integration with 08-deploy Skill
 
 After every first deploy, auto-run `configureSentryAlerts(projectSlug)`. The deploy skill checks if alert rules exist — if not, creates them. Subsequent deploys only trigger silence windows.

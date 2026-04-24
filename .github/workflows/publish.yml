@@ -3,11 +3,14 @@ name: Validate & Publish Skills
 on:
   push:
     branches: [master, main]
+    tags: ['v*']
   pull_request:
     branches: [master, main]
 
 permissions:
   contents: write
+  id-token: write
+  packages: write
 
 jobs:
   validate:
@@ -38,7 +41,6 @@ jobs:
           for dir in [0-9][0-9]-*/; do
             SKILL="${dir}SKILL.md"
             [ -f "$SKILL" ] || continue
-            # Extract submodule entries from frontmatter
             IN_SUBMODULES=false
             while IFS= read -r line; do
               if echo "$line" | grep -q '^submodules:'; then
@@ -65,7 +67,7 @@ jobs:
   sync-cross-platform:
     runs-on: ubuntu-latest
     needs: validate
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v4
         with:
@@ -94,6 +96,8 @@ jobs:
           This repo is compatible with the agentskills.io open standard. Skills work in Claude Code, OpenAI Codex, Cursor, GitHub Copilot, VS Code, Gemini CLI, and 30+ other tools.
 
           Install: `claude plugin install megabytespace/claude-skills`
+          Codex: Clone into `~/.codex/skills/` or `.agents/skills/`
+          npm: `npm i @megabytespace/claude-skills`
           AGENTSEOF
 
       - name: Generate .cursorrules
@@ -118,27 +122,22 @@ jobs:
           See CONVENTIONS.md for full patterns.
           CURSOREOF
 
-      - name: Generate .windsurfrules
-        run: cp .cursorrules .windsurfrules
-
-      - name: Generate .clinerules
-        run: cp .cursorrules .clinerules
-
-      - name: Generate GEMINI.md
-        run: sed 's/for Cursor/for Gemini/' .cursorrules > GEMINI.md
-
-      - name: Generate .github/copilot-instructions.md
-        run: sed 's/for Cursor/for GitHub Copilot/' .cursorrules > .github/copilot-instructions.md
-
-      - name: Generate editor-specific files
+      - name: Generate platform variants
         run: |
-          sed 's/for Cursor/for Amazon Q/' .cursorrules > .amazonq/rules/cloudflare-workers-hono-angular-saas.md
+          cp .cursorrules .windsurfrules
+          cp .cursorrules .clinerules
+          sed 's/for Cursor/for Gemini/' .cursorrules > GEMINI.md
+          mkdir -p .github
+          sed 's/for Cursor/for GitHub Copilot/' .cursorrules > .github/copilot-instructions.md
           mkdir -p .amazonq/rules
           sed 's/for Cursor/for Amazon Q/' .cursorrules > .amazonq/rules/cloudflare-workers-hono-angular-saas.md
           sed 's/for Cursor/for Zed/' .cursorrules > .rules
           mkdir -p .junie
           sed 's/for Cursor/for JetBrains Junie/' .cursorrules > .junie/guidelines.md
           sed 's/for Cursor/for Augment Code/' .cursorrules > .augment-guidelines
+          sed 's/for Cursor/for Aider/' .cursorrules > .aider-conventions.md
+          sed 's/for Cursor/for Amp/' .cursorrules > AMP.md
+          sed 's/for Cursor/for Codex/' .cursorrules > CODEX.md
 
       - name: Generate llms-full.txt
         run: |
@@ -150,10 +149,68 @@ jobs:
             cat CONVENTIONS.md
           } > llms-full.txt
 
+      - name: Generate Codex .agents/ directory
+        run: |
+          mkdir -p .agents/skills
+          # Symlink each SKILL.md for native Codex discovery
+          for dir in [0-9][0-9]-*/; do
+            DIRNAME=$(basename "$dir")
+            if [ -f "${dir}SKILL.md" ]; then
+              cp "${dir}SKILL.md" ".agents/skills/${DIRNAME}.md"
+            fi
+          done
+
       - name: Commit cross-platform files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md .github/copilot-instructions.md llms-full.txt .amazonq/ .rules .junie/ .augment-guidelines
+          git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md \
+            .github/copilot-instructions.md llms-full.txt .amazonq/ .rules \
+            .junie/ .augment-guidelines .aider-conventions.md AMP.md CODEX.md \
+            .agents/
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true
+
+  publish-npm:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-github-release:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          gh release create "$TAG" \
+            --title "Emdash Skills $TAG" \
+            --generate-notes \
+            --notes-start-tag "$(git tag --sort=-version:refname | head -2 | tail -1)"
+
+  publish-continue-hub:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish to Continue Hub (rules.so)
+        run: |
+          npx rules-cli publish --token "${{ secrets.CONTINUE_HUB_TOKEN }}" 2>/dev/null || echo "Continue Hub publish skipped (no token)"
+        continue-on-error: true

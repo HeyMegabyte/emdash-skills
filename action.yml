@@ -1,0 +1,54 @@
+name: 'Emdash Skills'
+description: 'Install Emdash autonomous product-building skills for AI coding tools (Claude Code, Codex, Cursor, Copilot, and 30+ more)'
+author: 'Brian Zalewski <hey@megabyte.space>'
+
+branding:
+  icon: 'cpu'
+  color: 'blue'
+
+inputs:
+  target:
+    description: 'Directory to install skills into'
+    required: false
+    default: '.agentskills'
+  tool:
+    description: 'Target tool (claude|codex|cursor|copilot|all)'
+    required: false
+    default: 'all'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install skills
+      shell: bash
+      run: |
+        TARGET="${{ inputs.target }}"
+        TOOL="${{ inputs.tool }}"
+        mkdir -p "$TARGET"
+
+        # Copy skill categories
+        for dir in 01-* 02-* 03-* 04-* 05-* 06-* 07-* 08-* 09-* 10-* 11-* 12-* 13-* 14-*; do
+          [ -d "${{ github.action_path }}/$dir" ] && cp -r "${{ github.action_path }}/$dir" "$TARGET/"
+        done
+
+        # Copy shared files
+        for f in agents templates scripts bin CONVENTIONS.md _router.md SKILL_PROFILES.md llms.txt; do
+          [ -e "${{ github.action_path }}/$f" ] && cp -r "${{ github.action_path }}/$f" "$TARGET/"
+        done
+
+        # Tool-specific config
+        if [ "$TOOL" = "all" ] || [ "$TOOL" = "claude" ]; then
+          [ -d "${{ github.action_path }}/.claude-plugin" ] && cp -r "${{ github.action_path }}/.claude-plugin" "$TARGET/"
+        fi
+        if [ "$TOOL" = "all" ] || [ "$TOOL" = "codex" ]; then
+          cp "${{ github.action_path }}/AGENTS.md" . 2>/dev/null || true
+        fi
+        if [ "$TOOL" = "all" ] || [ "$TOOL" = "cursor" ]; then
+          cp "${{ github.action_path }}/.cursorrules" . 2>/dev/null || true
+        fi
+        if [ "$TOOL" = "all" ] || [ "$TOOL" = "copilot" ]; then
+          mkdir -p .github
+          cp "${{ github.action_path }}/.github/copilot-instructions.md" .github/ 2>/dev/null || true
+        fi
+
+        echo "::notice::Emdash Skills installed to $TARGET (14 categories, 94 reference docs, 18 agents)"

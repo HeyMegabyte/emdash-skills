@@ -1,0 +1,66 @@
+{
+  "name": "@megabytespace/claude-skills",
+  "version": "7.1.0",
+  "description": "14-category autonomous product-building OS for AI coding tools. One-line prompts → deployed products on Cloudflare Workers.",
+  "author": {
+    "name": "Brian Zalewski",
+    "url": "https://megabyte.space"
+  },
+  "homepage": "https://github.com/megabytespace/claude-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/megabytespace/claude-skills.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "claude-code",
+    "claude-skills",
+    "ai-skills",
+    "agent-skills",
+    "codex-skills",
+    "cursor-rules",
+    "copilot-instructions",
+    "autonomous",
+    "product-building",
+    "cloudflare-workers",
+    "angular",
+    "hono",
+    "saas",
+    "ai-native",
+    "agents",
+    "agentskills"
+  ],
+  "files": [
+    "01-*/**",
+    "02-*/**",
+    "03-*/**",
+    "04-*/**",
+    "05-*/**",
+    "06-*/**",
+    "07-*/**",
+    "08-*/**",
+    "09-*/**",
+    "10-*/**",
+    "11-*/**",
+    "12-*/**",
+    "13-*/**",
+    "14-*/**",
+    "agents/**",
+    "templates/**",
+    "scripts/**",
+    "bin/**",
+    "CONVENTIONS.md",
+    "SKILL_PROFILES.md",
+    "_router.md",
+    "llms.txt",
+    "llms-full.txt",
+    "AGENTS.md",
+    ".cursorrules",
+    ".claude-plugin/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

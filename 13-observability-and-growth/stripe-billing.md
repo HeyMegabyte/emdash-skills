@@ -13,6 +13,10 @@ updated: "2026-04-23"
 | **Pro** | $50/mo | All features, priority support, cancel anytime |
 | **Enterprise** | Custom | SSO, SLA, dedicated support, volume pricing |
 
+**Seat-Based Billing:** `quantity` on subscription items. `stripe.subscriptions.update(subId, { items: [{ id: itemId, quantity: seatCount }] })`. Auto-adjust on member add/remove via Clerk org webhook. Prorate mid-cycle. Display: "$12/seat/mo × 8 seats = $96/mo".
+
+**Stripe Tax:** Automatic tax calculation. `stripe.subscriptions.create({ automatic_tax: { enabled: true } })`. Requires `tax_behavior: 'exclusive'|'inclusive'` on each Price. Registration: `stripe.tax.registrations.create({ country, state, type })`. Display tax line on invoices. No tax on $0 free tiers.
+
 - Annual billing default (20% discount): $480/year vs $600
 - Stripe Link enabled for one-click checkout (Source: Stripe reports 7%+ conversion lift)
 - Show monthly price on annual plan: "$40/mo billed annually"

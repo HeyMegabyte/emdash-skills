@@ -47,6 +47,7 @@ claude mcp add google-workspace -- npx -y @taylorwilsdon/google_workspace_mcp
 **Built-In (Claude AI OAuth):** Cloudflare, Stripe, Gmail, Google Calendar, Google Drive, Slack, Canva, IFTTT
 **Self-Hosted:** Coolify, Firecrawl, Postiz, WordPress, Home Assistant, DeepSeek, n8n, Notion, Supermemory, Plane, Omi
 **Developer Tools:** Playwright, GitHub, Sequential Thinking, Computer Use, PostHog, Sentry
+**Resend MCP (Apr 7, 2026):** Official MCP server with HTTP transport. `claude mcp add resend --transport http --url https://mcp.resend.com`. Tools: send_email, list_emails, create_contact, list_contacts, list_domains. Use for: transactional email automation, contact management, domain verification — all from Claude Code.
 
 ### MCP -> Skill Mapping
 Cloudflare→08-deploy, Playwright→07-quality, Stripe→13/stripe-billing, GitHub→08/ci-cd-pipeline, Coolify→05/mcp-and-cloud-integrations, Firecrawl→03/competitive-analysis, Postiz→09/social-automation, n8n→06/webhook-system, Gmail→09/email-templates, WordPress→06/blog-and-content-engine, Notion→09/documentation-and-codebase-hygiene, Sentry→13-observability, PostHog→13-observability, Computer Use→07-quality, Plane→03-planning

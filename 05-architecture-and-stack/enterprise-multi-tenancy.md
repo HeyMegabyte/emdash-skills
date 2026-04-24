@@ -43,5 +43,11 @@ Clerk `impersonate()`: admin logs in as any user within their org. Audit-logged 
 ## Data Portability (EU Data Act 2025)
 Export endpoint: `GET /api/org/{orgId}/export` returns ZIP of all tenant data (JSON + media). Include: users, content, settings, billing history, audit logs. Exclude: system internals, other tenants. GDPR Art. 20 right to portability. EU Data Act (Sept 2025): mandatory machine-readable export for all SaaS. Deletion endpoint: `DELETE /api/org/{orgId}` with 30-day grace period.
 
+## IP Allowlisting
+Enterprise customers: restrict API access to approved IP ranges. Store per-org in D1 (`org_ip_allowlist` table). Check in auth middleware after Clerk JWT verification. `CF-Connecting-IP` header for real client IP (CF proxied). Return 403 for non-allowlisted IPs. Admin UI: org settings → Security → IP Allowlist (add/remove CIDR ranges). Bypass for Clerk webhook IPs and health endpoints.
+
+## Compliance Certification Display
+SOC 2 Type II / HIPAA / GDPR badges on pricing page + footer. Trust page at `/trust` with: certifications, data processing agreements (DPA), subprocessor list, security practices, uptime history. Auto-generate from Vanta/Drata API if available, otherwise static markdown. Link DPA download (PDF in R2).
+
 ## Zero-Human-Loop Automation
 Tenant creation: Clerk org webhook → D1 create → Stripe customer create → welcome email (Resend) → PostHog identify. All automated. Tenant deletion: grace period webhook → data export to R2 → D1 delete → Stripe cancel → purge confirmation. Plan upgrades: Stripe webhook → Entitlements check → feature unlock → notification. No manual provisioning at any step.

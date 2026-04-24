@@ -7,7 +7,10 @@ updated: "2026-04-24"
 # Background Jobs and Workflows
 
 ## Decision Tree
-Simple schedule (health check, cache warm) → CF Cron Triggers (5 free, 250 paid). High-throughput fire-and-forget (analytics, logs) → CF Queues. Durable multi-step (onboarding, billing sync, email drip) → Inngest. Stateful long-running (AI agent, workflow builder) → CF Workflows v2 (rearchitected control plane, higher concurrency+creation rate) or DO. D1→R2 daily backup → CF Workflows + Cron Trigger. Agent orchestration → CF Agents SDK (Project Think, Fibers for crash-survivable execution).
+Simple schedule (health check, cache warm) → CF Cron Triggers (5 free, 250 paid). High-throughput fire-and-forget (analytics, logs) → CF Queues. Durable multi-step (onboarding, billing sync, email drip) → Inngest. Stateful long-running (AI agent, workflow builder) → CF Workflows v2 or DO. D1→R2 daily backup → CF Workflows + Cron Trigger. Agent orchestration → CF Agents SDK (Project Think, Fibers for crash-survivable execution).
+
+## CF Workflows v2 (Apr 15, 2026 — Rearchitected)
+Concurrency: 50K concurrent (up from 10K), 300/sec creation rate (up from 30/sec), 2M queued. Steps can return `ReadableStream` for >1MiB payloads (no more serialization limit). Control plane fully rearchitected — lower latency, better observability. Use for: multi-step pipelines, long-running AI agent tasks, data processing fan-out. Inngest still preferred for event-driven durable functions with built-in step.ai.infer().
 
 ## Inngest v4 on CF Workers (GA Mar 16, 2026 — BREAKING)
 

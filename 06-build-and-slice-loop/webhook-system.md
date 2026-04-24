@@ -2,7 +2,7 @@
 name: "Webhook System"
 version: "2.0.0"
 updated: "2026-04-23"
-description: "Consolidated webhook handling for Stripe, Clerk, GitHub, and custom events. Signature verification, event routing, idempotency via D1 dedup table (batch API, no BEGIN), retry-safe handlers, Drizzle v1 + RQBv2, and outbound webhook dispatch."
+description: "Consolidated webhook handling for Stripe, Clerk, GitHub, and custom events. Signature verification, event routing, idempotency via D1 dedup table (batch API, no BEGIN), retry-safe handlers, Drizzle v1 + RQBv2, and outbound webhook dispatch with HMAC signing, retry with exponential backoff, delivery logging, and customer-facing event catalog."
 ---
 
 # Webhook System
@@ -157,10 +157,130 @@ stripe listen --forward-to https://domain.com/webhooks/stripe
 # Events: user.created, user.deleted, session.created
 ```
 
+## Outbound Webhooks (Customer-Facing)
+For API/platform products: let customers register webhook endpoints to receive events from your app.
+
+### Architecture
+```
+App event → Inngest/Queue → sign + deliver → retry on failure → log delivery
+Customer dashboard: manage endpoints, view delivery history, retry failed
+```
+
+### Webhook Dispatch Pattern
+```typescript
+// src/services/webhooks.ts
+import { createHmac } from 'node:crypto';
+
+interface WebhookEndpoint {
+  id: string;
+  orgId: string;
+  url: string;
+  secret: string;       // per-endpoint HMAC key
+  events: string[];      // subscribed event types
+  active: boolean;
+}
+
+async function dispatchWebhook(
+  env: Env, event: { type: string; data: unknown; orgId: string }
+): Promise<void> {
+  const db = drizzle(env.DB);
+  const endpoints = await db.select().from(webhookEndpoints)
+    .where(and(eq(webhookEndpoints.orgId, event.orgId), eq(webhookEndpoints.active, true)));
+
+  for (const ep of endpoints) {
+    if (!ep.events.includes(event.type) && !ep.events.includes('*')) continue;
+    const payload = JSON.stringify({ id: crypto.randomUUID(), type: event.type, data: event.data, timestamp: new Date().toISOString() });
+    const signature = createHmac('sha256', ep.secret).update(payload).digest('hex');
+
+    // Queue for reliable delivery (Inngest or CF Queue)
+    await env.WEBHOOK_QUEUE.send({
+      endpointId: ep.id, url: ep.url, payload, signature,
+      attempt: 1, maxAttempts: 5,
+    });
+  }
+}
+```
+
+### Delivery Worker (retry with backoff)
+```typescript
+// Consumer: exponential backoff (1s, 5s, 30s, 2m, 15m)
+const BACKOFF = [1, 5, 30, 120, 900];
+
+export default {
+  queue: async (batch: MessageBatch, env: Env) => {
+    for (const msg of batch.messages) {
+      const { url, payload, signature, attempt, maxAttempts, endpointId } = msg.body;
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Webhook-Signature': `sha256=${signature}`,
+            'X-Webhook-Id': JSON.parse(payload).id,
+            'X-Webhook-Timestamp': JSON.parse(payload).timestamp,
+          },
+          body: payload,
+          signal: AbortSignal.timeout(10000),
+        });
+        await logDelivery(env, endpointId, JSON.parse(payload).id, res.status, attempt);
+        if (res.status >= 200 && res.status < 300) { msg.ack(); continue; }
+        if (attempt < maxAttempts) { msg.retry({ delaySeconds: BACKOFF[attempt - 1] }); }
+        else { msg.ack(); await markFailed(env, endpointId, JSON.parse(payload).id); }
+      } catch {
+        if (attempt < maxAttempts) msg.retry({ delaySeconds: BACKOFF[attempt - 1] });
+        else msg.ack();
+      }
+    }
+  },
+};
+```
+
+### D1 Schema
+```sql
+CREATE TABLE webhook_endpoints (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL,
+  url TEXT NOT NULL,
+  secret TEXT NOT NULL,
+  events TEXT NOT NULL DEFAULT '["*"]',  -- JSON array
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE webhook_deliveries (
+  id TEXT PRIMARY KEY,
+  endpoint_id TEXT NOT NULL,
+  event_id TEXT NOT NULL,
+  status INTEGER,
+  attempt INTEGER NOT NULL DEFAULT 1,
+  delivered_at TEXT NOT NULL DEFAULT (datetime('now')),
+  FOREIGN KEY (endpoint_id) REFERENCES webhook_endpoints(id)
+);
+CREATE INDEX idx_deliveries_endpoint ON webhook_deliveries(endpoint_id);
+```
+
+### Event Catalog (document all outbound events)
+```typescript
+const EVENT_CATALOG = {
+  'user.created': { description: 'New user registered', schema: userSchema },
+  'user.deleted': { description: 'User account deleted', schema: userIdSchema },
+  'subscription.activated': { description: 'Subscription started or resumed', schema: subscriptionSchema },
+  'subscription.canceled': { description: 'Subscription canceled', schema: subscriptionSchema },
+  'invoice.paid': { description: 'Invoice payment succeeded', schema: invoiceSchema },
+} as const;
+// Expose at GET /api/webhooks/events for self-service discovery
+```
+
 ## Wrangler.toml
 ```toml
-# Register webhook routes
-# No special config needed — just deploy the Worker with the routes
+# Register webhook routes + outbound queue
+[[queues.producers]]
+queue = "outbound-webhooks"
+binding = "WEBHOOK_QUEUE"
+
+[[queues.consumers]]
+queue = "outbound-webhooks"
+max_batch_size = 10
+max_retries = 5
 ```
 
 ## Testing Webhooks
