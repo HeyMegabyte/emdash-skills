@@ -17,7 +17,7 @@ megabyte.space | projectsites.dev | fundl.ink | gitl.ink | deskl.ink | linkbl.in
 
 ## Stack
 
-CF Workers+Hono v4.12+ | Angular 21+Ionic 8+PrimeNG 21 | Capacitor 8 | D1/Neon | Drizzle v1 | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest v4 | Bun 1.3 | TS 5.9 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
+CF Workers+Hono v4.12.12+ (security pin) | Angular 21+Ionic 8+PrimeNG 21 | Capacitor 8 | D1/Neon | Drizzle v1 | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest v4 | Bun 1.3 | TS 5.9 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
 
 ## Angular 21 Key Changes
 
