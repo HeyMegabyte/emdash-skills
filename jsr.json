@@ -1,6 +1,6 @@
 {
   "name": "@megabytespace/claude-skills",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "exports": {
     ".": "./_router.md",
     "./conventions": "./CONVENTIONS.md",
@@ -41,6 +41,11 @@
       ".kilo/**",
       ".roo/**",
       ".continue/**",
+      ".cursor/**",
+      ".windsurf/**",
+      ".augment/**",
+      ".openhands/**",
+      ".github/instructions/**",
       "GEMINI.md",
       "AMP.md",
       "CODEX.md",

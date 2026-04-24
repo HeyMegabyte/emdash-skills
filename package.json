@@ -1,6 +1,6 @@
 {
   "name": "@megabytespace/claude-skills",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "description": "14-category autonomous product-building OS for AI coding tools. One-line prompts → deployed products on Cloudflare Workers.",
   "author": {
     "name": "Brian Zalewski",
@@ -71,6 +71,11 @@
     ".continue/**",
     ".agents/**",
     ".claude-plugin/**",
+    ".cursor/**",
+    ".windsurf/**",
+    ".augment/**",
+    ".openhands/**",
+    ".github/instructions/**",
     "GEMINI.md",
     "AMP.md",
     "CODEX.md",

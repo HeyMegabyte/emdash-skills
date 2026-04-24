@@ -93,7 +93,13 @@ jobs:
           - `llms.txt` — LLM-optimized index of all skills
 
           ## For AI Coding Tools
-          This repo is compatible with the agentskills.io open standard. Skills work in Claude Code, OpenAI Codex, Cursor, GitHub Copilot, VS Code, Gemini CLI, and 30+ other tools.
+          This repo is compatible with the agentskills.io open standard. Skills work in Claude Code, OpenAI Codex, Cursor, GitHub Copilot, VS Code, Windsurf, Augment, OpenHands, Gemini CLI, and 30+ other tools.
+
+          ## Platform Variants (24 total)
+          Modern formats: `.cursor/rules/` (MDC) | `.windsurf/rules/` (trigger frontmatter) | `.augment/rules/` (type frontmatter) | `.github/instructions/` (applyTo frontmatter) | `.openhands/microagents/`
+          Legacy formats: `.cursorrules` | `.windsurfrules` | `.clinerules` | `.rules` | `.augment-guidelines` | `.aider-conventions.md` | `.github/copilot-instructions.md`
+          Named formats: `AGENTS.md` | `GEMINI.md` | `AMP.md` | `CODEX.md` | `replit.md`
+          Directory formats: `.amazonq/rules/` | `.junie/` | `.trae/rules/` | `.tabnine/guidelines/` | `.kilo/rules/` | `.roo/rules/` | `.continue/rules/` | `.agents/skills/`
 
           Install: `claude plugin install megabytespace/claude-skills`
           Codex: Clone into `~/.codex/skills/` or `.agents/skills/`
@@ -155,6 +161,126 @@ jobs:
           sed 's/for Cursor/for Continue/' .cursorrules > .continue/rules/cloudflare-workers-hono-angular-saas.md
           # Replit Agent
           sed 's/for Cursor/for Replit/' .cursorrules > replit.md
+          # Cursor modern format (.cursor/rules/*.mdc with MDC frontmatter)
+          mkdir -p .cursor/rules
+          cat > .cursor/rules/emdash-skills.mdc << 'MDCEOF'
+          ---
+          description: "Emdash Skills — 14-category product-building OS. CF Workers+Hono, Angular, D1, Drizzle, Clerk, Stripe."
+          alwaysApply: true
+          ---
+          # Emdash Skills for Cursor
+
+          Load CONVENTIONS.md for stack defaults. Load _router.md for skill routing.
+          14 categories (01-14), 94 reference docs, 18 agents.
+
+          ## Stack
+          CF Workers+Hono | Angular 21+Ionic 8+PrimeNG 21 | D1/Neon | Drizzle v1 | Clerk | Stripe | Inngest | Resend | Bun | Playwright v1.59+ | PostHog | Sentry
+
+          ## Rules
+          - TypeScript strict, never `any`, prefer `interface` over `type`
+          - Hono inline handlers for RPC type inference
+          - Zod validation on all inputs
+          - TDD: failing test first, Playwright 6 breakpoints
+          - Dark-first design, #060610 bg, #00E5FF accent
+          - Deploy to CF Workers, purge CDN after every deploy
+
+          See CONVENTIONS.md for full patterns.
+          MDCEOF
+          # Windsurf modern format (.windsurf/rules/*.md with trigger frontmatter)
+          mkdir -p .windsurf/rules
+          cat > .windsurf/rules/emdash-skills.md << 'WSEOF'
+          ---
+          trigger: always_on
+          description: "Emdash Skills — 14-category product-building OS for Windsurf."
+          ---
+          # Emdash Skills for Windsurf
+
+          Load CONVENTIONS.md for stack defaults. Load _router.md for skill routing.
+          14 categories (01-14), 94 reference docs, 18 agents.
+
+          ## Stack
+          CF Workers+Hono | Angular 21+Ionic 8+PrimeNG 21 | D1/Neon | Drizzle v1 | Clerk | Stripe | Inngest | Resend | Bun | Playwright v1.59+ | PostHog | Sentry
+
+          ## Rules
+          - TypeScript strict, never `any`, prefer `interface` over `type`
+          - Hono inline handlers for RPC type inference
+          - Zod validation on all inputs
+          - TDD: failing test first, Playwright 6 breakpoints
+          - Dark-first design, #060610 bg, #00E5FF accent
+          - Deploy to CF Workers, purge CDN after every deploy
+
+          See CONVENTIONS.md for full patterns.
+          WSEOF
+          # Augment Code modern format (.augment/rules/*.md with type frontmatter)
+          mkdir -p .augment/rules
+          cat > .augment/rules/emdash-skills.md << 'AUGEOF'
+          ---
+          type: always_apply
+          description: "Emdash Skills — 14-category product-building OS for Augment Code."
+          ---
+          # Emdash Skills for Augment Code
+
+          Load CONVENTIONS.md for stack defaults. Load _router.md for skill routing.
+          14 categories (01-14), 94 reference docs, 18 agents.
+
+          ## Stack
+          CF Workers+Hono | Angular 21+Ionic 8+PrimeNG 21 | D1/Neon | Drizzle v1 | Clerk | Stripe | Inngest | Resend | Bun | Playwright v1.59+ | PostHog | Sentry
+
+          ## Rules
+          - TypeScript strict, never `any`, prefer `interface` over `type`
+          - Hono inline handlers for RPC type inference
+          - Zod validation on all inputs
+          - TDD: failing test first, Playwright 6 breakpoints
+          - Dark-first design, #060610 bg, #00E5FF accent
+          - Deploy to CF Workers, purge CDN after every deploy
+
+          See CONVENTIONS.md for full patterns.
+          AUGEOF
+          # GitHub Copilot path-scoped instructions
+          mkdir -p .github/instructions
+          cat > .github/instructions/emdash-skills.instructions.md << 'GHIEOF'
+          ---
+          applyTo: "**"
+          ---
+          # Emdash Skills for GitHub Copilot
+
+          Load CONVENTIONS.md for stack defaults. Load _router.md for skill routing.
+          14 categories (01-14), 94 reference docs, 18 agents.
+
+          ## Stack
+          CF Workers+Hono | Angular 21+Ionic 8+PrimeNG 21 | D1/Neon | Drizzle v1 | Clerk | Stripe | Inngest | Resend | Bun | Playwright v1.59+ | PostHog | Sentry
+
+          ## Rules
+          - TypeScript strict, never `any`, prefer `interface` over `type`
+          - Hono inline handlers for RPC type inference
+          - Zod validation on all inputs
+          - TDD: failing test first, Playwright 6 breakpoints
+          - Dark-first design, #060610 bg, #00E5FF accent
+          - Deploy to CF Workers, purge CDN after every deploy
+
+          See CONVENTIONS.md for full patterns.
+          GHIEOF
+          # OpenHands microagent
+          mkdir -p .openhands/microagents
+          cat > .openhands/microagents/repo.md << 'OHEOF'
+          # Emdash Skills for OpenHands
+
+          Load CONVENTIONS.md for stack defaults. Load _router.md for skill routing.
+          14 categories (01-14), 94 reference docs, 18 agents.
+
+          ## Stack
+          CF Workers+Hono | Angular 21+Ionic 8+PrimeNG 21 | D1/Neon | Drizzle v1 | Clerk | Stripe | Inngest | Resend | Bun | Playwright v1.59+ | PostHog | Sentry
+
+          ## Rules
+          - TypeScript strict, never `any`, prefer `interface` over `type`
+          - Hono inline handlers for RPC type inference
+          - Zod validation on all inputs
+          - TDD: failing test first, Playwright 6 breakpoints
+          - Dark-first design, #060610 bg, #00E5FF accent
+          - Deploy to CF Workers, purge CDN after every deploy
+
+          See CONVENTIONS.md for full patterns.
+          OHEOF
 
       - name: Generate llms-full.txt
         run: |
@@ -182,9 +308,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md \
-            .github/copilot-instructions.md llms-full.txt .amazonq/ .rules \
-            .junie/ .augment-guidelines .aider-conventions.md AMP.md CODEX.md \
-            .agents/ .trae/ .tabnine/ .kilo/ .roo/ .continue/ replit.md
+            .github/copilot-instructions.md .github/instructions/ llms-full.txt \
+            .amazonq/ .rules .junie/ .augment-guidelines .augment/ \
+            .aider-conventions.md AMP.md CODEX.md .agents/ .trae/ .tabnine/ \
+            .kilo/ .roo/ .continue/ .cursor/ .windsurf/ .openhands/ replit.md
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true
 
