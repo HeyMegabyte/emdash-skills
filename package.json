@@ -67,6 +67,8 @@
     ".trae/**",
     ".tabnine/**",
     ".kilo/**",
+    ".roo/**",
+    ".continue/**",
     ".agents/**",
     ".claude-plugin/**",
     "GEMINI.md",

@@ -147,6 +147,12 @@ jobs:
           # Kilo Code (Roo Code successor)
           mkdir -p .kilo/rules
           sed 's/for Cursor/for Kilo Code/' .cursorrules > .kilo/rules/cloudflare-workers-hono-angular-saas.md
+          # Roo Code (predecessor to Kilo, active until May 2026)
+          mkdir -p .roo/rules
+          sed 's/for Cursor/for Roo Code/' .cursorrules > .roo/rules/cloudflare-workers-hono-angular-saas.md
+          # Continue.dev
+          mkdir -p .continue/rules
+          sed 's/for Cursor/for Continue/' .cursorrules > .continue/rules/cloudflare-workers-hono-angular-saas.md
           # Replit Agent
           sed 's/for Cursor/for Replit/' .cursorrules > replit.md
 
@@ -178,7 +184,7 @@ jobs:
           git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md \
             .github/copilot-instructions.md llms-full.txt .amazonq/ .rules \
             .junie/ .augment-guidelines .aider-conventions.md AMP.md CODEX.md \
-            .agents/ .trae/ .tabnine/ .kilo/ replit.md
+            .agents/ .trae/ .tabnine/ .kilo/ .roo/ .continue/ replit.md
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true
 

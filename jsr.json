@@ -39,6 +39,8 @@
       ".trae/**",
       ".tabnine/**",
       ".kilo/**",
+      ".roo/**",
+      ".continue/**",
       "GEMINI.md",
       "AMP.md",
       "CODEX.md",
