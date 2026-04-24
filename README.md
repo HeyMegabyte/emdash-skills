@@ -11,6 +11,8 @@
   <a href="https://github.com/megabytespace/claude-skills/blob/master/LICENSE"><img alt="License: Rutgers" src="https://img.shields.io/badge/License-Rutgers-7C3AED?logo=open-source-initiative&logoColor=white&style=for-the-badge" /></a>
   <a href="https://github.com/megabytespace/claude-skills"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/megabytespace/claude-skills?logo=github&logoColor=white&style=for-the-badge&color=060610" /></a>
   <a href="https://github.com/megabytespace/claude-skills/issues"><img alt="Issues" src="https://img.shields.io/github/issues/megabytespace/claude-skills?logo=github&logoColor=white&style=for-the-badge&color=00E5FF" /></a>
+  <a href="https://www.npmjs.com/package/@megabytespace/claude-skills"><img alt="npm" src="https://img.shields.io/npm/v/@megabytespace/claude-skills?logo=npm&logoColor=white&style=for-the-badge&color=50AAE3" /></a>
+  <a href="https://jsr.io/@megabytespace/claude-skills"><img alt="JSR" src="https://img.shields.io/jsr/v/@megabytespace/claude-skills?logo=jsr&logoColor=white&style=for-the-badge&color=7C3AED" /></a>
 </div>
 
 <br/>
@@ -67,12 +69,52 @@
 ## Install
 
 ```bash
-# Plugin (recommended)
+# Claude Code plugin (recommended)
 claude plugin install megabytespace/claude-skills
+
+# npm (includes all 24 platform variants)
+npm i @megabytespace/claude-skills
+
+# JSR
+npx jsr add @megabytespace/claude-skills
+
+# OpenAI Codex
+git clone https://github.com/megabytespace/claude-skills ~/.codex/skills
 
 # Manual
 git clone https://github.com/megabytespace/claude-skills ~/.agentskills
 ```
+
+## Cross-Platform Support (24 variants)
+
+Auto-generated on every push to master. Modern formats use native frontmatter for each tool.
+
+| Format | Path | Notes |
+|--------|------|-------|
+| **Cursor** (modern) | `.cursor/rules/emdash-skills.mdc` | MDC frontmatter: `alwaysApply: true` |
+| **Windsurf** (modern) | `.windsurf/rules/emdash-skills.md` | `trigger: always_on` |
+| **Augment** (modern) | `.augment/rules/emdash-skills.md` | `type: always_apply` |
+| **Copilot** (modern) | `.github/instructions/emdash-skills.instructions.md` | `applyTo: "**"` |
+| **OpenHands** | `.openhands/microagents/repo.md` | Plain markdown |
+| **Cursor** (legacy) | `.cursorrules` | Single-file format |
+| **Windsurf** (legacy) | `.windsurfrules` | Single-file format |
+| **Cline** | `.clinerules` | Single-file format |
+| **Copilot** (legacy) | `.github/copilot-instructions.md` | Plain markdown |
+| **Augment** (legacy) | `.augment-guidelines` | Single-file format |
+| **Aider** | `.aider-conventions.md` | Plain markdown |
+| **Zed** | `.rules` | Plain markdown |
+| **Codex** | `CODEX.md` + `.agents/skills/` | SKILL.md per category |
+| **Gemini CLI** | `GEMINI.md` | Plain markdown |
+| **Amp** | `AMP.md` | Plain markdown |
+| **Replit** | `replit.md` | Plain markdown |
+| **AGENTS.md** | `AGENTS.md` | Devin, Jules, Copilot, OpenHands |
+| **Amazon Q** | `.amazonq/rules/` | Directory format |
+| **JetBrains Junie** | `.junie/guidelines.md` | Plain markdown |
+| **Trae** | `.trae/rules/project_rules.md` | ByteDance IDE |
+| **Tabnine** | `.tabnine/guidelines/guidelines.md` | Directory format |
+| **Kilo Code** | `.kilo/rules/` | Roo Code successor |
+| **Roo Code** | `.roo/rules/` | Active until May 2026 |
+| **Continue.dev** | `.continue/rules/` | Directory format |
 
 ## Skill Categories
 
@@ -245,7 +287,7 @@ Every deploy must clear all gates. No exceptions. No overrides.
 
 ## Task Routing
 
-The router loads the smallest useful subset per task — never the full 93 docs. See [`_router.md`](_router.md) for the complete routing table.
+The router loads the smallest useful subset per task — never the full 94 docs. See [`_router.md`](_router.md) for the complete routing table.
 
 | When you say... | Skills loaded |
 |-----------------|---------------|
