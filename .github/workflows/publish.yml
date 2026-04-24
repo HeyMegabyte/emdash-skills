@@ -102,11 +102,11 @@ jobs:
           ## For AI Coding Tools
           This repo is compatible with the agentskills.io open standard. Skills work in Claude Code, OpenAI Codex, Cursor, GitHub Copilot, VS Code, Windsurf, Augment, OpenHands, Gemini CLI, and 30+ other tools.
 
-          ## Platform Variants (24 total)
-          Modern formats: `.cursor/rules/` (MDC) | `.windsurf/rules/` (trigger frontmatter) | `.augment/rules/` (type frontmatter) | `.github/instructions/` (applyTo frontmatter) | `.openhands/microagents/`
+          ## Platform Variants (30 total)
+          Modern formats: `.cursor/rules/` (MDC) | `.windsurf/rules/` (trigger frontmatter) | `.augment/rules/` (type frontmatter) | `.github/instructions/` (applyTo frontmatter) | `.openhands/microagents/` | `.aiassistant/rules/` | `.kiro/steering/` | `.void/rules/`
           Legacy formats: `.cursorrules` | `.windsurfrules` | `.clinerules` | `.rules` | `.augment-guidelines` | `.aider-conventions.md` | `.github/copilot-instructions.md`
-          Named formats: `AGENTS.md` | `GEMINI.md` | `AMP.md` | `CODEX.md` | `replit.md`
-          Directory formats: `.amazonq/rules/` | `.junie/` | `.trae/rules/` | `.tabnine/guidelines/` | `.kilo/rules/` | `.roo/rules/` | `.continue/rules/` | `.agents/skills/`
+          Named formats: `AGENTS.md` | `GEMINI.md` | `AMP.md` | `CODEX.md` | `QODO.MD` | `replit.md`
+          Directory formats: `.amazonq/rules/` | `.junie/` | `.trae/rules/` | `.tabnine/guidelines/` | `.kilo/rules/` | `.roo/rules/` | `.continue/rules/` | `.agents/skills/` | `.bolt/` | `.cursor/BUGBOT.md`
 
           Install: `claude plugin install megabytespace/claude-skills`
           Codex: Clone into `~/.codex/skills/` or `.agents/skills/`
@@ -288,6 +288,22 @@ jobs:
 
           See CONVENTIONS.md for full patterns.
           OHEOF
+          # JetBrains AI Assistant (separate from Junie)
+          mkdir -p .aiassistant/rules
+          sed 's/for Cursor/for JetBrains AI Assistant/' .cursorrules > .aiassistant/rules/emdash-skills.md
+          # Kiro (AWS)
+          mkdir -p .kiro/steering
+          sed 's/for Cursor/for Kiro/' .cursorrules > .kiro/steering/emdash-skills.md
+          # Void Editor
+          mkdir -p .void/rules
+          sed 's/for Cursor/for Void/' .cursorrules > .void/rules/emdash-skills.md
+          # Qodo (CodiumAI)
+          sed 's/for Cursor/for Qodo/' .cursorrules > QODO.MD
+          # Bolt.new
+          mkdir -p .bolt
+          sed 's/for Cursor/for Bolt/' .cursorrules > .bolt/promptfile
+          # Cursor BugBot
+          sed 's/for Cursor/for Cursor BugBot/' .cursorrules > .cursor/BUGBOT.md
 
       - name: Generate llms-full.txt
         run: |
@@ -319,6 +335,7 @@ jobs:
             .amazonq/ .rules .junie/ .augment-guidelines .augment/ \
             .aider-conventions.md AMP.md CODEX.md .agents/ .trae/ .tabnine/ \
             .kilo/ .roo/ .continue/ .cursor/ .windsurf/ .openhands/ \
+            .aiassistant/ .kiro/ .void/ .bolt/ QODO.MD \
             .claude-plugin/ replit.md
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true

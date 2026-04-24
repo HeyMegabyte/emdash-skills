@@ -85,7 +85,7 @@ git clone https://github.com/megabytespace/claude-skills ~/.codex/skills
 git clone https://github.com/megabytespace/claude-skills ~/.agentskills
 ```
 
-## Cross-Platform Support (24 variants)
+## Cross-Platform Support (30 variants)
 
 Auto-generated on every push to master. Modern formats use native frontmatter for each tool.
 
@@ -115,6 +115,12 @@ Auto-generated on every push to master. Modern formats use native frontmatter fo
 | **Kilo Code** | `.kilo/rules/` | Roo Code successor |
 | **Roo Code** | `.roo/rules/` | Active until May 2026 |
 | **Continue.dev** | `.continue/rules/` | Directory format |
+| **JetBrains AI** | `.aiassistant/rules/emdash-skills.md` | Separate from Junie |
+| **Kiro** (AWS) | `.kiro/steering/emdash-skills.md` | Workspace steering |
+| **Void** | `.void/rules/emdash-skills.md` | Open-source VS Code fork |
+| **Qodo** | `QODO.MD` | PR-Agent auto-detects |
+| **Bolt.new** | `.bolt/promptfile` | Plain text instructions |
+| **Cursor BugBot** | `.cursor/BUGBOT.md` | Per-directory code review |
 
 ## Skill Categories
 
