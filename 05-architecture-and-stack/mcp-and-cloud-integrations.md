@@ -49,7 +49,7 @@ claude mcp add google-workspace -- npx -y @taylorwilsdon/google_workspace_mcp
 **Developer Tools:** Playwright, GitHub, Sequential Thinking, Computer Use, PostHog, Sentry
 
 ### MCP -> Skill Mapping
-Cloudflare->08 Deploy, Playwright->07 Quality, Stripe->18 Billing, GitHub->35 CI/CD, Coolify->50, Firecrawl->17 Competitive, Postiz->27 Social, n8n->45 Webhooks, Gmail->19 Email, WordPress->33 Blog, Notion->29 Docs, Sentry->13 Observability, PostHog->13, Computer Use->07 Quality, Plane->03 Planning
+Cloudflare→08-deploy, Playwright→07-quality, Stripe→13/stripe-billing, GitHub→08/ci-cd-pipeline, Coolify→05/mcp-and-cloud-integrations, Firecrawl→03/competitive-analysis, Postiz→09/social-automation, n8n→06/webhook-system, Gmail→09/email-templates, WordPress→06/blog-and-content-engine, Notion→09/documentation-and-codebase-hygiene, Sentry→13-observability, PostHog→13-observability, Computer Use→07-quality, Plane→03-planning
 
 ## Secret Hygiene
 
@@ -126,4 +126,4 @@ Hey — I need a [SERVICE] key. Options:
 
 ## Ownership
 **Owns:** MCP discovery/connection, secrets discovery, cloud API patterns, AI API strategy, notification patterns, automation hooks, projectsites.dev branding.
-**Never owns:** Specific implementations (->individual skills), payments (->18), email (->19), deployment (->08).
+**Never owns:** Specific implementations (→individual skills), payments (→13/stripe-billing), email (→09/email-templates), deployment (→08-deploy).

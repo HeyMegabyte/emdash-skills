@@ -128,5 +128,5 @@ function parseCommits(commits: Array<{ message: string; sha: string; author: str
 | 4 | Release notes match changelog entry | Diff release body against CHANGELOG.md section — identical content |
 | 5 | `/changelog` page renders correctly | Playwright screenshot shows formatted entries, no empty state |
 | 6 | Changelog page has valid date ordering | Entries sorted newest-first, no date inversions |
-| 7 | Social announcement fires for minor+ releases | Skill 27 triggered, post confirmed on at least 2 platforms |
+| 7 | Social announcement fires for minor+ releases | 09/social-automation triggered, post confirmed on at least 2 platforms |
 | 8 | No `docs`/`chore`/`refactor`/`test` commits leak into changelog | Parse changelog — only feat/fix/perf/breaking entries present |

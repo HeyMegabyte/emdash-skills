@@ -20,10 +20,10 @@ app.notFound((c) => {
 - Brand colors, logo, and typography
 - Animated element (floating orbs, particle effect — reuse from domain provisioning)
 - "This page doesn't exist" headline (friendly, not technical)
-- Search box if site has search (skill 37)
+- Search box if site has search (06/site-search)
 - 3-4 links to popular pages
 - "Go home" CTA button
-- Easter egg opportunity (skill 15)
+- Easter egg opportunity (06/easter-eggs)
 
 ### 500 — Server Error
 ```typescript

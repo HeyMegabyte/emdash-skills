@@ -134,7 +134,7 @@ app.get('/api/donation-progress', async (c) => {
 ```
 
 ### Post-Donation Flow
-1. Success page with confetti animation (skill 15 Easter egg energy)
+1. Success page with confetti animation (06/easter-eggs energy)
 2. Auto-email via Resend: thank you + tax receipt + ask to share
 3. Auto-email all participants when goal is met
 4. PostHog event: `donation_complete` with amount and method
@@ -155,7 +155,7 @@ app.get('/api/donation-progress', async (c) => {
 - Guest checkout default (don't force account creation)
 - Show total prominently before final submit
 
-## Psychology of Pricing (skill 51 — Wisdom Applied)
+## Psychology of Pricing (04/wisdom-and-human-psychology — Wisdom Applied)
 ### Anchoring (Kahneman)
 Show annual price first. $480/year makes $50/month feel reasonable. The first number anchors expectations.
 
@@ -203,7 +203,7 @@ if (!hasFeature) return c.json({ error: 'Upgrade required', code: 'ENTITLEMENT_M
 Use for plan-tier feature gating instead of hardcoded plan checks. Auto-updates when plan changes — no webhook needed for feature access.
 
 ## Key Locations
-- Stripe API key: shared key pool (skill 05)
+- Stripe API key: shared key pool (05/shared-api-pool)
 - Webhook secret: wrangler secret per project
 - Test mode: always test with `sk_test_` before going live
 

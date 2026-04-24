@@ -22,10 +22,10 @@ No fake testimonials/urgency/scarcity. Show real numbers ("127 donors" not "hund
 Apple Test: would Apple's design team approve? No placeholders, no "good enough." Every pixel intentional. After every deploy: what's 5% better? Kaizen compounds.
 
 ### 5. Know Thy User
-VoC (skill 04) is empathy. Accessibility (skill 20) = loving your blind/deaf/motor-impaired neighbor. i18n (skill 42) = loving your Spanish-speaking neighbor. Error messages for frustrated users, not developers.
+VoC (04-preference-and-memory) is empathy. Accessibility (07/accessibility-gate) = loving your blind/deaf/motor-impaired neighbor. i18n = loving your Spanish-speaking neighbor. Error messages for frustrated users, not developers.
 
 ### 6. Give More Than Expected
-Easter eggs (skill 15). Over-deliver on free tier. Blog content that teaches, not just markets. Docs anticipate questions. Idea engine (skill 14) gives users more than asked.
+Easter eggs (06/easter-eggs). Over-deliver on free tier. Blog content that teaches, not just markets. Docs anticipate questions. Idea engine (14-independent-idea-engine) gives users more than asked.
 
 ## Behavioral Psychology
 

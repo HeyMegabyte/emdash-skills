@@ -9,20 +9,20 @@ description: "Go-live checklist: sitemap → GSC, robots.txt unblock, Postiz soc
 ## Pre-Launch Verification
 ```
 [ ] All pages return 200
-[ ] All forms submit correctly (8-point test matrix — skill 32)
+[ ] All forms submit correctly (8-point test matrix — 06/contact-forms-and-endpoints)
 [ ] All images load (no broken images)
 [ ] No placeholder content (Lorem, TODO, coming soon)
 [ ] Mobile responsive at 375px
 [ ] Desktop looks good at 1280px
-[ ] Accessibility: axe-core 0 violations (skill 20)
-[ ] SEO: Yoast checklist passes on all pages (skill 28)
+[ ] Accessibility: axe-core 0 violations (07/accessibility-gate)
+[ ] SEO: Yoast checklist passes on all pages (09/seo-and-keywords)
 [ ] Performance: Lighthouse report generated
 [ ] Security: CSP headers, Turnstile on forms
 [ ] Legal: privacy policy + terms present
-[ ] Easter egg: at least one hidden delight (skill 15)
-[ ] Error pages: branded 404 + 500 (skill 31)
-[ ] Contact form: working and tested (skill 32)
-[ ] Web property completeness (skill 24):
+[ ] Easter egg: at least one hidden delight (06/easter-eggs)
+[ ] Error pages: branded 404 + 500 (06/custom-error-pages)
+[ ] Contact form: working and tested (06/contact-forms-and-endpoints)
+[ ] Web property completeness (06/web-manifest-system):
     - site.webmanifest validates in Chrome DevTools (0 warnings)
     - PWA screenshots taken with Playwright (wide + narrow form_factor)
     - 4+ JSON-LD blocks per page (Organization, WebSite+SearchAction, WebPage, domain-specific)
@@ -66,10 +66,10 @@ gh repo edit --homepage "https://domain.com"
 gh repo edit --add-topic "cloudflare,hono,emdash,typescript"
 ```
 
-### Step 5: Generate README (skill 29)
+### Step 5: Generate README (09/documentation-and-codebase-hygiene)
 Auto-generate branded README with install.doctor template, aqua dividers, badges.
 
-### Step 6: Social Announcement (skill 27)
+### Step 6: Social Announcement (09/social-automation)
 ```bash
 # Auto-post via Postiz
 curl -X POST "https://postiz.megabyte.space/api/posts" \
@@ -82,7 +82,7 @@ curl -X POST "https://postiz.megabyte.space/api/posts" \
   }'
 ```
 
-### Step 7: Launch Email (skill 19)
+### Step 7: Launch Email (09/email-templates)
 Send branded launch announcement via Resend to newsletter subscribers (if Listmonk is set up).
 
 ### Step 8: Production E2E Suite
@@ -111,7 +111,7 @@ npx playwright test --project=chromium --project=firefox --project=webkit
 - [feature list]
 
 ### Next Steps
-- [improvements from idea engine — skill 14]
+- [improvements from idea engine — 14-independent-idea-engine]
 ```
 
 ### Step 11: Notify Connected Services
@@ -126,7 +126,7 @@ await notifyDiscord(env, `${domain} launched!`, `Check it out: https://${domain}
 await triggerZapier(env, 'site_launched', { domain, url: `https://${domain}` });
 ```
 
-### Step 12: Psychology-Optimized Launch (skill 51)
+### Step 12: Psychology-Optimized Launch (04/wisdom-and-human-psychology)
 - **Peak-End Rule:** The launch announcement IS the peak moment. Make it count.
 - **Social Proof:** Include user count or testimonial in the social post.
 - **Reciprocity:** Share something valuable in the announcement (tip, insight, free tool).

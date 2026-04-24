@@ -39,7 +39,7 @@ posthog.capture('onboarding_step_completed', { step: 'first_thing_created' });
 posthog.capture('onboarding_complete', { time_to_complete_ms: elapsed });
 ```
 
-## Welcome Email (skill 19)
+## Welcome Email (09/email-templates)
 Sent immediately after signup via Resend:
 ```
 Subject: "Welcome to [Product] 🎉"
@@ -72,7 +72,7 @@ If you need anything, just reply to this email.
 - "3-day streak" badge for daily active use
 - Subtle reward for completing each step
 
-## Psychology of Onboarding (skill 51 — Wisdom Applied)
+## Psychology of Onboarding (04/wisdom-and-human-psychology — Wisdom Applied)
 ### Zeigarnik Effect
 Incomplete tasks stay in memory and create tension. A progress bar showing "3 of 5 steps complete" drives users to finish. Never show 100% until they actually complete everything.
 

@@ -165,7 +165,7 @@ await resend.emails.send({
 ```
 
 - Verified domain: megabyte.space
-- API key: shared key pool (skill 26)
+- API key: shared key pool (05/shared-api-pool)
 - Rate limit: 100 emails/day on free tier
 - For bulk: use Listmonk on Cloudflare Containers
 

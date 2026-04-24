@@ -120,21 +120,21 @@ curl -X POST "https://firecrawl.megabyte.space/v1/crawl" \
 7. **Media quality** — real images, real video, real animation (not stock)
 
 ### What to Always Beat Competitors On (Emdash Defaults)
-- Visual quality (anti-slop design system, skill 10)
+- Visual quality (anti-slop design system, 10-experience-and-design-system)
 - Page speed (Cloudflare edge, < 1.5s LCP)
-- Accessibility (WCAG AA verified, skill 20)
-- Media richness (generated imagery, not stock, skill 12)
-- Completeness (no placeholder content, skill 06)
-- Motion quality (meaningful animation, skill 11)
-- Easter eggs (delightful hidden features, skill 15)
+- Accessibility (WCAG AA verified, 07/accessibility-gate)
+- Media richness (generated imagery, not stock, 12-media-orchestration)
+- Completeness (no placeholder content, 06-build-and-slice-loop)
+- Motion quality (meaningful animation, 11-motion-and-interaction-system)
+- Easter eggs (delightful hidden features, 06/easter-eggs)
 
 ## Output: Build Plan Integration
 After analysis, feed findings into:
-- **02 (Goal & Brief):** Refine product thesis based on competitive gaps
-- **03 (Planning):** Prioritize features that differentiate
-- **09 (Brand):** Adopt winning design patterns, improve on weaknesses
-- **10 (Design):** Match or exceed best competitor's visual quality
-- **18 (Pricing):** Position pricing competitively
+- **02-goal-and-brief:** Refine product thesis based on competitive gaps
+- **03-planning-and-research:** Prioritize features that differentiate
+- **09-brand-and-content-system:** Adopt winning design patterns, improve on weaknesses
+- **10-experience-and-design-system:** Match or exceed best competitor's visual quality
+- **13/stripe-billing:** Position pricing competitively
 
 ## Enhancement: AI Website Builder Competitive Landscape (April 2026)
 ### Key Competitors in the AI Builder Space

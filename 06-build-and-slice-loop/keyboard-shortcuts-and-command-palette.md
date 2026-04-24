@@ -10,7 +10,7 @@ description: "Full command palette (Cmd+K) like Linear/Notion for SaaS products.
 - SaaS products with 3+ pages
 - Developer tools
 - Products targeting power users
-- Any product with search (pairs with skill 37)
+- Any product with search (pairs with 06/site-search)
 
 ## Command Palette (Cmd+K)
 ### HTML

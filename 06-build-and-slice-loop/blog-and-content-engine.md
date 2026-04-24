@@ -32,7 +32,7 @@ readingTime: 5
 Your markdown content here...
 ```
 
-## SEO Integration (skill 28)
+## SEO Integration (09/seo-and-keywords)
 Every blog post targets a longtail keyword:
 - **Title tag** contains the keyword phrase
 - **H1** matches the title (or is a close variation)
@@ -43,7 +43,7 @@ Every blog post targets a longtail keyword:
 - **Image alt text** includes keyword where natural
 
 ### Seed Posts (3-5 on First Build)
-Generate 3-5 posts targeting longtail keywords from skill 28 research:
+Generate 3-5 posts targeting longtail keywords from 09/seo-and-keywords research:
 ```
 1. "How to [solve problem] with [our product]" (tutorial)
 2. "[Product category] comparison: [us] vs alternatives" (comparison)

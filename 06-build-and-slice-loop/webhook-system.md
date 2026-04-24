@@ -116,7 +116,7 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, env: Env
       stripeSessionId: session.id,
     });
   }
-  // Send confirmation email (skill 19)
+  // Send confirmation email (09/email-templates)
   await sendReceiptEmail(session, env);
   // Track in PostHog
   // posthog.capture('purchase_complete', { amount: session.amount_total });
@@ -133,8 +133,8 @@ async function handleUserCreated(user: ClerkUser, env: Env) {
     email: user.email_addresses[0].email_address,
     name: `${user.first_name} ${user.last_name}`.trim(),
   });
-  // Send welcome email (skill 19)
-  // Start onboarding tracking (skill 36)
+  // Send welcome email (09/email-templates)
+  // Start onboarding tracking (06/onboarding-and-first-run)
 }
 ```
 

@@ -219,7 +219,7 @@ volumes:
 # 5. Verify all services healthy
 ```
 
-See skill 40 (Backup and Disaster Recovery) for the full single-zip restore plan.
+See 08/backup-and-disaster-recovery for the full single-zip restore plan.
 
 ## Troubleshooting
 | Issue | Fix |

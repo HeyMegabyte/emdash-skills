@@ -197,8 +197,8 @@ test.describe('Contact form', () => {
 </form>
 ```
 
-### Donation Form (Stripe — skill 18)
+### Donation Form (Stripe — 13/stripe-billing)
 Redirect to Stripe Checkout. No form processing needed on our side.
 
-### Feedback Form (skill 41)
+### Feedback Form (13/user-feedback-collection)
 In-app widget with rating + text. Stored in D1.

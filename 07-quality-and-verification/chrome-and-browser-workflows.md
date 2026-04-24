@@ -20,7 +20,7 @@ updated: "2026-04-23"
 | Browser extension testing | Computer Use | Playwright can't access extensions |
 
 ## Playwright MCP Workflows
-### E2E Testing Protocol (Skill 07 Integration)
+### E2E Testing Protocol (07-quality-and-verification Integration)
 ```
 1. browser_navigate → target URL
 2. browser_resize → first breakpoint (375x667)
@@ -154,7 +154,7 @@ Prefer Playwright. Use Computer Use only for visual DevTools analysis.
 ```
 
 ## Web Scraping Workflows
-### Competitive Analysis (Skill 17 Integration)
+### Competitive Analysis (03/competitive-analysis Integration)
 ```
 1. firecrawl_search → "[competitor domain] [product category]"
 2. firecrawl_scrape → competitor homepage
@@ -172,7 +172,7 @@ Prefer Playwright. Use Computer Use only for visual DevTools analysis.
 5. Verify Flesch >= 60
 ```
 
-### SEO Audit (Skill 28 Integration)
+### SEO Audit (09/seo-and-keywords Integration)
 ```
 1. firecrawl_map → get all pages on domain
 2. For each page:

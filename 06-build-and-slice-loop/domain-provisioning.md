@@ -18,20 +18,20 @@ The placeholder is NOT a placeholder — it's the first impression. It must be:
 - Responsive at 375px and 1280px
 
 ### Functional
-- Newsletter signup form (connected to Listmonk via skill 13)
-- Turnstile captcha on the form (skill 05)
+- Newsletter signup form (connected to Listmonk via 13-observability-and-growth)
+- Turnstile captcha on the form (05/shared-api-pool)
 - Contact: brian@megabyte.space (mailto link)
 - Megabyte Labs logo in footer
-- Easter egg (skill 15 — AI chooses what)
-- Language selector (EN + ES minimum, skill 01)
+- Easter egg (06/easter-eggs — AI chooses what)
+- Language selector (EN + ES minimum, 01-operating-system)
 
 ### SEO & Meta
 - Full OG tags (title, description, image)
 - Twitter Card (summary_large_image)
 - Favicon set (generated via Ideogram, skill 12)
 - JSON-LD: Organization + WebSite
-- robots.txt and sitemap.xml (skill 24)
-- site.webmanifest (skill 24)
+- robots.txt and sitemap.xml (06/web-manifest-system)
+- site.webmanifest (06/web-manifest-system)
 
 ### Performance
 - Zero external JS dependencies
