@@ -25,6 +25,8 @@
       "agents/**",
       "templates/**",
       "scripts/**",
+      "bin/**",
+      ".claude-plugin/**",
       "CONVENTIONS.md",
       "SKILL_PROFILES.md",
       "_router.md",
