@@ -1,7 +1,7 @@
 ---
 name: "Background Jobs and Workflows"
-description: "Inngest for durable background jobs on CF Workers. CF Workflows v2 (rearchitected control plane, higher concurrency). Event-driven architecture, scheduled tasks, retry logic, fan-out patterns, and step functions. Covers Stripe webhook processing, email sequences, data sync, D1→R2 backups, and long-running workflows. Also: CF Cron Triggers (250 paid), CF Queues for high-throughput."
-updated: "2026-04-23"
+description: "Inngest v4 for durable background jobs on CF Workers. CF Workflows v2 (rearchitected control plane, higher concurrency). Event-driven architecture, scheduled tasks, retry logic, fan-out patterns, and step functions. Covers Stripe webhook processing, email sequences, data sync, D1→R2 backups, long-running workflows, step.ai.infer(), and built-in realtime. Also: CF Cron Triggers (250 paid), CF Queues for high-throughput."
+updated: "2026-04-24"
 ---
 
 # Background Jobs and Workflows
@@ -9,30 +9,49 @@ updated: "2026-04-23"
 ## Decision Tree
 Simple schedule (health check, cache warm) → CF Cron Triggers (5 free, 250 paid). High-throughput fire-and-forget (analytics, logs) → CF Queues. Durable multi-step (onboarding, billing sync, email drip) → Inngest. Stateful long-running (AI agent, workflow builder) → CF Workflows v2 (rearchitected control plane, higher concurrency+creation rate) or DO. D1→R2 daily backup → CF Workflows + Cron Trigger. Agent orchestration → CF Agents SDK (Project Think, Fibers for crash-survivable execution).
 
-## Inngest on CF Workers
+## Inngest v4 on CF Workers (GA Mar 16, 2026 — BREAKING)
 
-### Setup
+### v3→v4 Breaking Changes
+- Default mode→cloud (was dev). Requires `INNGEST_SIGNING_KEY` or set `isDev: true`/`INNGEST_DEV=1` for local
+- `EventSchemas` removed → use `eventType("name", { schema: z.object({...}) })` per-event
+- Standard Schema support: schema field accepts Zod, Valibot, ArkType, or any Standard Schema lib
+- Triggers moved into options object (1st arg of `createFunction`)
+- Serve options (signingKey, baseUrl) moved to client constructor
+- `step.invoke()` no longer accepts string function IDs
+- `connect()` API: `rewriteGatewayEndpoint` → `gatewayUrl`
+- Middleware completely rewritten — check migration guide
+- Parallel step optimization + checkpointing default-on (~50% fewer HTTP requests)
+
+### Setup (v4)
 ```typescript
 // src/inngest/client.ts
-import { Inngest } from 'inngest';
-export const inngest = new Inngest({ id: 'my-app' });
+import { Inngest, eventType } from 'inngest';
+import { z } from 'zod';
 
-// src/inngest/serve.ts — Hono route
-import { serve } from 'inngest/hono';
+// v4: per-event type definitions (replaces EventSchemas)
+const userCreated = eventType('user/created', {
+  schema: z.object({ userId: z.string(), email: z.string() }),
+});
+const invoicePaid = eventType('stripe/invoice.paid', {
+  schema: z.object({ customerId: z.string(), amount: z.number() }),
+});
+
+export const inngest = new Inngest({
+  id: 'my-app',
+  eventTypes: [userCreated, invoicePaid],
+  // v4: serve options moved here
+  // signingKey: env.INNGEST_SIGNING_KEY,
+});
+
+// src/inngest/serve.ts — Hono route (v4: use inngest/cloudflare adapter)
+import { serve } from 'inngest/cloudflare';
 import { inngest } from './client';
 import { functions } from './functions';
 
-app.on(['GET', 'PUT', 'POST'], '/api/inngest', serve({ client: inngest, functions }));
-```
-
-### Event Schema (Zod-validated)
-```typescript
-type Events = {
-  'user/created': { data: { userId: string; email: string } };
-  'stripe/invoice.paid': { data: { customerId: string; amount: number } };
-  'email/drip.send': { data: { userId: string; templateId: string; step: number } };
-  'data/sync.requested': { data: { source: string; cursor?: string } };
-};
+app.on(['GET', 'PUT', 'POST'], '/api/inngest', (c) => {
+  inngest.setEnvVars(c.env); // v4: runtime bindings for CF Workers
+  return serve({ client: inngest, functions })(c.req.raw);
+});
 ```
 
 ### Core Patterns
@@ -107,6 +126,42 @@ export const dailyReport = inngest.createFunction(
 );
 ```
 
+**5. AI Inference (step.ai.infer — v4)**
+```typescript
+export const analyzeContent = inngest.createFunction(
+  { id: 'analyze-content' },
+  { event: 'content/submitted' },
+  async ({ event, step }) => {
+    // Offloads inference to Inngest infra — pauses function, no serverless compute charges
+    const [sentiment, summary] = await Promise.all([
+      step.ai.infer('sentiment', { model: 'openai/gpt-4o-mini', body: {
+        messages: [{ role: 'user', content: `Classify sentiment: ${event.data.text}` }],
+      }}),
+      step.ai.infer('summary', { model: 'anthropic/claude-haiku', body: {
+        messages: [{ role: 'user', content: `Summarize in 1 sentence: ${event.data.text}` }],
+      }}),
+    ]);
+    await step.run('save', () => db.update(content).set({ sentiment, summary }));
+  }
+);
+```
+
+**6. Realtime (built-in v4)**
+```typescript
+export const processOrder = inngest.createFunction(
+  { id: 'process-order' },
+  { event: 'order/placed' },
+  async ({ event, step }) => {
+    // Durable publish — survives retries
+    await step.realtime.publish(`order:${event.data.orderId}`, { status: 'processing' });
+    await step.run('charge', () => stripe.charges.create({ amount: event.data.total }));
+    await step.realtime.publish(`order:${event.data.orderId}`, { status: 'charged' });
+  }
+);
+// Client: import { useRealtime } from '@inngest/realtime/react';
+// const { messages } = useRealtime(`order:${orderId}`);
+```
+
 ## CF Cron Triggers (Simple Schedules)
 ```toml
 # wrangler.toml
@@ -146,4 +201,8 @@ Timeout: `step.sleep()` for delays, `step.waitForEvent()` for external triggers 
 
 Error handling: `retries: 3` default, exponential backoff. Dead letter: Inngest dashboard. Alert: `onFailure` callback → Sentry + Slack.
 
-Testing: `inngest/test` SDK for local step-through. `npx inngest-cli dev` for local dev server with event replay.
+v4 step.ai.infer(): offloads AI inference to Inngest infrastructure — function pauses while inference runs, zero serverless compute charges during wait. Parallelizable via `Promise.all()`. Supports OpenAI, Anthropic, and custom models.
+
+v4 Realtime: `step.realtime.publish(channel, data)` for durable pub/sub (survives retries). `inngest.realtime.publish()` for non-durable fire-and-forget. Client: `@inngest/realtime` React hook `useRealtime(channel)`. Replaces deprecated `@inngest/realtime` package.
+
+Testing: `inngest/test` SDK for local step-through. `npx inngest-cli dev` for local dev server with event replay. v4: set `isDev: true` or `INNGEST_DEV=1` for local mode.

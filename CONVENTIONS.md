@@ -17,7 +17,7 @@ megabyte.space | projectsites.dev | fundl.ink | gitl.ink | deskl.ink | linkbl.in
 
 ## Stack
 
-CF Workers+Hono v4.12+ | Angular 21+Ionic 8+PrimeNG 21 | Capacitor 8 | D1/Neon | Drizzle v1 | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest | Bun 1.3 | TS 5.9 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
+CF Workers+Hono v4.12+ | Angular 21+Ionic 8+PrimeNG 21 | Capacitor 8 | D1/Neon | Drizzle v1 | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest v4 | Bun 1.3 | TS 5.9 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
 
 ## Angular 21 Key Changes
 
@@ -115,7 +115,7 @@ GA4/GTM: `~/.config/emdash/gcp-service-account.json` | PostHog: posthog.megabyte
 
 ## Key Integrations
 
-CF AI Search (RAG per tenant, formerly AutoRAG) | Stagehand (AI browser testing, accessibility-tree MCP) | CF Agents SDK | Inngest (step functions) | Mem0 (persistent AI memory) | Flagship (feature flags)
+CF AI Search (namespace binding Apr 2026, per-tenant/per-agent RAG, runtime instance CRUD) | Stagehand v3 (direct CDP, 44% faster, CF Browser Run native) | CF Agents SDK | Inngest v4 (step.ai.infer, realtime, Standard Schema) | Mem0 (persistent AI memory) | Flagship (feature flags)
 
 ## Breakpoints
 
@@ -137,7 +137,7 @@ import { Hono } from 'hono';
 import { createFactory } from 'hono/factory';
 import { secureHeaders } from 'hono/secure-headers';
 import { cors } from 'hono/cors';
-type Env = { DB: D1Database; KV: KVNamespace; AI: Ai; VECTORIZE: VectorizeIndex; AI_SEARCH: AiSearch; TURNSTILE_SECRET: string; SITE_NAME: string; SITE_DESCRIPTION: string; };
+type Env = { DB: D1Database; KV: KVNamespace; AI: Ai; VECTORIZE: VectorizeIndex; AI_SEARCH: AiSearchNamespace; TURNSTILE_SECRET: string; SITE_NAME: string; SITE_DESCRIPTION: string; INNGEST_SIGNING_KEY: string; };
 const app = new Hono<{ Bindings: Env }>();
 app.use('*', secureHeaders());
 app.use('/api/*', cors({ origin: ['https://domain.com'] }));
@@ -174,9 +174,11 @@ report-uri /api/csp-report;
 
 Prefer nonce-based strict CSP with `strict-dynamic`. Test with `Content-Security-Policy-Report-Only` first.
 
-## Inngest Patterns
+## Inngest v4 Patterns (BREAKING — Mar 16, 2026)
 
-Setup: `app.on(['GET','PUT','POST'], '/api/inngest', serve({ client: inngest, functions }))` | Step functions: `step.run('id', fn)` (each step idempotent, retried independently) | Delays: `step.sleep('id', '1 day')` | External triggers: `step.waitForEvent('id', { event: 'stripe/paid', timeout: '7d' })` | Fan-out: `step.sendEvent('id', items.map(...))` | Cron: `{ cron: '0 9 * * *' }` | Concurrency: `{ concurrency: { limit: 5 } }` | Retries: `{ retries: 3 }` default exponential backoff | Max duration: 2hr (Inngest Cloud) | Local dev: `npx inngest-cli dev`
+v3→v4 breaking: EventSchemas removed→`eventType()` per-event with Standard Schema (Zod/Valibot/ArkType) | serve options→client constructor | default mode→cloud (set `isDev:true` for local) | `step.invoke()` no longer accepts string IDs | CF Workers: `inngest/cloudflare` adapter + `inngest.setEnvVars(c.env)`
+Setup: `app.on(['GET','PUT','POST'], '/api/inngest', (c) => { inngest.setEnvVars(c.env); return serve({ client: inngest, functions })(c.req.raw); })` | Step functions: `step.run('id', fn)` (each step idempotent, retried independently) | Delays: `step.sleep('id', '1 day')` | External triggers: `step.waitForEvent('id', { event: 'stripe/paid', timeout: '7d' })` | Fan-out: `step.sendEvent('id', items.map(...))` | Cron: `{ cron: '0 9 * * *' }` | Concurrency: `{ concurrency: { limit: 5 } }` | Retries: `{ retries: 3 }` default exponential backoff | Max duration: 2hr | Parallel step optimization + checkpointing default-on (~50% fewer HTTP requests)
+New v4: `step.ai.infer('id', { model, body })` offloads inference to Inngest infra (zero compute during wait) | `step.realtime.publish(channel, data)` durable pub/sub | `useRealtime(channel)` React hook | Local dev: `npx inngest-cli dev` with `INNGEST_DEV=1`
 Dedup: Inngest auto-deduplicates by event ID within 24h. Use D1 UNIQUE constraint for external side effects. `onFailure` callback → Sentry + Slack.
 
 ## Patterns
@@ -211,9 +213,18 @@ JSON-LD boosts LLM accuracy 16%→54% (AI search visibility for ChatGPT/Perplexi
 
 E2E 0 failures | WCAG 2.2 AA | Lighthouse a11y ≥95 perf ≥75 | CSP (Trusted Types cross-browser since Feb 2026 — add `require-trusted-types-for 'script'`) | Flesch ≥60 | Yoast GREEN | Images <200KB WebP | No placeholders | No dead forms | ADA Title II: April 24, 2026 (state/local gov 50K+ pop — EFFECTIVE NOW) / April 2028 (small/special districts). WCAG 2.1 AA mandatory | Chrome LNA (v142+): public sites accessing local network need `Access-Control-Allow-Private-Network` header
 
+## Bun 1.3 Native Clients
+
+`Bun.sql` — unified tagged template API: ``sql`SELECT * FROM users WHERE id = ${id}` ``. Supports PostgreSQL, MySQL/MariaDB, SQLite. Zero deps, auto SQL injection prevention. Replaces `pg`/`mysql2`/`better-sqlite3`.
+`Bun.redis` — 7.9x faster than ioredis. 66 commands. Auto-reconnect, command timeouts, message queuing. Replaces `ioredis`/`redis` npm packages.
+`Bun.s3` — built-in S3 client with backpressure handling. Replaces `@aws-sdk/client-s3`. Note: CF Workers use R2 binding directly, not S3 client.
+
 ## Clerk Core 3 (Mar 2026 — Breaking)
 
 `@clerk/clerk-react` → `@clerk/react` | `@clerk/clerk-expo` → `@clerk/expo` | `<Protect>/<SignedIn>/<SignedOut>` → unified `<Show when="signed-in|signed-out" />` | `getToken()` now throws `ClerkOfflineError` (was null) | `@clerk/types` deprecated (import from SDK packages) | ~50KB gzipped bundle reduction | Upgrade: `npx @clerk/upgrade` codemod, requires Node 20.9+
+**Clerk CLI** (Apr 22 2026): `clerk init` (framework detect + scaffold) | `clerk config` (auth settings) | `clerk api` (BAPI access) | `clerk deploy` coming
+**API Keys GA** (Apr 17 2026): machine auth — users create delegated API keys for programmatic access. Billing active.
+**SCIM/Directory Sync GA** (Apr 16 2026): auto user create/update/deactivate from IdP. Custom attribute mapping (beta) into `publicMetadata`. Role assignment from IdP groups. No extra charge with enterprise connection.
 
 ## Stripe (Versioned Releases)
 

@@ -1,7 +1,7 @@
 ---
 name: "AI Technology Integration"
-description: "Latest AI APIs, models, and techniques for building AI-native products. GPT-4o vision for visual QA, Workers AI for edge inference, embeddings for RAG, structured outputs, image/video generation, speech, and the visual TDD loop."
-updated: "2026-04-23"
+description: "Latest AI APIs, models, and techniques for building AI-native products. GPT-4o vision for visual QA, Workers AI for edge inference, AI Search namespace binding (per-tenant/per-agent RAG), embeddings for RAG, structured outputs, image/video generation, speech, and the visual TDD loop."
+updated: "2026-04-24"
 allowed-tools: "Bash, Read, Write, Edit, mcp__playwright__*"
 ---
 
@@ -43,9 +43,27 @@ OPENAI_API_KEY, ANTHROPIC_API_KEY, IDEOGRAM_API_KEY, REPLICATE_API_TOKEN, CLOUDF
 // Vision: await env.AI.run('@cf/meta/llama-3.2-11b-vision-instruct', { image: bytes, prompt: '...' });
 // Embeddings: await env.AI.run('@cf/baai/bge-base-en-v1.5', { text: [...] });
 // Translation: await env.AI.run('@cf/meta/m2m100-1.2b', { text, source_lang, target_lang });
+// New models (Apr 2026): GLM, Qwen, EmbeddingGemma (no provider keys), Kimi K2.5 (large agent model), real-time voice
 ```
 
 Wrangler: `[ai] binding = "AI"` + `[[vectorize]] binding = "VECTORIZE_INDEX" index_name = "site-content"`
+
+## AI Search Namespace Binding (Apr 16, 2026)
+```toml
+# wrangler.toml — replaces env.AI.autorag()
+[[ai_search_namespaces]]
+binding = "AI_SEARCH"
+namespace_id = "namespace-id-here"
+```
+```typescript
+// Query AI Search
+const results = await env.AI_SEARCH.search(query, { topK: 5 });
+// Runtime instance CRUD — per-agent, per-customer, or per-language
+const instance = await env.AI_SEARCH.createInstance({ name: 'tenant-123' });
+// Cross-instance ranked search via instance ID array
+const merged = await env.AI_SEARCH.search(query, { instances: ['tenant-a', 'tenant-b'] });
+```
+Built-in storage + vector index on new instances. Use for: per-tenant RAG, per-agent knowledge bases, multi-language search.
 
 ## GPT-4o Structured Outputs
 ```typescript

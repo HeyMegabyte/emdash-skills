@@ -1,7 +1,7 @@
 ---
 name: "Auth and Session Management"
-description: "Clerk as the auth layer for all SaaS projects. Middleware patterns for Hono on CF Workers, webhook sync to D1, RBAC with org-scoped roles, protected route patterns, and session token handling. Covers signup/login flows, user metadata sync, impersonation, and MFA enforcement."
-updated: "2026-04-23"
+description: "Clerk Core 3 as the auth layer for all SaaS projects. Middleware patterns for Hono on CF Workers, webhook sync to D1, RBAC with org-scoped roles, protected route patterns, session token handling. Clerk CLI (init/config/api), API Keys GA (machine auth), SCIM/Directory Sync GA (auto provisioning). Covers signup/login flows, user metadata sync, impersonation, and MFA enforcement."
+updated: "2026-04-24"
 ---
 
 # Auth and Session Management (Clerk)
@@ -105,12 +105,24 @@ Clerk JWT verified per-request (no session store needed). Short-lived tokens (60
 // Get user: inject ClerkService → user$ observable
 ```
 
+## Clerk CLI (Apr 22, 2026)
+`clerk init` — framework detect + scaffold (Angular/React/Next/Remix). `clerk config` — auth settings from terminal. `clerk api` — direct BAPI access for scripting. `clerk deploy` coming.
+Install: `npm i -g @clerk/cli` or `npx @clerk/cli init`.
+
+## API Keys GA (Apr 17, 2026)
+Machine auth: users create delegated API keys for programmatic access. Use for: CI/CD integration, external service auth, customer API access. Verify: `clerk.apiKeys.verify(apiKey)`. Billing active — counts toward MAU.
+
+## SCIM / Directory Sync GA (Apr 16, 2026)
+Auto user create/update/deactivate from IdP (Okta, Azure AD, OneLogin, Google Workspace). Custom attribute mapping (beta) into `publicMetadata`. Role assignment from IdP groups. No extra charge with enterprise connection. Webhooks: `organizationMembership.created`, `organizationMembership.deleted` for JIT provisioning.
+
 ## Checklist
 - [ ] `CLERK_SECRET_KEY` + `CLERK_PUBLISHABLE_KEY` in wrangler.toml [vars]
 - [ ] `CLERK_WEBHOOK_SECRET` for svix verification
-- [ ] Webhook endpoint registered in Clerk dashboard (user.*, org.*, session.*)
+- [ ] Webhook endpoint registered in Clerk dashboard (user.*, org.*, session.*, organizationMembership.*)
 - [ ] D1 users table with Clerk ID as PK
 - [ ] Middleware applied to all /api/* except /api/webhooks/* and /health
 - [ ] Frontend route guards on protected pages
 - [ ] MFA enforced for admin roles (Clerk dashboard setting)
+- [ ] SCIM directory connection configured for enterprise customers
+- [ ] API Keys enabled for programmatic access use cases
 - [ ] Test: expired JWT returns 401, wrong org returns 403, deleted user returns 401
