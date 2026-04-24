@@ -1,0 +1,38 @@
+{
+  "name": "@megabytespace/claude-skills",
+  "version": "7.1.0",
+  "exports": {
+    ".": "./_router.md",
+    "./conventions": "./CONVENTIONS.md",
+    "./profiles": "./SKILL_PROFILES.md"
+  },
+  "publish": {
+    "include": [
+      "01-*/**",
+      "02-*/**",
+      "03-*/**",
+      "04-*/**",
+      "05-*/**",
+      "06-*/**",
+      "07-*/**",
+      "08-*/**",
+      "09-*/**",
+      "10-*/**",
+      "11-*/**",
+      "12-*/**",
+      "13-*/**",
+      "14-*/**",
+      "agents/**",
+      "templates/**",
+      "scripts/**",
+      "CONVENTIONS.md",
+      "SKILL_PROFILES.md",
+      "_router.md",
+      "llms.txt",
+      "llms-full.txt",
+      "AGENTS.md",
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}

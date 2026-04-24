@@ -138,6 +138,17 @@ jobs:
           sed 's/for Cursor/for Aider/' .cursorrules > .aider-conventions.md
           sed 's/for Cursor/for Amp/' .cursorrules > AMP.md
           sed 's/for Cursor/for Codex/' .cursorrules > CODEX.md
+          # Trae IDE (ByteDance)
+          mkdir -p .trae/rules
+          sed 's/for Cursor/for Trae/' .cursorrules > .trae/rules/project_rules.md
+          # Tabnine
+          mkdir -p .tabnine/guidelines
+          sed 's/for Cursor/for Tabnine/' .cursorrules > .tabnine/guidelines/guidelines.md
+          # Kilo Code (Roo Code successor)
+          mkdir -p .kilo/rules
+          sed 's/for Cursor/for Kilo Code/' .cursorrules > .kilo/rules/cloudflare-workers-hono-angular-saas.md
+          # Replit Agent
+          sed 's/for Cursor/for Replit/' .cursorrules > replit.md
 
       - name: Generate llms-full.txt
         run: |
@@ -167,7 +178,7 @@ jobs:
           git add AGENTS.md .cursorrules .windsurfrules .clinerules GEMINI.md \
             .github/copilot-instructions.md llms-full.txt .amazonq/ .rules \
             .junie/ .augment-guidelines .aider-conventions.md AMP.md CODEX.md \
-            .agents/
+            .agents/ .trae/ .tabnine/ .kilo/ replit.md
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true
 
@@ -204,6 +215,22 @@ jobs:
             --generate-notes \
             --notes-start-tag "$(git tag --sort=-version:refname | head -2 | tail -1)"
 
+  publish-jsr:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Publish to JSR
+        run: npx jsr publish --allow-dirty
+        continue-on-error: true
+
   publish-continue-hub:
     runs-on: ubuntu-latest
     needs: validate
@@ -213,4 +240,18 @@ jobs:
       - name: Publish to Continue Hub (rules.so)
         run: |
           npx rules-cli publish --token "${{ secrets.CONTINUE_HUB_TOKEN }}" 2>/dev/null || echo "Continue Hub publish skipped (no token)"
+        continue-on-error: true
+
+  publish-github-skills:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish via gh skill (if available)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-skill 2>/dev/null || true
+          gh skill publish 2>/dev/null || echo "gh skill publish not available yet"
         continue-on-error: true

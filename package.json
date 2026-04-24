@@ -57,6 +57,8 @@
     "AGENTS.md",
     ".cursorrules",
     ".claude-plugin/**",
+    "jsr.json",
+    "replit.md",
     "README.md",
     "LICENSE"
   ],
