@@ -1,9 +1,10 @@
 ---
 name: "media-orchestration"
-version: "2.1.0"
-updated: "2026-04-23"
-context: fork
 description: "Section-by-section media planning and generation. Image generation (GPT Image 1.5 primary, built-in fallback), logo/icon generation (Ideogram v3 → favicon set), video generation (Sora), social preview images (OG 1200x630 + AI search optimization), stock photo curation (Unsplash, Pexels), critique/remix loops (max 3 rounds), asset compression pipeline, and media performance budgets."
+metadata:
+  version: "2.1.0"
+  updated: "2026-04-23"
+  context: "fork"
 submodules:
   - media-prompts.md
   - compression-pipeline.md

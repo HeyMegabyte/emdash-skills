@@ -1,8 +1,9 @@
 ---
 name: "build-and-slice-loop"
-version: "2.0.0"
-updated: "2026-04-23"
 description: "Implements features in vertical slices, always starting with homepage. Enforces anti-placeholder rules — no lorem ipsum, no TODO stubs, no gray boxes. Real content, real images, real interactions. TypeScript strict mode, Zod validation, and structured file organization."
+metadata:
+  version: "2.0.0"
+  updated: "2026-04-23"
 submodules:
   - easter-eggs.md
   - domain-provisioning.md

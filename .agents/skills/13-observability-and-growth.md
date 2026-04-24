@@ -1,9 +1,10 @@
 ---
 name: "observability-and-growth"
-version: "2.1.0"
-updated: "2026-04-23"
-context: fork
 description: "Full instrumentation from day one. PostHog consolidates product analytics + feature flags + error tracking (one platform, one bill). GA4 via GTM (14-step automation, custom dimensions over events, server-side tagging). Sentry (deep error tracking + performance). Stripe (webhook-first with idempotent processing). Listmonk on Coolify (newsletters via Resend SMTP relay). PLG 7-layer framework. Programmatic SEO (5 page types). Incident auto-remediation via Sentry→Inngest pipeline. AI search (GEO) awareness."
+metadata:
+  version: "2.1.0"
+  updated: "2026-04-23"
+  context: "fork"
 submodules:
   - stripe-billing.md
   - analytics-configuration.md

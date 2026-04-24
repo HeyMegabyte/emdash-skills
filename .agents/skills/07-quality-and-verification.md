@@ -1,9 +1,10 @@
 ---
 name: "quality-and-verification"
-version: "2.0.0"
-updated: "2026-04-23"
 description: "5-level verification pyramid: static→unit→Playwright E2E (homepage-first, 6bp)→AI visual→post-deploy. 8-check quality gate. Multi-agent testing (functional/security/a11y/performance). Playwright v1.59+ AI agents (Planner/Generator/Healer). WCAG 2.2 AA via axe-core v4.11. Percy+Chromatic visual regression. ADA Title II 2027/2028 deadlines."
-token_budget: "5K"
+metadata:
+  version: "2.0.0"
+  updated: "2026-04-23"
+  token_budget: "5K"
 submodules:
   - accessibility-gate.md
   - performance-optimization.md

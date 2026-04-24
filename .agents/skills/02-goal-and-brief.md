@@ -1,10 +1,11 @@
 ---
 name: "goal-and-brief"
 description: "Establish project thesis before first code. Infer product type from domain/folder/README. Identify users, business model, pSEO strategy, AI-native dev approach. Maintain PROJECT_BRIEF.md as source of truth."
-version: "2.0.0"
-updated: "2026-04-23"
-effort: medium
-model: sonnet
+metadata:
+  version: "2.0.0"
+  updated: "2026-04-23"
+  effort: "medium"
+  model: "sonnet"
 ---
 
 # 02 — Goal and Brief

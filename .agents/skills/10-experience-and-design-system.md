@@ -1,8 +1,9 @@
 ---
 name: "experience-and-design-system"
-version: "2.1.0"
-updated: "2026-04-23"
 description: "Anti-AI-slop design system for distinctive, premium interfaces. Bold typography, dark-first #060610, fluid clamp() type, cascade layers + native nesting + container queries, OKLCH color, @starting-style, View Transitions API, DTCG tokens."
+metadata:
+  version: "2.1.0"
+  updated: "2026-04-23"
 submodules:
   - design-tokens.md
 ---

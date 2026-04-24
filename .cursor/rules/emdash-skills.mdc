@@ -1,6 +1,7 @@
 ---
 description: "Emdash Skills — 14-category product-building OS. CF Workers+Hono, Angular, D1, Drizzle, Clerk, Stripe."
 alwaysApply: true
+globs: "**/*"
 ---
 # Emdash Skills for Cursor
 

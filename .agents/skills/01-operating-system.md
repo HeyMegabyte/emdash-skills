@@ -1,10 +1,11 @@
 ---
 name: "operating-system"
 description: "Supreme policy layer governing all Claude Code behavior. Autonomy, one-line prompt interpretation, speed standards, emphasis signal processing, cross-skill coordination, done definitions, conflict resolution. Loaded every prompt."
-version: "2.0.0"
-updated: "2026-04-23"
-effort: high
-model: inherit
+metadata:
+  version: "2.0.0"
+  updated: "2026-04-23"
+  effort: "high"
+  model: "inherit"
 submodules:
   - ai-native-coding.md
   - autonomous-orchestrator.md

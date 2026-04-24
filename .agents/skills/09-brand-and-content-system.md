@@ -1,8 +1,9 @@
 ---
 name: "brand-and-content-system"
 description: "Extract real brands (Wayback for rebuilds). Copy system, headline/CTA rules, trust surfaces, legal pages, SEO+structured data, anti-AI-slop, microcopy, DESIGN.md, W3C DTCG tokens, pSEO 5 types, GEO/AI search."
-version: "2.1.0"
-updated: "2026-04-23"
+metadata:
+  version: "2.1.0"
+  updated: "2026-04-23"
 submodules:
   - email-templates.md
   - social-automation.md

@@ -1,9 +1,10 @@
 ---
 name: "independent-idea-engine"
-version: "2.1.0"
-updated: "2026-04-23"
-context: fork
 description: "Fierce autonomous internal co-founder. Bounded web research for evidence-backed improvements. Structured idea formulation with self-critique filter that rejects ideas not serving the goal. Auto-implements high-confidence aligned improvements, proposes medium-confidence ideas for approval. Evaluates viral coefficient, AI search visibility (GEO), and solo SaaS economics. Considers higher pursuits: employing disabled people, spiritual tech investigation, 99% wealth donation ethos."
+metadata:
+  version: "2.1.0"
+  updated: "2026-04-23"
+  context: "fork"
 ---
 
 # 14 -- Independent Idea Engine
