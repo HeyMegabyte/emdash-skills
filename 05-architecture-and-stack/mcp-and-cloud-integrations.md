@@ -49,6 +49,11 @@ claude mcp add google-workspace -- npx -y @taylorwilsdon/google_workspace_mcp
 **Developer Tools:** Playwright, GitHub, Sequential Thinking, Computer Use, PostHog, Sentry
 **Resend MCP (Apr 7, 2026):** Official MCP server with HTTP transport. `claude mcp add resend --transport http --url https://mcp.resend.com`. Tools: send_email, list_emails, create_contact, list_contacts, list_domains. Use for: transactional email automation, contact management, domain verification — all from Claude Code.
 
+### Agent Interop Protocols
+**MCP (Model Context Protocol):** Tool access for AI agents. 97M+ monthly SDK downloads. Donated to Linux Foundation AAIF (Dec 2025). Standard for connecting AI models to external tools/data.
+**A2A (Agent-to-Agent, Google):** Agent discovery and coordination across org boundaries. Donated to Linux Foundation. Enables agents to find, authenticate, and delegate tasks to other agents. ACP (Cisco/LangChain agent commerce) merged into A2A (Aug 2025).
+**Enterprise stack:** MCP (tool access) + A2A (agent coordination) = complete agent interop. MCP for connecting to services, A2A for multi-agent orchestration across teams/orgs.
+
 ### MCP -> Skill Mapping
 Cloudflare→08-deploy, Playwright→07-quality, Stripe→13/stripe-billing, GitHub→08/ci-cd-pipeline, Coolify→05/mcp-and-cloud-integrations, Firecrawl→03/competitive-analysis, Postiz→09/social-automation, n8n→06/webhook-system, Gmail→09/email-templates, WordPress→06/blog-and-content-engine, Notion→09/documentation-and-codebase-hygiene, Sentry→13-observability, PostHog→13-observability, Computer Use→07-quality, Plane→03-planning
 

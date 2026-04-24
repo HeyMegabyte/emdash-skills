@@ -1,6 +1,6 @@
 ---
 name: "Auth and Session Management"
-description: "Clerk Core 3 as the auth layer for all SaaS projects. Middleware patterns for Hono on CF Workers, webhook sync to D1, RBAC with org-scoped roles, protected route patterns, session token handling. Clerk CLI (init/config/api), API Keys GA (machine auth), SCIM/Directory Sync GA (auto provisioning). Covers signup/login flows, user metadata sync, impersonation, and MFA enforcement."
+description: "Clerk Core 3 as the auth layer for all SaaS projects. Middleware patterns for Hono on CF Workers, webhook sync to D1, RBAC with org-scoped roles, protected route patterns, session token handling. Clerk CLI (init/config/api), API Keys GA (machine auth), SCIM/Directory Sync (roadmap, not GA). Covers signup/login flows, user metadata sync, impersonation, and MFA enforcement."
 updated: "2026-04-24"
 ---
 
@@ -112,8 +112,11 @@ Install: `npm i -g @clerk/cli` or `npx @clerk/cli init`.
 ## API Keys GA (Apr 17, 2026)
 Machine auth: users create delegated API keys for programmatic access. Use for: CI/CD integration, external service auth, customer API access. Verify: `clerk.apiKeys.verify(apiKey)`. Billing active — counts toward MAU.
 
-## SCIM / Directory Sync GA (Apr 16, 2026)
-Auto user create/update/deactivate from IdP (Okta, Azure AD, OneLogin, Google Workspace). Custom attribute mapping (beta) into `publicMetadata`. Role assignment from IdP groups. No extra charge with enterprise connection. Webhooks: `organizationMembership.created`, `organizationMembership.deleted` for JIT provisioning.
+## SCIM / Directory Sync (Roadmap — NOT GA)
+On Clerk's roadmap for enterprise orgs — auto user create/update/deactivate from IdP (Okta, Azure AD, OneLogin, Google Workspace). NOT yet generally available as of April 2026. When GA: custom attribute mapping into `publicMetadata`, role assignment from IdP groups, no extra charge with enterprise connection. For now: use Clerk webhooks (`organizationMembership.created`/`deleted`) for JIT provisioning from IdP.
+
+## Clerk Core 3 (Mar 3, 2026)
+Theme editor for custom auth UI. Keyless mode (no CLERK_PUBLISHABLE_KEY needed in dev). Modern React compat improvements. Upgrade path: `npx @clerk/upgrade` runs codemods automatically.
 
 ## Checklist
 - [ ] `CLERK_SECRET_KEY` + `CLERK_PUBLISHABLE_KEY` in wrangler.toml [vars]
@@ -123,6 +126,6 @@ Auto user create/update/deactivate from IdP (Okta, Azure AD, OneLogin, Google Wo
 - [ ] Middleware applied to all /api/* except /api/webhooks/* and /health
 - [ ] Frontend route guards on protected pages
 - [ ] MFA enforced for admin roles (Clerk dashboard setting)
-- [ ] SCIM directory connection configured for enterprise customers
+- [ ] SCIM directory connection configured for enterprise customers (when GA — currently roadmap)
 - [ ] API Keys enabled for programmatic access use cases
 - [ ] Test: expired JWT returns 401, wrong org returns 403, deleted user returns 401
