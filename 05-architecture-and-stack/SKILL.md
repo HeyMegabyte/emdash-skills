@@ -4,6 +4,10 @@ description: "Cloudflare-first platform selection. Decision trees for Workers, D
 metadata:
   version: "2.0.0"
   updated: "2026-04-23"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - api-design-and-documentation.md
   - shared-api-pool.md

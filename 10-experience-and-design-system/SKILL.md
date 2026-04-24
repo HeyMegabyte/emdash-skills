@@ -4,6 +4,10 @@ description: "Anti-AI-slop design system for distinctive, premium interfaces. Bo
 metadata:
   version: "2.1.0"
   updated: "2026-04-23"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - design-tokens.md
 ---

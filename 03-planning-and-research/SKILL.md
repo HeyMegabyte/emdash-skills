@@ -6,6 +6,10 @@ metadata:
   updated: "2026-04-23"
   context: "fork"
   agent: "Explore"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - competitive-analysis.md
 ---

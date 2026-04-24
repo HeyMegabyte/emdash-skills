@@ -5,7 +5,7 @@
   "version": "7.2.1",
   "author": "Brian Zalewski",
   "repository": "https://github.com/megabytespace/claude-skills",
-  "homepage": "https://megabyte.space",
+  "homepage": "https://claude.megabyte.space",
   "license": "Rutgers",
   "categories": ["development", "deployment", "testing", "design"],
   "tags": [

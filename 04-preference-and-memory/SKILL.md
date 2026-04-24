@@ -4,6 +4,10 @@ description: "Captures and evolves user preferences with confidence levels. Main
 metadata:
   version: "2.0.0"
   updated: "2026-04-23"
+license: "Rutgers"
+compatibility:
+  claude-code: ">=2.0.0"
+  agentskills: ">=1.0.0"
 submodules:
   - wisdom-and-human-psychology.md
   - brian-voc-data.md
