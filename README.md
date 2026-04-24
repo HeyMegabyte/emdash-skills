@@ -72,7 +72,7 @@
 # Claude Code plugin (recommended)
 claude plugin install megabytespace/claude-skills
 
-# npm (includes all 24 platform variants)
+# npm (includes all 30 platform variants)
 npm i @megabytespace/claude-skills
 
 # JSR
