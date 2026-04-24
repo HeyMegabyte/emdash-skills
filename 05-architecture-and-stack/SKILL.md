@@ -14,6 +14,7 @@ submodules:
   - background-jobs-and-workflows.md
   - openapi-generation.md
   - cf-auto-provision.md
+  - enterprise-multi-tenancy.md
 ---
 
 ## Submodules
@@ -30,6 +31,7 @@ submodules:
 | background-jobs-and-workflows.md | Inngest durable jobs, CF Workflows v2, CF Cron Triggers, CF Queues, email drips, fan-out. |
 | openapi-generation.md | @hono/zod-openapi auto-generated specs, Swagger UI, client SDK codegen, versioning. |
 | cf-auto-provision.md | Single-function CF project bootstrap: D1+KV+R2+DNS+routes+wrangler.toml+integrations via cf CLI. |
+| enterprise-multi-tenancy.md | DB-per-tenant D1, RBAC/ABAC, audit logging (R2 WORM), SSO/SCIM, data residency, rate limiting, white-labeling. |
 
 # 05 — Architecture and Stack
 

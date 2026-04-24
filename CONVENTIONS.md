@@ -17,13 +17,17 @@ megabyte.space | projectsites.dev | fundl.ink | gitl.ink | deskl.ink | linkbl.in
 
 ## Stack
 
-CF Workers+Hono v4.12+ | Angular 21+Ionic+PrimeNG | Capacitor | D1/Neon | Drizzle v1-beta | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest | Bun 1.3 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
+CF Workers+Hono v4.12+ | Angular 21+Ionic 8+PrimeNG 21 | Capacitor 8 | D1/Neon | Drizzle v1-beta | Zod | Clerk Core 3 (SaaS)/Authentik (self-hosted) | Stripe (versioned releases: `2026-03-25.dahlia`) | Resend | Inngest | Bun 1.3 | TS 5.9 | Playwright v1.59+ | Vitest | ESLint+Prettier | PostHog | Sentry | GA4/GTM
 
 ## Angular 21 Key Changes
 
 Angular 21 (Nov 2025): Zoneless by default (CLI scaffolds without Zone.js, `provideZonelessChangeDetection()` no longer needed) | Vitest default test runner (replaces Karma/Jest) | Signal Forms experimental (signal-based reactive forms API) | Angular Aria library dev preview (8 patterns, 13 components, signals-based) | MCP server in CLI for AI-assisted dev
 Angular 20 (May 2025): `effect()`+`linkedSignal`+`toSignal` stable | HttpResource | `@if`/`@for`/`@switch`/`@defer` control flow (deprecated v20, removed v22) | Incremental hydration stable | Host bindings type-checked
 Standalone-only (no NgModules) | Signal stores per feature | providedIn:'root'
+
+## TypeScript 5.9 (Q1 2026)
+
+Stable TC39 Decorator Metadata | `strictInference` flag | 10-20% build perf gains | Conditional type narrowing improvements. TS 7.0 (mid-2026): Go-based compiler rewrite — track for breaking changes.
 
 ## Drizzle v1 Patterns
 
@@ -34,6 +38,11 @@ v1 migration: `journal.json` removed, SQL files/snapshots grouped separately —
 
 Free: 100K req/day, 10ms CPU | Paid: unlimited req, 30s CPU default / 5min max | Memory: 128MB/isolate | Worker size: 3MB free / 10MB paid | Subrequests: 50 free / 10K paid | Static assets: 20K free / 100K paid | WebSocket msg: 32MiB | D1 storage: 250GB→1TB (paid) | Cron: 5 free / 250 paid
 D1 global read replication (beta): routes reads to nearest replica, 40-60% latency decrease
+D1 jurisdiction: `--jurisdiction eu|fedramp` at creation for GDPR/FedRAMP compliance. Vectorize: 10M vectors/index, topK 50. Workflows: 25K step limit (was 1024), `pause()`/`resume()` in local dev.
+
+## CF Containers (GA Apr 13 2026)
+
+Full Linux containers co-located with Workers. Instance types: lite/basic/standard-1/standard-2. Billing: 25 GiB-hours + 375 vCPU-min + 200 GB-hours on Workers Paid ($5/mo). Active-only CPU billing. Use for: heavy background jobs, FFmpeg, headless Chrome, per-agent sandboxing. Sandbox SDK GA same day — isolated code execution with TypeScript API, live preview URLs, persistent interpreters.
 
 ## CF Agents SDK (Agents Week 2026)
 
@@ -200,7 +209,7 @@ JSON-LD boosts LLM accuracy 16%→54% (AI search visibility for ChatGPT/Perplexi
 
 ## Quality Bar
 
-E2E 0 failures | WCAG 2.2 AA | Lighthouse a11y ≥95 perf ≥75 | CSP (Trusted Types cross-browser since Feb 2026 — add `require-trusted-types-for 'script'`) | Flesch ≥60 | Yoast GREEN | Images <200KB WebP | No placeholders | No dead forms | ADA Title II (DOJ IFR shifted dates): April 2027 (large 50K+ pop) / April 2028 (small/special districts) | Chrome LNA (v142+): public sites accessing local network need `Access-Control-Allow-Private-Network` header
+E2E 0 failures | WCAG 2.2 AA | Lighthouse a11y ≥95 perf ≥75 | CSP (Trusted Types cross-browser since Feb 2026 — add `require-trusted-types-for 'script'`) | Flesch ≥60 | Yoast GREEN | Images <200KB WebP | No placeholders | No dead forms | ADA Title II: April 24, 2026 (state/local gov 50K+ pop — EFFECTIVE NOW) / April 2028 (small/special districts). WCAG 2.1 AA mandatory | Chrome LNA (v142+): public sites accessing local network need `Access-Control-Allow-Private-Network` header
 
 ## Clerk Core 3 (Mar 2026 — Breaking)
 
@@ -208,12 +217,16 @@ E2E 0 failures | WCAG 2.2 AA | Lighthouse a11y ≥95 perf ≥75 | CSP (Trusted T
 
 ## Stripe (Versioned Releases)
 
-Semiannual named releases ("Acacia"→"Dahlia") + monthly additive updates. Pin via `stripe-version` header. Agentic Commerce Suite: AI agents pay on behalf of users. AI billing: markup % on token usage. Adaptive Pricing: local currency in 150+ countries on subscriptions. Decimal quantities on invoices (fractional usage billing).
+Semiannual named releases ("Acacia"→"Dahlia") + monthly additive updates. Pin via `stripe-version` header. Agentic Commerce Suite: AI agents pay on behalf of users, Shared Payment Tokens (new auth surface to model). AI billing: markup % on token usage. Adaptive Pricing: local currency in 150+ countries. Decimal quantities on invoices.
+**Billing Meter API v2** (GA): required for all metered prices, token/API-call billing, real-time streaming events. `POST /v1/billing/meters` + `POST /v1/billing/meter_events`.
+**Entitlements API** (GA): Feature objects attached to Products, active entitlements returned on subscription. Check at API boundary: `GET /v1/entitlements/active_entitlements?customer={id}`. Use for plan-tier feature gating.
+**Stripe Rate Limit binding**: CF Workers native, arbitrary identifiers (orgId/tenantId) for per-tenant rate limiting.
 
 ## Playwright (v1.59+)
 
 6 breakpoints: 375,390,768,1024,1280,1920 | axe-core 0 violations | No sleeps—waitFor/toBeVisible() | data-testid/role/text selectors | Stagehand AI fallback (AOM not DOM) | AI agents: Planner+Generator+Healer | parallel-safe+deterministic | PROD_URL env var
-v1.57: Chrome for Testing default (was Chromium) | `testConfig.webServer.wait` regex | v1.58: Timeline Speedboard, Cmd+F in UI mode/Trace Viewer | MCP server: 20+ tools (browser_click, browser_snapshot, etc.)
+v1.57: Chrome for Testing default (was Chromium) | `testConfig.webServer.wait` regex | v1.58: Timeline Speedboard, Cmd+F in UI mode/Trace Viewer | v1.59: `page.screencast` (video receipts, action annotations), `browser.bind` (MCP to live browser), Trace CLI for agent debugging | MCP server: 20+ tools (browser_click, browser_snapshot, etc.)
+**Stagehand v3** (2026): removed Playwright dep, direct CDP, 44% faster on iframes/shadow DOM, `act/extract/observe/agent` primitives, element caching. CF Browser Run native: `@cloudflare/browser-run` + Stagehand.
 
 ## Claude Code — Skills
 
@@ -221,7 +234,7 @@ Skill locations: managed > personal `~/.claude/skills/` > project `.claude/skill
 
 ## Claude Code — Hooks
 
-32 event types | 5 handler types: command/http/mcp_tool/prompt/agent | Exit 0=success | Exit 2=blocking error fed to Claude | Other non-zero=non-blocking | Hooks > CLAUDE.md (deterministic vs advisory) | `CLAUDE_ENV_FILE` available on SessionStart/CwdChanged/FileChanged only | asyncRewake: runs background, wakes Claude on exit 2 | Events: SubProcess (credential scrubbing), MCPElicitation, StopFailure, PermissionRequest, PermissionDenied (return `retry:true` for Claude to try alternate approach), PostToolUseFailure, PostToolBatch, ElicitationResult | `type: "mcp_tool"` chains MCP operations from hook handlers without Bash | Conditional `if` field (v2.1.85): permission-rule syntax e.g. `"if": "Bash(git commit *)"` scopes handlers to specific commands
+32 event types | 5 handler types: command/http/mcp_tool/prompt/agent | Exit 0=success | Exit 2=blocking error fed to Claude | Other non-zero=non-blocking | Hooks > CLAUDE.md (deterministic vs advisory) | `CLAUDE_ENV_FILE` available on SessionStart/CwdChanged/FileChanged only | asyncRewake: runs background, wakes Claude on exit 2 | Events: SubProcess (credential scrubbing), MCPElicitation, Elicitation, ElicitationResult, StopFailure, PermissionRequest, PermissionDenied (return `retry:true` for Claude to try alternate approach), PostToolUseFailure, PostToolBatch, InstructionsLoaded, ConfigChange, WorktreeCreate, WorktreeRemove, PostCompact | `type: "mcp_tool"` chains MCP operations from hook handlers without Bash | Conditional `if` field (v2.1.85): permission-rule syntax e.g. `"if": "Bash(git commit *)"` scopes handlers to specific commands
 
 ## Claude Code — Settings Precedence
 
@@ -236,6 +249,18 @@ CLAUDE.md = your rules (loaded every session) | Auto memory `~/.claude/projects/
 
 Subagent locations: managed > `--agents` CLI > `.claude/agents/` > `~/.claude/agents/` > plugin | Brian's custom agents: `~/.agentskills/agents/` (18 agents, referenced via `--agents` or symlinked) | @ mention invocation with typeahead | `isolation: worktree` auto-cleans if no changes | Agent teams (experimental): `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`, 3-5 teammates, 5-6 tasks each | Model resolution: env `CLAUDE_CODE_SUBAGENT_MODEL` > invocation param > frontmatter > main model | Agent frontmatter `mcpServers` loaded for main-thread agents via `--agent` | Agent `hooks:` fire in `--agent` mode | Forked subagents: `CLAUDE_CODE_FORK_SUBAGENT=1` for true process isolation
 Built-in subagents: `Explore` (Haiku, read-only codebase exploration), `Plan` (read-only research+planning), `general-purpose` (full tools) | `initialPrompt` frontmatter: auto-submits first turn on spawn | Agent persistent memory: `~/.claude/agent-memory/` (opt-in per subagent) | `/agents` UI: Running tab (live view+stop) + Library tab (create, color, memory scope) | `Monitor` tool: streams background watcher events as live transcript messages (replaces Bash sleep loops) | Plugin `bin/` added to Bash PATH automatically
+
+## Claude Code — Slash Commands
+
+Built-in: /help, /clear, /compact, /status, /login, /logout, /config, /permissions, /sandbox, /hooks, /agents, /memory, /cost, /fast, /model, /plan, /bug, /vim | /ultrareview (deep code review) | /ultraplan (comprehensive planning) | /tui (terminal UI mode) | /theme (color theme) | /loop (repeat prompt/command on interval) | /recap (conversation summary) | /focus (narrow context) | /less-permission-prompts (reduce confirmations)
+
+## Claude Managed Agents API
+
+`POST /v1/agents` (create persistent agent), `POST /v1/sessions` (stateful conversations), `POST /v1/environments` (sandboxed execution). Agent Memory GA (Apr 23 2026): managed persistent memory across sessions. `ant` CLI (Apr 8 2026): new CLI for Anthropic API (`ant agent create`, `ant session run`). Use for: multi-turn stateful agents, persistent tool-using agents, customer-facing AI features.
+
+## MCP Streamable HTTP
+
+New default transport (spec 2025-03-26), replaces deprecated HTTP+SSE. Single endpoint, bidirectional, resumable streams, session management. All new MCP servers should use Streamable HTTP. Stdio still valid for local tools.
 
 ## Prompt Cache Optimization
 

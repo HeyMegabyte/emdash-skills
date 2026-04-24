@@ -22,7 +22,7 @@ Ambiguous: Angular+auth+billing=SaaS | `wrangler.toml`+minimal routes=Marketing 
 
 ## SaaS Application
 
-Core + refs (load first): `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `drizzle-orm-and-migrations`, `mcp-and-cloud-integrations` | `06/admin-dashboard`, `ai-chat-widget`, `data-tables`, `empty-states-and-loading`, `file-uploads-and-storage`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `onboarding-and-first-run`, `realtime-and-websockets`, `rich-text-editor`, `site-search`, `webhook-system` | `07/accessibility-gate`, `agentic-security`, `performance-optimization`, `security-hardening` | `08/ci-cd-pipeline`, `backup-and-disaster-recovery`, `uptime-and-health` | `09/documentation-and-codebase-hygiene`, `seo-and-keywords` | `13/analytics-configuration`, `conversion-optimization`, `feature-flags-and-experiments`, `stripe-billing`, `user-feedback-collection`
+Core + refs (load first): `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `drizzle-orm-and-migrations`, `enterprise-multi-tenancy`, `mcp-and-cloud-integrations` | `06/admin-dashboard`, `ai-chat-widget`, `data-tables`, `empty-states-and-loading`, `file-uploads-and-storage`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `onboarding-and-first-run`, `realtime-and-websockets`, `rich-text-editor`, `site-search`, `webhook-system` | `07/accessibility-gate`, `agentic-security`, `performance-optimization`, `security-hardening` | `08/ci-cd-pipeline`, `backup-and-disaster-recovery`, `uptime-and-health` | `09/documentation-and-codebase-hygiene`, `seo-and-keywords` | `13/analytics-configuration`, `conversion-optimization`, `feature-flags-and-experiments`, `stripe-billing`, `user-feedback-collection`
 
 ## Micro-SaaS
 
@@ -34,7 +34,7 @@ Trimmed SaaS: `05/api-design-and-documentation`, `auth-and-session-management`, 
 
 ## API Service
 
-`03`, `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `cf-auto-provision`, `drizzle-orm-and-migrations`, `mcp-and-cloud-integrations`, `openapi-generation`, `shared-api-pool` | `06/realtime-and-websockets`, `webhook-system` | `07/agentic-security`, `contract-testing`, `performance-optimization`, `security-hardening` | `08/backup-and-disaster-recovery`, `changelog-and-releases`, `ci-cd-pipeline`, `uptime-and-health` | `13/feature-flags-and-experiments`, `sentry-alert-rules`
+`03`, `05/api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `cf-auto-provision`, `drizzle-orm-and-migrations`, `enterprise-multi-tenancy`, `mcp-and-cloud-integrations`, `openapi-generation`, `shared-api-pool` | `06/realtime-and-websockets`, `webhook-system` | `07/agentic-security`, `contract-testing`, `performance-optimization`, `security-hardening` | `08/backup-and-disaster-recovery`, `changelog-and-releases`, `ci-cd-pipeline`, `uptime-and-health` | `13/feature-flags-and-experiments`, `sentry-alert-rules`
 
 ## Developer Tool
 
@@ -42,4 +42,4 @@ Trimmed SaaS: `05/api-design-and-documentation`, `auth-and-session-management`, 
 
 ## Internal Tool
 
-`05/api-design-and-documentation`, `auth-and-session-management`, `drizzle-orm-and-migrations` | `06/admin-dashboard`, `chat-native-dashboard`, `data-tables`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `site-search` | `07/accessibility-gate`, `agentic-security`, `security-hardening` | `08/uptime-and-health` | `13/analytics-configuration`, `feature-flags-and-experiments`
+`05/api-design-and-documentation`, `auth-and-session-management`, `drizzle-orm-and-migrations`, `enterprise-multi-tenancy` | `06/admin-dashboard`, `chat-native-dashboard`, `data-tables`, `keyboard-shortcuts-and-command-palette`, `notification-center`, `site-search` | `07/accessibility-gate`, `agentic-security`, `security-hardening` | `08/uptime-and-health` | `13/analytics-configuration`, `feature-flags-and-experiments`

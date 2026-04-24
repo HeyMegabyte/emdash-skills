@@ -177,8 +177,33 @@ The post-purchase experience matters as much as the purchase. Confetti animation
 - Easy cancellation — as easy as signup
 - No hidden fees revealed at checkout
 
+## Billing Meter API v2 (GA 2026)
+Required for all metered/usage-based pricing (token billing, API calls, storage). `POST /v1/billing/meters` creates meter, `POST /v1/billing/meter_events` streams events. Real-time aggregation replaces manual invoice item creation. Pattern: track usage in KV → batch flush to Stripe Meter Events via `ctx.waitUntil()`.
+```typescript
+// Create meter (once)
+const meter = await stripe.billing.meters.create({
+  display_name: 'API Calls',
+  event_name: 'api_call',
+  default_aggregation: { formula: 'sum' },
+});
+// Stream events (per request)
+await stripe.billing.meterEvents.create({
+  event_name: 'api_call',
+  payload: { stripe_customer_id: customerId, value: '1' },
+});
+```
+
+## Entitlements API (GA 2026)
+Feature-to-product mapping. Define Features (`POST /v1/entitlements/features`), attach to Products. Check at API boundary:
+```typescript
+const { data } = await stripe.entitlements.activeEntitlements.list({ customer: customerId });
+const hasFeature = data.some(e => e.feature.lookup_key === 'advanced_analytics');
+if (!hasFeature) return c.json({ error: 'Upgrade required', code: 'ENTITLEMENT_MISSING' }, 403);
+```
+Use for plan-tier feature gating instead of hardcoded plan checks. Auto-updates when plan changes — no webhook needed for feature access.
+
 ## Key Locations
-- Stripe API key: shared key pool (skill 26)
+- Stripe API key: shared key pool (skill 05)
 - Webhook secret: wrangler secret per project
 - Test mode: always test with `sk_test_` before going live
 

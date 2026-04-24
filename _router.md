@@ -10,7 +10,7 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | 02 | Goal and Brief | — |
 | 03 | Planning and Research | `competitive-analysis` |
 | 04 | Preference and Memory | `brian-decision-model`, `brian-voc-data`, `wisdom-and-human-psychology` |
-| 05 | Architecture and Stack | `ai-technology-integration`, `api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `cf-auto-provision`, `coolify-docker-proxmox`, `drizzle-orm-and-migrations`, `mcp-and-cloud-integrations`, `openapi-generation`, `shared-api-pool` |
+| 05 | Architecture and Stack | `ai-technology-integration`, `api-design-and-documentation`, `auth-and-session-management`, `background-jobs-and-workflows`, `cf-auto-provision`, `coolify-docker-proxmox`, `drizzle-orm-and-migrations`, `enterprise-multi-tenancy`, `mcp-and-cloud-integrations`, `openapi-generation`, `shared-api-pool` |
 | 06 | Build and Slice Loop | `admin-dashboard`, `ai-chat-widget`, `blog-and-content-engine`, `chat-native-dashboard`, `contact-forms-and-endpoints`, `copilot-and-ai-features`, `custom-error-pages`, `data-tables`, `domain-provisioning`, `easter-eggs`, `empty-states-and-loading`, `file-uploads-and-storage`, `internationalization`, `keyboard-shortcuts-and-command-palette`, `microcopy-library`, `notification-center`, `notification-system`, `onboarding-and-first-run`, `realtime-and-websockets`, `rich-text-editor`, `site-search`, `web-manifest-system`, `webhook-system` |
 | 07 | Quality and Verification | `accessibility-gate`, `adversarial-testing`, `agentic-security`, `audio-video-sync`, `chrome-and-browser-workflows`, `completeness-verification`, `computer-use-automation`, `contract-testing`, `e2e-accumulation`, `eval-driven-development`, `evidence-collection`, `performance-optimization`, `picovoice-eagle-biometric`, `security-hardening`, `semgrep-codebase-rules`, `slop-detection`, `spec-driven-development`, `stagehand-ai-fallback`, `stagehand-ai-testing`, `tdd-verification`, `testing-matrices`, `ui-completeness-sweep`, `visual-inspection-loop`, `visual-regression` |
 | 08 | Deploy and Runtime | `backup-and-disaster-recovery`, `changelog-and-releases`, `ci-cd-pipeline`, `critical-css`, `font-subsetting`, `gh-fix-ci`, `launch-day-sequence`, `service-worker`, `uptime-and-health` |
@@ -31,7 +31,7 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | Deploy / launch | `08` — add `09` if SEO/content changed |
 | Design / frontend polish | `09`, `10`, `11`, `12` |
 | SEO / copy | `09` — add `06/blog-and-content-engine` or `13/analytics-configuration` when relevant |
-| Billing / auth | `05/auth-and-session-management`, `06/webhook-system`, `13/stripe-billing` |
+| Billing / auth | `05/auth-and-session-management`, `05/enterprise-multi-tenancy`, `06/webhook-system`, `13/stripe-billing` |
 | File uploads / admin / data grids | `06/file-uploads-and-storage`, `admin-dashboard`, `data-tables` |
 | Realtime / AI features | `05/ai-technology-integration`, `06/realtime-and-websockets`, `ai-chat-widget`, `copilot-and-ai-features` |
 | Growth / analytics | `13` — add `09/social-automation` when publishing |
@@ -40,6 +40,7 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | Chat / messaging UI | `06/chat-native-dashboard`, `06/realtime-and-websockets`, `06/notification-center` |
 | Microcopy / UX writing | `06/microcopy-library`, `09` |
 | Evidence / screenshots | `07/evidence-collection`, `07/visual-inspection-loop` |
+| Enterprise / multi-tenant | `05/enterprise-multi-tenancy`, `05/auth-and-session-management`, `13/stripe-billing` |
 | Infra / self-hosted | `05/coolify-docker-proxmox`, `05/cf-auto-provision`, `08/uptime-and-health` |
 | Skills / config | `01`, `04` |
 | Security audit | `07/agentic-security`, `07/security-hardening`, `07/semgrep-codebase-rules` |
