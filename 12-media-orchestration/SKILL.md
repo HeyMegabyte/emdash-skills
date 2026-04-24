@@ -44,6 +44,10 @@ GPT Image 1.5 preferred (best quality). GPT Image 1 for speed. GPT Image 1-mini 
 
 **Assets:** favicon.ico (16+32+48), 16/32/180/192/512 PNGs, logo-header, logo-mark, og-image 1200x630.
 
+**Auto-favicon pipeline (EVERY NEW PROJECT):** Generate winning logo→`magick logo.png -fuzz 15% -trim +repage` then: `-resize 512x512 android-chrome-512x512.png`|`-resize 192x192 android-chrome-192x192.png`|`-resize 180x180 apple-touch-icon.png`|`-resize 32x32 favicon-32x32.png`|`-resize 16x16 favicon-16x16.png`|multi-size `.ico` with 16+32+48. Ensure `site.webmanifest` references 192+512. Head tags: `<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>`|`<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>`|`<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>`|`<link rel="manifest" href="/site.webmanifest"/>`.
+
+**OpenAI key:** Load from `~/.claude/.env` via `source ~/.claude/.env`. Manage at https://platform.openai.com/api-keys. Replicate at https://replicate.com/account/api-tokens. Ideogram at https://developer.ideogram.ai/keys.
+
 **Gates:** legible 32px+512px, transparent bg, brand palette, no artifacts, dark+light, GPT-4o >=7/10.
 
 ## Video (Sora)
@@ -65,4 +69,7 @@ Total images <500KB, largest <200KB, hero LCP <2.5s, total media <3MB, requests 
 
 ## Fallback Chain
 1. GPT Image 1.5 (scenes/hero/OG -- best quality) 2. Ideogram v3 (logos/icons) 3. GPT Image 1-mini (bulk drafts) 4. Pexels (200/hr) 5. Unsplash (50/hr) 6. Pixabay (100/hr) 7. Replicate (specialty).
-All keys: project .env.local or shared key pool.
+All keys: project .env.local or shared key pool. `~/.claude/.env` for shared keys (OPENAI_API_KEY, etc).
+
+## Design Phase API Scan (EVERY NEW PROJECT)
+Before first design: scan `get-secret` vault for available media APIs. Check: OPENAI_API_KEY (GPT Image)|PEXELS_API_KEY (stock photos)|UNSPLASH_ACCESS_KEY (stock)|REPLICATE_API_TOKEN (Flux/specialty)|IDEOGRAM_API_KEY (logos). Also scan for: embedded video APIs (YouTube Data API, Vimeo), background video sources (Pexels Video API supports free HD video), high-res content APIs (NASA/APOD for space themes, Giphy for motion). Map available APIs to section needs before generating any media. Always provide exact API key management URLs when prompting user for missing keys.
