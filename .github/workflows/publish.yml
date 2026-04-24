@@ -121,10 +121,26 @@ jobs:
       - name: Generate .windsurfrules
         run: cp .cursorrules .windsurfrules
 
+      - name: Generate GEMINI.md
+        run: sed 's/for Cursor/for Gemini/' .cursorrules > GEMINI.md
+
+      - name: Generate .github/copilot-instructions.md
+        run: sed 's/for Cursor/for GitHub Copilot/' .cursorrules > .github/copilot-instructions.md
+
+      - name: Generate llms-full.txt
+        run: |
+          {
+            cat llms.txt
+            echo ""
+            echo "## Full Conventions"
+            echo ""
+            cat CONVENTIONS.md
+          } > llms-full.txt
+
       - name: Commit cross-platform files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add AGENTS.md .cursorrules .windsurfrules
+          git add AGENTS.md .cursorrules .windsurfrules GEMINI.md .github/copilot-instructions.md llms-full.txt
           git diff --cached --quiet && echo "No changes" || git commit -m "chore: sync cross-platform rule files [skip ci]"
           git push || true
