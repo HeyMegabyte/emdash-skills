@@ -45,6 +45,9 @@ These cost near-zero to add and dramatically increase value. Include ALL of thes
 - **Business hours display** — from Places API, with open/closed status indicator
 - **Email signup** — newsletter form (connects to Listmonk or stores in D1)
 - **Social share buttons** — per page, uses OG meta
+- **SMS deep links** — `sms:` links alongside `tel:`, track as sms_click event
+- **Speed Dial FAB** — floating action button (mobile), expands to phone/email/directions/booking
+- **Emergency banner** — auto-shows after business hours with emergency number (medical/dental/plumber/HVAC/legal)
 
 ### Legal & Compliance
 - **Privacy Policy page** — AI-generated from business type + jurisdiction, GDPR/CCPA compliant
@@ -71,6 +74,9 @@ These cost near-zero to add and dramatically increase value. Include ALL of thes
 - **Skip to content link** — accessibility, hidden until focused
 - **Reduced motion** — `prefers-reduced-motion` disables all animations
 - **Focus visible outlines** — WCAG 2.4.11 Focus Appearance
+- **Before/after slider** — CSS clip-path drag comparison, touch-support, for contractors/salons/dental
+- **Competitor comparison** — auto-generated from research data, "/why-choose-us" page
+- **Weather-aware hero** — outdoor businesses get dynamic hero based on local weather conditions
 
 ### Content Enrichment
 - **Blog/news section** — AI-generated 3-5 initial posts from research + scraped content, with RSS feed
@@ -78,6 +84,8 @@ These cost near-zero to add and dramatically increase value. Include ALL of thes
 - **Reading time estimates** — on blog posts
 - **QR code** — SVG QR code for print materials linking to site URL (downloadable from about page)
 - **Multi-language** — detect via `Accept-Language`, translate key pages via Workers AI (if content justifies it)
+- **FAQ from reviews** — mine Google/Yelp reviews for recurring questions, generate with FAQPage schema
+- **Service area pages** — pSEO `/service-area/{city}` for service-area businesses
 
 ### Booking & Scheduling
 - **Cal.com embed** — free tier, embeddable scheduling widget (if no existing booking system)

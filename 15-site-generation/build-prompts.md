@@ -136,6 +136,89 @@ Every image in assets/ MUST appear on the site. Every fact must come from resear
 - Stats counter: animated number counting (IntersectionObserver triggered), with unit labels
 - Trust badges section: payment icons, certifications, "Serving {{city}} since {{year}}" with verified year
 
+### Local Conversion Components (***ALWAYS FOR LOCAL BUSINESS***)
+- NAPFooter: schema.org microdata, tel:/mailto:/Maps links, hours with today highlighted, social icons
+- ReviewCTA: star-gate (>=4→Google review link, <3→private feedback), QR code
+- QuickActions: mobile-only 2x2 grid (Call, Directions, Book, Menu), 48px touch targets
+- StickyPhoneCTA: mobile fixed bottom bar, hides when footer visible
+- SpeedDial: floating action button, expands to show phone/email/directions/booking
+- EmergencyBanner: auto-shows after business hours with emergency phone number
+- BookingEmbed: Calendly/Acuity/Square iframe OR custom booking form
+- BeforeAfterSlider: CSS clip-path drag comparison (contractors, salons, dental)
+
+### Schema Generation (***NON-NEGOTIABLE***)
+Import `generateLocalBusinessSchema` from `src/components/local/LocalSchemaGenerator`.
+Pass `_research.json` data → outputs complete JSON-LD with: @type, name, PostalAddress, telephone, geo, openingHoursSpecification, image, sameAs, aggregateRating, priceRange, areaServed, hasMenu (restaurant), paymentAccepted, knowsAbout.
+Also generate: FAQPage schema on FAQ sections, BreadcrumbList on sub-pages.
+Validate: Google Rich Results Test before deploy.
+
+### Service Area Pages (pSEO — IF service-area business)
+{{#if area_served}}
+- Generate `/service-area/{city}` for each city in _research.json.operations.areaServed
+- Each page: unique H1 "{service} in {city}", localized intro paragraph, embedded map centered on city
+- Link all service area pages from footer and sitemap.xml
+- JSON-LD areaServed array matches generated pages
+{{/if}}
+
+### GBP Review Deep Link
+- "Leave a Review" button: `https://search.google.com/local/writereview?placeid={{place_id}}`
+- Place in: thank-you state after form submit, contact page, ReviewCTA component
+- QR code SVG in assets/review-qr.svg for print materials
+
+### Print Stylesheet
+Add to index.css:
+```css
+@media print {
+  header, footer, .sticky-cta, .speed-dial, nav, .back-to-top { display: none; }
+  body { background: white; color: black; font-size: 12pt; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+  img { max-width: 100%; }
+}
+```
+
+### PWA Manifest
+Generate `public/site.webmanifest`:
+```json
+{
+  "name": "{{businessName}}",
+  "short_name": "{{shortName}}",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "{{brand_primary}}",
+  "background_color": "#0a0a1a",
+  "icons": [
+    {"src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
+```
+Add `<link rel="manifest" href="/site.webmanifest">` to index.html.
+
+### SMS Deep Links
+Alongside every `tel:` link, add `sms:` link option. Track as `sms_click` event.
+Mobile: show both "Call" and "Text" buttons side by side.
+
+### Competitor Comparison Page (IF competitor data exists)
+{{#if competitors}}
+- Generate `/why-choose-us` page from _research.json.competitors[]
+- H1: "Why Choose {{businessName}} Over the Competition"
+- Comparison table: features, rating, reviews, years in business
+- Every comparison factual from research data
+- JSON-LD: no schema needed, pure content play
+{{/if}}
+
+### FAQ Auto-Generation from Reviews
+Mine _research.json.trust.reviews[] for recurring themes/questions.
+Generate 8-12 FAQ items with FAQPage schema. Real customer language = better AI citation.
+Place on dedicated /faq page AND inline on relevant service pages.
+
+### Weather-Aware Hero (outdoor businesses only)
+{{#if outdoor_business}}
+- Fetch weather from _research.json.operations.geo via free weather API
+- Swap hero messaging based on conditions: rain→"Rainy season? Book your {service}" | snow→"Snow removal available" | heat→"Beat the heat with {service}"
+- Fallback: standard hero if API unavailable
+{{/if}}
+
 ### Domain-Specific Features
 Read _domain_features.json and implement ALL listed features for this business category.
 

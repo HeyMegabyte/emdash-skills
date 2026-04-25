@@ -26,7 +26,8 @@ template/
 │   │   ├── Footer.tsx  — columns layout, social links, copyright, legal links
 │   │   ├── Hero.tsx    — full-width, parallax-ready, gradient overlay, CTA slots
 │   │   ├── Section.tsx — reusable section wrapper with IntersectionObserver animations
-│   │   └── ContactForm.tsx — Turnstile-ready, Zod validation, submission handler
+│   │   ├── ContactForm.tsx — Turnstile-ready, Zod validation, submission handler
+│   │   └── local/      — 15 local business components (see below)
 │   ├── pages/          — route pages (Home, About, Services, Gallery, Contact, FAQ, Blog)
 │   ├── hooks/          — useScrollAnimation, useMediaQuery, useInView
 │   ├── lib/            — utils.ts (cn helper), constants.ts (brand tokens)
@@ -79,6 +80,34 @@ Local business sites need components SaaS templates don't have. These are pre-bu
 **ReviewCTA.tsx:** "Love our service? Leave us a review!" card with Google review QR code (`assets/review-qr.svg`) and direct link button. Placed on thank-you page and contact page. Star-gate logic: 4+ stars → Google, <3 → private feedback form.
 
 **GalleryGrid.tsx:** Masonry layout of ALL images in `assets/`. Full-width section. Lightbox on click (Dialog component). Lazy-loaded, srcset for responsive. Caption from `_image_profiles.json.description`. Min 12 images visible without scrolling on desktop.
+
+**BeforeAfterSlider.tsx:** CSS clip-path drag comparison for contractors/salons/dental. Props: beforeSrc, afterSrc, labels. Touch-enabled handle. `prefers-reduced-motion` disables transition. No external deps.
+
+**QuickActions.tsx:** Mobile-only 2x2 action grid (md:hidden). Icons: Phone, MapPin, Calendar, UtensilsCrossed. Min 48px touch targets. Each fires tracking event (phone_click, direction_click, booking_click). Replaces hamburger menu for local businesses.
+
+**EmergencyBanner.tsx:** Auto-detects after-hours from `_research.json.operations.hours` vs client timezone. Shows urgent red banner: "After Hours? Call {emergencyPhone}". `tel:` with phone_click + `after_hours:true` property. Hidden during business hours.
+
+**SpeedDial.tsx:** Floating action button (bottom-right, z-index:55, above StickyPhoneCTA). Expands on tap to radial/vertical layout of 2-4 actions (phone/email/directions/booking). Collapse on outside click. Mobile-only.
+
+**LocalSchemaGenerator.tsx:** Utility module (not visual). Exports: `generateLocalBusinessSchema(research)` → complete JSON-LD with @type, name, PostalAddress, telephone, geo, openingHoursSpecification, image, sameAs, aggregateRating, priceRange, areaServed, hasMenu, paymentAccepted, knowsAbout. Also: `generateFAQSchema(faqs)`, `generateBreadcrumbSchema(items)`.
+
+**BookingEmbed.tsx:** Wraps Calendly/Acuity/Square iframe OR custom booking form. Props: provider, embedUrl, phone. booking_click tracking on all interactions. Responsive iframe sizing. Custom form: name, phone, preferred date, service dropdown, message.
+
+## PWA & Print (***EVERY SITE***)
+
+**PWA manifest:** `public/site.webmanifest` with business name, brand colors, icons (192+512). `<link rel="manifest">` in index.html. Favicon set: ico (16+32+48), apple-touch-icon (180), android-chrome (192+512). Meta theme-color matches brand primary.
+
+**Print stylesheet:** `@media print` in index.css: hide nav/footer/sticky-cta/speed-dial, white bg, black text, show link URLs via `a[href]::after`, img max-width 100%.
+
+**SMS deep links:** Every `tel:` link paired with `sms:` option. Track as sms_click. Mobile: "Call" and "Text" buttons side by side.
+
+## Dual-Template Architecture
+
+Two template repos serve different site types:
+- **`megabytespace/template.projectsites.dev`** — local business (this template). 15 components, CSS var brand slots, conversion tracking, PWA.
+- **`megabytespace/saas-starter`** — SaaS products. Hono+D1+Clerk+Stripe+Inngest+Resend on CF Workers.
+
+Container selects template from `_form_data.json.category`. Local categories → `~/template-local`. SaaS categories → `~/template-saas`. See SKILL.md "Dual-Template Architecture" for full selection logic.
 
 ## Dep Versions (Pinned)
 react 19 | react-router 7 | tailwindcss 4 | @shadcn/ui latest | lucide-react latest | vite 6 | typescript 5.8. Container runs `bun install` during image build — deps are cached, not fetched per build.

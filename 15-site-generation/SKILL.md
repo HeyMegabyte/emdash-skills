@@ -25,6 +25,17 @@ submodules:
 
 Submodules: research-pipeline.md (API-driven business research, scraping, enrichment), media-acquisition.md (image/video/logo sourcing from 12+ APIs), build-prompts.md (master prompt + enhancement phases), quality-gates.md (tiered visual inspection, SEO audit, accessibility), domain-features.md (category-specific features for 18+ business types), template-system.md (Vite+React+Tailwind+shadcn/ui starter, customization patterns), local-seo.md (citation building, GBP sync, review generation, trust badges, local conversion tracking).
 
+## Dual-Template Architecture (***TWO REPOS — NEVER CONFUSE***)
+
+| Template | Repo | Use Case | Stack |
+|----------|------|----------|-------|
+| **Local Business** | `megabytespace/template.projectsites.dev` | Restaurant, salon, medical, legal, fitness, contractor, retail, etc. | Vite+React+Tailwind+shadcn/ui, 15 local components, CSS var brand slots, conversion tracking |
+| **SaaS** | `megabytespace/saas-starter` | SaaS products, APIs, dev tools, platforms | Hono+D1+Clerk+Stripe+Inngest+Resend on CF Workers, ESLint+Prettier |
+
+**Template selection logic:** Container entrypoint checks `_form_data.json.category`. If category ∈ {restaurant,cafe,salon,spa,medical,dental,legal,fitness,automotive,construction,photography,real_estate,education,financial,retail,pet_services,wedding,church,nonprofit,government} → clone `template.projectsites.dev`. If category ∈ {saas,api,platform,devtool,marketplace} → clone `saas-starter`. Unknown → default to local business.
+
+**Auto-sync workflow (***EVERY PROMPT***):** After ANY change to skills 05-15, evaluate: "Does this improve the template?" If yes → push to the appropriate template repo in the same prompt. Changes to: design patterns/components/CSS → `template.projectsites.dev` | API patterns/auth/billing/middleware → `saas-starter` | both → push to both. Template repos must always reflect current best practices from skills.
+
 ## Philosophy
 
 A perfect website CANNOT be created with a single LLM call. It requires a Principal SE-level prompt that orchestrates research→build→inspect→fix loops. The system front-loads ALL research and assets BEFORE Claude Code touches code, then gives it one comprehensive prompt with everything pre-digested. Claude Code starts from a pre-installed template and customizes it — never generates from scratch.
@@ -68,15 +79,15 @@ The container receives ONE prompt that encompasses all build phases. The prompt 
 
 **Brand:** Extract colors from LOGO first → website → signage in photos (see skill 09 "Brand Extraction from Physical Assets" section). Never guess from category. Use ALL original content from scraped site. Logo must appear in every header. Brand fonts influence entire design.
 
-**Tech:** Vite+React+Tailwind+shadcn/ui. React Router for multi-page nav. IntersectionObserver for scroll animations. Lucide React icons (verified names only). `npm run build` must compile zero errors. `prefers-reduced-motion` on ALL animations (see skill 11). Local business components from template-system.md (see skill 10 local design patterns).
+**Tech:** Vite+React+Tailwind+shadcn/ui. React Router for multi-page nav. IntersectionObserver for scroll animations. Lucide React icons (verified names only). `npm run build` must compile zero errors. `prefers-reduced-motion` on ALL animations (see skill 11). 15 local business components from template-system.md: HeroWithPhoto, ServiceCards, TestimonialCarousel, MapEmbed, StickyPhoneCTA, NAPFooter, TrustBadges, ReviewCTA, GalleryGrid, BeforeAfterSlider, QuickActions, EmergencyBanner, SpeedDial, BookingEmbed, LocalSchemaGenerator. PWA manifest + favicon set + print stylesheet mandatory.
 
 **Analytics (***NON-NEGOTIABLE — skill 13***):** PostHog snippet (`persistence:'memory'`, cookie-free) + GA4/GTM container + local conversion tracking (phone_click, direction_click, form_submit, booking_click). See skill 13 conversion-optimization.md for event taxonomy. Every `tel:` link fires phone_click. Every Maps link fires direction_click. Every form submit fires form_submit.
 
 ## Container Architecture
 
-Container is a stateless Claude Code executor on CF Workers Containers. Pre-bakes: `@anthropic-ai/claude-code`, `~/.agentskills` (this repo), `~/template` (starter project), `~/upload-to-r2.mjs` (R2 upload script). Runs as non-root `cuser` with `--dangerously-skip-permissions`.
+Container is a stateless Claude Code executor on CF Workers Containers. Pre-bakes: `@anthropic-ai/claude-code`, `~/.agentskills` (this repo), `~/template-local` (megabytespace/template.projectsites.dev), `~/template-saas` (megabytespace/saas-starter), `~/upload-to-r2.mjs` (R2 upload script). Runs as non-root `cuser` with `--dangerously-skip-permissions`.
 
-The container entrypoint: HTTP server on 8080. POST /build → copy template → write context files → write CLAUDE.md → run single `claude -p` → on completion, run `npm run build` → run `node ~/upload-to-r2.mjs` → return status. GET /status → poll job. GET /result → return metadata.
+The container entrypoint: HTTP server on 8080. POST /build → select template from `_form_data.json.category` (local→`~/template-local`, saas→`~/template-saas`) → copy to `~/build/` → write context files → write CLAUDE.md → run single `claude -p` → on completion, run `npm run build` → run `node ~/upload-to-r2.mjs` → return status. GET /status → poll job. GET /result → return metadata.
 
 **R2 upload script** runs inside the container after build. Uses CF REST API (`api.cloudflare.com/client/v4/accounts/{acctId}/r2/buckets/{bucket}/objects/{key}`). Detects Vite projects via dist/ prefix. dist/ files → `sites/{slug}/{version}/`. Source → `sites/{slug}/{version}/_src/`. Writes `_manifest.json`. Credentials passed as env vars.
 

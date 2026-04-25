@@ -100,6 +100,16 @@ Universal rules applied to ALL generated sites:
 
 **Cookie Consent / GDPR:** If site targets EU: cookie banner with accept/reject. PostHog `persistence:'memory'` = no cookies (compliant by default). Google Analytics requires consent mode v2 (`gtag('consent', 'default', {analytics_storage:'denied'})` until accepted).
 
+**NAP Consistency (***BUILD-BREAKING***):** Name+Address+Phone must match EXACTLY across: site header, NAPFooter, JSON-LD LocalBusiness, Google Maps embed, contact page, `_gbp_sync.json`. Any divergence = build failure. Automated check in inspect.js: extract NAP from all sources, diff, fail if mismatch.
+
+**Component Completeness:** All 15 local components must be available in template. Build prompt must reference: HeroWithPhoto, ServiceCards, TestimonialCarousel, MapEmbed, StickyPhoneCTA, NAPFooter, TrustBadges, ReviewCTA, GalleryGrid, BeforeAfterSlider, QuickActions, EmergencyBanner, SpeedDial, BookingEmbed, LocalSchemaGenerator. Missing component = template drift.
+
+**PWA Validation:** site.webmanifest present with correct name/icons/theme_color. Favicon set complete (ico+16+32+apple-touch+android-chrome 192+512). `<link rel="manifest">` in index.html.
+
+**Print Stylesheet:** `@media print` rules present in index.css. Verify: nav/footer/sticky hidden, body white bg, link URLs printed.
+
+**Service Area Pages (if applicable):** Each `/service-area/{city}` has unique H1, meta desc, localized content. No duplicate content across pages. All pages in sitemap.xml.
+
 ## Domain-Specific Quality Rules
 
 **Restaurant:** Menu must have prices. Food photos must look appetizing (well-lit, styled). Hours prominently displayed. Online ordering CTA if platform exists.
