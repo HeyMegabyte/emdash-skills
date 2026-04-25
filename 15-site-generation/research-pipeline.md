@@ -18,7 +18,9 @@ Fallback chain: 1. Yelp Fusion API (`YELP_API_KEY`) — business match by name+l
 
 ## Phase 0b: Website Scraping (Deep Crawl)
 
-If business has existing website: crawl up to 20 pages. For each: extract title, headings, body text, images (download to R2), nav structure, footer content, meta tags, schema.org data. Store as `_scraped_content.json` keyed by URL path. Extract: all text content for reuse, all image URLs for download, sitemap structure for page recreation, blog posts for content migration.
+If business has existing website: crawl up to 50 pages (was 20 — content-rich sites need full migration). For each: extract title, headings, body text, images (download to R2), nav structure, footer content, meta tags, schema.org data. Store as `_scraped_content.json` keyed by URL path. Extract: all text content for reuse, all image URLs for download, sitemap structure for page recreation, blog posts for content migration.
+
+**Sitemap fetch (***CRITICAL FOR URL PRESERVATION***):** Before crawling, fetch `/sitemap.xml` and `/sitemap_index.xml`. Parse all `<loc>` URLs into `_scraped_content.json.sitemap_urls[]`. These become the canonical list of URLs that must resolve (200 or 301) on the new site. If no sitemap exists, build the URL list from crawled pages + any links discovered. Store as `_original_urls: string[]` in `_scraped_content.json`.
 
 Tools: `fetch()` with CF Workers (no Puppeteer needed for static sites). For JS-rendered: use `@cloudflare/puppeteer` or skip with graceful degradation. Parse HTML with regex patterns (no DOM parser in Worker).
 
@@ -26,11 +28,27 @@ Tools: `fetch()` with CF Workers (no Puppeteer needed for static sites). For JS-
 
 For each platform (Facebook, Instagram, Twitter/X, LinkedIn, YouTube, TikTok, Pinterest, Yelp, Google Business): construct candidate URL from business name → HEAD request → verify 200 status. Only include URLs at 90%+ confidence. Dead links: exclude entirely.
 
-## Phase 0d: Brand Extraction
+## Phase 0d: Brand Extraction (***PRIMARY COLOR RETRIEVAL***)
 
-Priority order for colors: logo dominant color → header/nav background → CTA button color → accent borders → body background. Extract via: GPT-4o vision on screenshot of existing site (if available), or Brandfetch API, or Logo.dev API. Return: primary, secondary, accent colors + font family + brand personality (modern/classic/playful/professional).
+Priority order for primary color: logo dominant color → header/nav background → CTA button color → accent borders → hero overlay. Extract via: 1. Brandfetch API (`BRANDFETCH_API_KEY`) — returns full brand kit (colors, fonts, logos) at 90% confidence. 2. Logo.dev API (`LOGODEV_TOKEN`) — logo image → GPT-4o vision extracts dominant colors. 3. GPT-4o vision on screenshot of existing site. 4. Color extraction from downloaded images in assets/ (look for signage, storefront, uniforms).
 
-**Color source tracking (***CRITICAL***):** Every color must have `color_source`: extracted_from_logo|extracted_from_website|extracted_from_assets|generated. NEVER guess colors from business category. The njsk.org burgundy incident: system guessed "warm soup kitchen colors" instead of extracting their actual burgundy brand.
+**Output to `_brand.json`:**
+```json
+{
+  "colors": {
+    "primary": { "value": "#8B1A2B", "source": "extracted_from_logo", "confidence": 0.92 },
+    "secondary": { "value": "#1A1A2E", "source": "extracted_from_website", "confidence": 0.85 },
+    "accent": { "value": "#E8B931", "source": "extracted_from_website", "confidence": 0.80 },
+    "background": { "value": "#0D0D1A", "source": "derived_from_primary", "confidence": 0.88 },
+    "foreground": { "value": "#F5F5F5", "source": "contrast_calculated", "confidence": 0.95 }
+  },
+  "fonts": { "heading": "Playfair Display", "body": "Inter", "source": "extracted_from_website" },
+  "personality": "professional",
+  "logo_url": "assets/logo.svg"
+}
+```
+
+**Color source tracking (***CRITICAL***):** Every color must have `color_source`: extracted_from_logo|extracted_from_website|extracted_from_assets|derived_from_primary|contrast_calculated|generated. NEVER guess colors from business category. The njsk.org burgundy incident: system guessed "warm soup kitchen colors" instead of extracting their actual burgundy brand. `background` is derived by darkening primary by 80-90% lightness in OKLCH. `foreground` is calculated for WCAG AA contrast against background.
 
 ## Phase 0e: Confidence Scoring
 

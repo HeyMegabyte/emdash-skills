@@ -34,11 +34,15 @@ Every image in assets/ MUST appear on the site. Every fact must come from resear
 
 ## Phase 1: Foundation (generates 90% of the site)
 
-### Brand Configuration
-- Extract exact colors from _brand.json (NEVER guess from category)
-- Set colors in tailwind.config.ts: primary, secondary, accent from brand
-- Use brand fonts (or Inter/Satoshi fallback) in tailwind.config.ts
+### Brand Configuration (***PRIMARY COLOR RETRIEVAL — skill 09***)
+- Read _brand.json — colors are pre-extracted from logo/website/assets by research pipeline
+- Set CSS custom properties in globals.css: --color-primary, --color-secondary, --color-accent, --color-background, --color-foreground from _brand.json.colors
+- Map to tailwind.config.ts: primary→_brand.json.colors.primary.value, secondary→colors.secondary.value, accent→colors.accent.value
+- Background color: derived from primary (darkened 80-90% lightness in OKLCH), NOT hardcoded
+- Use brand fonts from _brand.json.fonts (fallback: Inter body, system-ui heading)
 - Logo from assets/logo.* in EVERY page header
+- NEVER hardcode hex colors — always reference _brand.json or CSS custom properties
+- NEVER guess colors from business category — the njsk.org burgundy incident
 
 ### Pages (match original site structure — NEVER reduce page count)
 - Homepage: hero with brand image + gradient overlay, selling points grid, about preview, testimonials, FAQ, CTA
@@ -287,10 +291,11 @@ Read _domain_features.json and implement ALL listed features for this business c
 
 After customizing all files:
 1. Run `npm run build` — fix ANY errors
-2. Run `node /home/cuser/inspect.js dist/index.html` — read the GPT-4o critique
-3. Fix ALL issues scoring below 8/10 in the critique
-4. Run `npm run build` again — verify zero errors
-5. If inspect score < 8: repeat fix+build (max 3 iterations)
+2. Run `node /home/cuser/validate-urls.js` — compare _scraped_content.json.original_urls against new sitemap + _redirects. Fail if any URL unaccounted.
+3. Run `node /home/cuser/inspect.js dist/index.html` — read the GPT-4o critique
+4. Fix ALL issues scoring below 8/10 in the critique
+5. Run `npm run build` again — verify zero errors
+6. If inspect score < 8: repeat fix+build (max 3 iterations)
 
 ## Phase 3: Polish Pass
 

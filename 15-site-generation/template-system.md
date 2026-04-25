@@ -27,7 +27,10 @@ template/
 │   │   ├── Hero.tsx    — full-width, parallax-ready, gradient overlay, CTA slots
 │   │   ├── Section.tsx — reusable section wrapper with IntersectionObserver animations
 │   │   ├── ContactForm.tsx — Turnstile-ready, Zod validation, submission handler
-│   │   └── local/      — 16 local business components (see below)
+│   │   ├── local/      — 16 local business components (see below)
+│   │   ├── BlogList.tsx    — paginated blog listing with category filters
+│   │   ├── BlogPost.tsx    — full post with TOC, sharing, related posts
+│   │   └── DonationForm.tsx — one-time/monthly toggle, Stripe integration
 │   ├── hooks/
 │   │   ├── useInView.ts    — IntersectionObserver hook
 │   │   ├── useSEO.ts       — meta tag management
@@ -39,8 +42,11 @@ template/
 │       └── globals.css — @layer reset/base/components/utilities, custom properties, animations
 ├── public/
 │   ├── robots.txt      — template (SITE_URL placeholder)
-│   └── sitemap.xml     — template (SITE_URL placeholder)
-└── inspect.js          — post-build checker (validates build output, checks for placeholders)
+│   ├── sitemap.xml     — template (SITE_URL placeholder)
+│   ├── feed.xml        — Atom RSS feed (generated during build from blog posts)
+│   ├── _redirects      — Cloudflare Pages redirect rules (301s for merged/renamed URLs)
+├── inspect.js          — post-build checker (validates build output, checks for placeholders)
+└── validate-urls.js    — compares original sitemap URLs against new routes + _redirects, exits 1 if any 404
 ```
 
 ## Customization Points
@@ -49,7 +55,7 @@ template/
 
 **Content slots**: SITE_NAME | HERO_HEADLINE | HERO_SUBTEXT | HERO_CTA | PHONE | EMAIL | ADDRESS | HOURS | All replaced with real data from `_research.json`.
 
-**Page generation**: Claude Code reads `_scraped_content.json` to determine page count and structure. Minimum 4 pages (Home/About/Services/Contact). Maximum 8 for complex businesses. Each page gets its own route in App.tsx.
+**Page generation**: Claude Code reads `_scraped_content.json` to determine page count and structure. Minimum 4 pages (Home/About/Services/Contact). NEVER reduce page count vs original site — create pages for all substantial scraped content. Blog posts get individual dynamic routes (`/blog/:slug`). Merged thin pages get 301 redirects in `public/_redirects`. Each page gets its own route in App.tsx.
 
 ## Animation Presets (Pre-Built)
 
@@ -97,6 +103,14 @@ Local business sites need components SaaS templates don't have. These are pre-bu
 
 **BookingEmbed.tsx:** Wraps Calendly/Acuity/Square iframe OR custom booking form. Props: provider, embedUrl, phone. booking_click tracking on all interactions. Responsive iframe sizing. Custom form: name, phone, preferred date, service dropdown, message.
 
+**DonationForm.tsx:** One-time + monthly toggle (defaults to MONTHLY). Suggested amount buttons ($10/$25/$50/$100/$250 — customizable via props). Custom amount input. Stripe Payment Links integration or link to existing donation platform. Props: `stripePaymentLink`, `externalDonationUrl`, `suggestedAmounts`, `defaultRecurrence`. Fires `donation_click` + `donation_amount` analytics events. Used by nonprofits at `/donate` and churches at `/give`. Visual: glassmorphism card, brand-primary CTA, impact statement ("$25 feeds a family for a week").
+
+**BlogList.tsx:** Paginated blog listing. Props: `posts[]` (title, slug, excerpt, date, image, author, readingTime). Grid layout: 2-col desktop, 1-col mobile. Each card links to `/blog/{slug}`. Pagination: numbered pages or infinite scroll. Category filter tabs if >10 posts. RSS link icon in header.
+
+**BlogPost.tsx:** Full blog post page. Props: `title, content, date, author, image, readingTime, relatedPosts[]`. Renders markdown/HTML content. Table of contents sidebar for posts >1500 words. Social share buttons (Web Share API with fallback). Related posts grid at bottom. JSON-LD BlogPosting schema. `<link rel="canonical">` preserving original URL if migrated. Previous/next post navigation.
+
+**RSSFeed:** Not a component — generated as `public/feed.xml` during build. Atom 2.0 format. Includes all blog posts with title, link, published date, summary, author. `<link rel="alternate" type="application/atom+xml">` in index.html `<head>`.
+
 ## PWA & Print (***EVERY SITE***)
 
 **PWA manifest:** `public/site.webmanifest` with business name, brand colors, icons (192+512). `<link rel="manifest">` in index.html. Favicon set: ico (16+32+48), apple-touch-icon (180), android-chrome (192+512). Meta theme-color matches brand primary.
@@ -112,7 +126,7 @@ Local business sites need components SaaS templates don't have. These are pre-bu
 ## Dual-Template Architecture
 
 Two template repos serve different site types:
-- **`megabytespace/template.projectsites.dev`** — local business (this template). 15 components, CSS var brand slots, conversion tracking, PWA.
+- **`megabytespace/template.projectsites.dev`** — local business (this template). 19 components (16 local + BlogList + BlogPost + DonationForm), CSS var brand slots, conversion tracking, PWA.
 - **`megabytespace/saas-starter`** — SaaS products. Hono+D1+Clerk+Stripe+Inngest+Resend on CF Workers.
 
 Container selects template from `_form_data.json.category`. Local categories → `~/template-local`. SaaS categories → `~/template-saas`. See SKILL.md "Dual-Template Architecture" for full selection logic.
