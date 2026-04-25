@@ -20,7 +20,7 @@ Brand identity (colors, fonts, personality) + selling points (3 USPs, hero sloga
 Discover images (6 APIs: Unsplash, Pexels, Pixabay, Google CSE, Foursquare, Yelp) + generate logo (DALL-E if none found) + generate section images + discover videos (YouTube, Pexels) + move user uploads. Store all media in object storage, return metadata only.
 
 ### Phase 4: Profile Images (~90s)
-GPT-4o vision profiles every collected image: description, quality score, relevance score, suggested placement, alt text, dominant colors. Pre-selects top picks for hero/about/services/gallery. See image-profiling skill for batch architecture.
+Workers AI Llama Vision profiles all images (FREE): description, quality score, relevance score, suggested placement, alt text, dominant colors. GPT-4o detail:low ONLY for top 5 hero candidates (~$0.02). Pre-selects top picks for hero/about/services/gallery. See image-profiling skill for tiered architecture.
 
 ## Context Files (what builder receives)
 ```
@@ -43,7 +43,7 @@ Builder instructions: "Read _research.json for ALL business data. Read _image_pr
 Pre-digested builds produce dramatically better first-time results because: (1) builder has 100% context from minute 1, (2) image placement is data-driven not guessed, (3) original website content is preserved completely, (4) brand colors are extracted from real assets not hallucinated.
 
 ## Cost Savings
-Pre-container phases: ~$0.50-2.00 (LLM calls + API queries + GPT-4o profiling). Container time saved: ~15min ($3-5 of compute). Net savings: $1-3/build + dramatically higher quality.
+Pre-container phases: ~$0.15-0.50 (LLM calls + API queries + Workers AI profiling + GPT-4o hero pick). Container time saved: ~15min ($3-5 of compute). Net savings: $3-5/build + dramatically higher quality.
 
 ## Logic Distribution
 Generic methodology (this skill, image-profiling, heartbeat-polling) → public skills repo. Business-specific prompts (image profiling system prompt, builder instructions, CLAUDE.md template) → private project prompts/. Implementation code (workflow orchestration, API wiring) → private project src/.

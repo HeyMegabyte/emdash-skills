@@ -1,15 +1,17 @@
 ---
 name: "image-profiling"
-description: "GPT-4o vision batch profiling for AI build pipelines — scores, placement, alt text, colors"
-updated: "2026-04-24"
+description: "Tiered vision profiling: Workers AI Llama Vision (free, bulk) → GPT-4o (paid, hero/logo picks only). Scores, placement, alt text, colors."
+updated: "2026-04-25"
 ---
 
-# GPT-4o Vision Image Profiling
+# Image Profiling (Tiered Vision)
 
 Bridge between visual assets and text-only AI builders. Profile every candidate image BEFORE the build so the builder makes informed placement decisions without seeing images.
 
-## Architecture
-Batch 5 images per GPT-4o call (multi-image vision). Process 3 batches parallel = 15 images/round. Max 60 images in 4 rounds ≈ 90s. Cost: ~$0.01-0.02/image.
+## Architecture (***COST-TIERED***)
+**Tier 1 — Workers AI Llama Vision (FREE, 90% of images):** `@cf/meta/llama-3.2-11b-vision-instruct`. Batch 5 images/call, 3 batches parallel = 15 images/round. Handles: description, keywords, quality_score, suggested_placement, alt_text, dominant_colors. Sufficient for gallery/about/services/background images.
+
+**Tier 2 — GPT-4o detail:low ($0.01/call, 10% of images):** Hero candidates only (top 5 by Tier 1 score) + logo variants + brand color extraction. Single batch call with all hero candidates. Worth the spend — hero is 80% of first impression.
 
 ## Profile Schema
 ```json
@@ -51,4 +53,4 @@ Return JSON array matching the profile schema.
 Pre-container: collect 50-100 candidate images from all APIs → batch profile → select top picks → write `_image_profiles.json` as context file. Builder reads profiles, uses every top-pick in its suggested placement. Alt text pre-written. No guessing, no vision needed in build step.
 
 ## Cost Management
-5 images/call × $0.01-0.02 per image. 60 images = $0.60-1.20. Skip duplicates (hash-based dedup before profiling). Skip images <100px or >5MB. Timeout: 30s per batch call, 90s total phase.
+Workers AI: FREE (included in Workers Paid plan). 60 images = $0.00. GPT-4o: 1 batch call for top 5 hero candidates = ~$0.02. Total profiling cost: ~$0.02/site (down from $0.60-1.20). Skip duplicates (hash-based dedup before profiling). Skip images <100px or >5MB. Timeout: 30s per batch call, 90s total phase.

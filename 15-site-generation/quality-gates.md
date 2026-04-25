@@ -6,13 +6,17 @@ updated: "2026-04-24"
 
 # Quality Gates
 
-## GPT-4o Visual Inspection (MANDATORY)
+## Visual Inspection (MANDATORY — ***COST-TIERED***)
 
-`inspect.js` pre-baked at `/home/cuser/inspect.js`. Takes HTML file path → sends first 14KB to GPT-4o → returns `{ score, issues[], recommendations[] }`. Persona: "senior Stripe web designer." 8 scoring categories: color contrast, typography, layout/spacing, animations, images, mobile responsiveness, brand consistency, visual polish vs generic AI look. Scale 1-10.
+**In-container `inspect.js`:** Takes HTML file path → sends first 14KB to vision model. Persona: "senior Stripe web designer." 8 scoring categories: color contrast, typography, layout/spacing, animations, images, mobile responsiveness, brand consistency, visual polish vs generic AI look. Scale 1-10.
 
-**In-container loop:** After `npm run build`, run `node /home/cuser/inspect.js dist/index.html`. If score <8: fix issues → rebuild → re-inspect. Max 3 iterations. If still <8 after 3: proceed with warnings logged.
+**Tiered model selection:**
+- **Draft rounds (1-2):** Workers AI Llama Vision (FREE) — catches layout breaks, missing elements, broken images, contrast failures. Sufficient for 80% of issues.
+- **Final round (homepage only):** GPT-4o detail:low (~$0.02) — catches aesthetic nuance, brand harmony, "does it feel premium?" Only if Workers AI round scores ≥7 (no point polishing a broken layout).
 
-**Post-deploy inspection:** Worker screenshots via `microlink.io` API → sends to GPT-4o vision for full-page analysis → logs score + issues to D1 audit_logs.
+**In-container loop:** After `npm run build`, run `node /home/cuser/inspect.js dist/index.html`. If score <8: fix → rebuild → re-inspect. Max 3 iterations. Workers AI for rounds 1-2, GPT-4o for final homepage check only.
+
+**Post-deploy inspection:** Worker screenshots via `microlink.io` API → Workers AI Llama Vision for all pages → GPT-4o detail:low for homepage ATF only → logs score + issues to D1 audit_logs.
 
 ## 10-Dimension Quality Scoring
 
