@@ -36,8 +36,9 @@ GTM-first: centralize measurement via GTM for no-code updates, version control, 
 CSP: script-src googletagmanager.com google-analytics.com *.posthog.com. connect-src analytics.google.com *.posthog.com *.sentry.io.
 
 ## PostHog
+Default API key: stored in Claude memory (reference_posthog_key.md) — host: `https://us.i.posthog.com`
 ```typescript
-posthog.init(key, { api_host: 'https://posthog.megabyte.space', capture_pageview: true, capture_pageleave: true, autocapture: true, session_recording: { maskAllInputs: true }, persistence: 'memory' });
+posthog.init(POSTHOG_KEY, { api_host: 'https://us.i.posthog.com', capture_pageview: true, capture_pageleave: true, autocapture: true, session_recording: { maskAllInputs: true }, persistence: 'memory' });
 ```
 Events: page_view, cta_click, form_submit, signup_start/complete, feature_used, upgrade_click, error_displayed. Naming: snake_case, present-tense verbs. Consistent IDs across platforms. Prefer server-side event logging. Reverse proxy to bypass ad blockers.
 
