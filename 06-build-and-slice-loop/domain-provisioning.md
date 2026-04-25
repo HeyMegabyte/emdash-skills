@@ -53,7 +53,7 @@ name = "domain-name"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
-account_id = "***REDACTED_CF_KEY***"
+account_id = "${CLOUDFLARE_ACCOUNT_ID}"
 
 routes = [
   { pattern = "domain.com", custom_domain = true },

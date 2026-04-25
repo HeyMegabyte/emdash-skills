@@ -19,7 +19,7 @@ Location: `~/.local/share/chezmoi/home/.chezmoitemplates/secrets/`
 Cross-machine sync: `chezmoi apply` on any new machine → all 185 secrets available instantly.
 
 ### 2. Shared .env.local (54 keys, runtime-loaded)
-`/Users/apple/emdash-projects/worktrees/rare-chefs-film-8op/.env.local`
+active project `.env.local` (check `$CLAUDE_ENV_FILE` when set)
 
 ### 3. Emdash Config
 `~/.config/emdash/` — coolify-token, gcp-service-account.json
@@ -77,7 +77,7 @@ TAILSCALE_AUTH_KEY | NGROK_AUTH_TOKEN | NORDVPN_* | PROTONVPN_* | PROXMOX_ROOT_P
 Cloudflare | GitHub | Playwright | Stripe | Slack | Airtable | Figma | Google Cal/Drive/Gmail | IFTTT | Notion | Plane | Coolify | WordPress | PostHog | Sentry | Firecrawl | DeepSeek | Sequential Thinking | Supermemory | Computer Use | Context7 | Neon | Snyk | Semgrep | Upstash | Twilio | Replicate | ElevenLabs | Meilisearch | Accessibility Scanner | Idea Reality
 
 ## Self-Hosted Services (Proxmox/Coolify, 70+ containers)
-Sentry→sentry.megabyte.space | PostHog→posthog.megabyte.space | Postiz→postiz.megabyte.space | Home Assistant→connect.tomy.house | SearXNG→searxng.megabyte.space | FireCrawl→firecrawl.megabyte.space | Browserless→browserless.megabyte.space | n8n→n8n.megabyte.space | Authentik→authentik.megabyte.space | Coolify→coolify.megabyte.space
+Services follow pattern `{service}.megabyte.space` behind CF Tunnels + Authentik SSO. 70+ containers managed via Coolify. All URLs discoverable via Coolify API or `~/.config/emdash/` config.
 
 ## Integration Protocol
 For EVERY new project: (1) scan key pool via discover-secrets.sh (2) create PostHog+Sentry project instances (3) inject keys as CF Worker secrets via `wrangler secret put` (4) configure client-side snippets (5) set up server-side reporting. MANDATORY: PostHog analytics + Sentry errors on every project.

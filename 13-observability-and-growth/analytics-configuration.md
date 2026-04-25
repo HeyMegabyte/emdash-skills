@@ -23,7 +23,7 @@ always-load: false---
 
 ## Standard Events
 | Event | Properties | Trigger |
-|-------|-----------|---------|
+|-------|-----------|--------|
 | page_viewed | path, title, referrer | Every page |
 | scroll_depth_reached | percent (25/50/75/100) | Scroll milestones |
 | cta_clicked | cta_text, cta_location, destination | CTA click |
@@ -111,7 +111,7 @@ Every project gets Sentry from day one. Missing @sentry/cloudflare (Workers) or 
 Every HTML page gets PostHog snippet. Config: `persistence:'memory'` (cookie-free, no GDPR banner), `capture_pageview:true`, `capture_pageleave:true`, `autocapture:true`. CSP: script-src+connect-src for PostHog API host. PostHog project key stored as env var POSTHOG_KEY or inline for static HTML. Self-hosted preferred (posthog.megabyte.space) but us.i.posthog.com acceptable for cloud. Events: page_viewed, cta_clicked, form_submitted, donate_click, newsletter_signup, scroll_depth.
 
 ### GA4/GTM (Marketing Analytics + Tag Management)
-Every HTML page gets GTM container (head script + noscript iframe after body). GTM container ID: GTM-W746ZTWT (Megabyte Labs). CSP: script-src googletagmanager.com+google-analytics.com, connect-src analytics.google.com+region1.google-analytics.com, img-src googletagmanager.com+google-analytics.com. GA4 configured inside GTM (never standalone). Custom dimensions over separate events. 14-month retention. Google Signals enabled.
+Every HTML page gets GTM container (head script + noscript iframe after body). GTM container ID: `get-secret GTM_CONTAINER_ID` (Megabyte Labs). CSP: script-src googletagmanager.com+google-analytics.com, connect-src analytics.google.com+region1.google-analytics.com, img-src googletagmanager.com+google-analytics.com. GA4 configured inside GTM (never standalone). Custom dimensions over separate events. 14-month retention. Google Signals enabled.
 
 ### Enforcement
 Missing ANY of the three → add in same prompt. No page ships without all three firing. Every action: GA4 event + PostHog event + Sentry breadcrumb. CSP must allow all three domains. Verify in browser DevTools Network tab before marking deploy as done.
