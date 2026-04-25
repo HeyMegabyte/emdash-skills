@@ -6,7 +6,9 @@ updated: "2026-04-24"
 
 # Media Acquisition
 
-Collect 10x more assets than needed, curate down via AI visual inspection. A 4-page site needs 15-20 high-quality images + 1-2 videos minimum. Every site MUST have a logo and favicon set.
+Collect 10x more assets than needed, curate down via AI visual inspection. A 4-page site needs ***30-50 high-quality images + 3-5 videos + 1 logo + 5-10 AI-generated originals*** minimum. The site must feel media-rich and immersive from the first scroll. Every site MUST have a logo and favicon set. Users should feel like a professional agency spent weeks curating this content.
+
+**Budget split:** GPT-4o vision QA capped at $1 (see completeness-verification). Media generation/acquisition is a SEPARATE budget — spend what's needed to make the site gorgeous. Ideogram (~$0.05/logo), GPT Image 1.5 (~$0.04/image), Stability (~$0.03/image), stock APIs (free tiers). Typical media budget: $0.50-2.00/site. This is GOOD spend — it creates the content that makes sites convert.
 
 ## API Priority Chain
 
@@ -43,9 +45,33 @@ From winning logo: `magick logo.png -fuzz 15% -trim +repage` then: 512x512 (andr
 
 **In-container alternative** (no ImageMagick): `buildPngIco()` — manual ICO construction: 6-byte header + 16-byte directory entry + raw PNG bytes. Width/height 0 (=256+), 32-bit, offset 22. Store full PNG as favicon.ico (browsers handle it).
 
-## Video Discovery
+## AI-Generated Original Content (***AGGRESSIVE — EVERY SITE***)
 
-YouTube Data API (`YOUTUBE_API_KEY`): search business name + city → top 3 results. Pexels Video API (`PEXELS_API_KEY`): search business type for generic B-roll. Store as video manifest JSON (URL, thumbnail, duration, title) — not downloaded. Embed via YouTube iframe or Pexels player.
+Generate originals when stock/discovered images are insufficient or generic. Originals make the site feel bespoke.
+
+| Type | API | Use Case | Cost |
+|------|-----|----------|------|
+| Hero backgrounds | GPT Image 1.5 | Abstract brand-colored scenes, atmospheric gradients with depth | ~$0.04 |
+| Service illustrations | GPT Image 1.5 | Custom illustrations per service offered | ~$0.04 |
+| Section dividers | Stability AI | Geometric patterns, brand-colored abstract art | ~$0.03 |
+| Texture overlays | Stability AI | Noise, grain, mesh gradients for glassmorphism | ~$0.03 |
+| Team/about imagery | GPT Image 1.5 | Workplace scenes matching business type (NOT fake headshots) | ~$0.04 |
+| Logo + variants | Ideogram v3 | A=lockup, B=icon, C=wordmark | ~$0.05 |
+| OG preview image | GPT Image 1.5 | 1200x630 social share card with brand + business name | ~$0.04 |
+| Icon set | Ideogram v3 | Custom service icons matching brand style (if generic Lucide insufficient) | ~$0.05 |
+
+**Generation strategy:** Generate 3-5 hero candidates, 1 per service, 2-3 atmospheric textures, 1 OG image. Pick best via GPT-4o detail:low (single batch call, all candidates in one request). Total generation: ~$0.30-0.50. Combined with logo A/B/C: ~$0.35-0.55 generation spend.
+
+**Prompt patterns for GPT Image 1.5:**
+- Hero: "Cinematic wide shot, {business_type} environment, {brand_primary} and {brand_secondary} color palette, dramatic lighting, professional photography style, no text, no people, 16:9"
+- Service: "Clean modern illustration of {service_name}, {brand_colors}, minimal style, white/dark background, professional"
+- Texture: "Abstract geometric pattern, {brand_primary} gradients, subtle depth, seamless tileable, dark background"
+
+## Video Discovery (***3-5 VIDEOS MINIMUM***)
+
+YouTube Data API (`YOUTUBE_API_KEY`): search business name + city → top 3 results. Search business type + "professional" → 2 more. Pexels Video API (`PEXELS_API_KEY`): search business type for B-roll (3-5 clips). Store as video manifest JSON (URL, thumbnail, duration, title) — not downloaded. Embed via YouTube iframe or Pexels player.
+
+**Video placement strategy:** Hero background (muted autoplay 4-8s loop from Pexels), services section (YouTube embed if business has channel), about section (B-roll montage), testimonials (video reviews if available). Every page should have at least one video or animated element.
 
 ## Image Profiling (GPT-4o Vision)
 

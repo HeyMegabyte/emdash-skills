@@ -57,7 +57,7 @@ The container receives ONE prompt that encompasses all build phases. The prompt 
 
 ## Build Rules (NON-NEGOTIABLE)
 
-**Images:** USE ALL images in assets/. Never use external URLs (hotlinking blocked). Hero: assets/hero-*. Gallery: full-width slider with ALL images. Service cards: relevant images. No image in assets/ left unused. Minimum 15 unique images per site.
+**Images:** USE ALL images in assets/. Never use external URLs (hotlinking blocked). Hero: assets/hero-*. Gallery: full-width slider with ALL images. Service cards: relevant images. No image in assets/ left unused. ***Minimum 30 unique images per site*** (discovered + AI-generated originals + stock). 3-5 AI-generated originals per site (hero backgrounds, service illustrations, textures). The site must feel media-rich from first scroll — no sparse pages.
 
 **Design:** Dark theme preferred (#0a0a1a base). 10+ @keyframes animations. Glassmorphism cards (bg-white/5 backdrop-blur-md border-white/10). Gradient text on key headings. Parallax-style depth on hero. 25+ inline SVG decorative elements. Every interactive element has hover+active+focus states. Smooth scroll for ALL same-page nav (scrollIntoView, never #href jumps).
 
@@ -99,4 +99,6 @@ R2 credentials: CF_API_TOKEN, CF_ACCOUNT_ID, R2_BUCKET_NAME, SITE_SLUG, SITE_VER
 
 Never waste API credits on speculative builds. If error: reduce to simplest reproducible state first. Fix issues as separate minimal tests. Only trigger full builds when pipeline proven working. Each Claude Code prompt ~$0.50-2.00. Each full build ~$3-8. Treat credits as scarce.
 
-**GPT-4o vision budget: ***$1 HARD CAP per local business site.*** Breakdown: image profiling ~$0.15 (batch 5/call), logo A/B/C selection ~$0.05, inspect.js in-container ~$0.03/round, post-deploy visual QA ~$0.10-0.20. Total ~$0.35-0.45 typical. Homepage/ATF gets vision priority — other pages use FREE a11y tree + axe-core. Never exceed $1 total GPT-4o spend per site build.
+**Two separate budgets — don't confuse them:**
+1. **GPT-4o vision QA: ***$1 HARD CAP.*** ** Image profiling ~$0.15, logo pick ~$0.05, inspect.js ~$0.03/round, post-deploy QA ~$0.10-0.20. Homepage/ATF gets vision priority. Total ~$0.35-0.45 typical.
+2. **Media generation/acquisition: $0.50-2.00 (GOOD spend).** Ideogram logos ~$0.05, GPT Image 1.5 originals ~$0.04/each (5-10 per site), Stability textures ~$0.03/each, stock APIs (free tiers). This spend CREATES the content that makes sites convert — never cap it below what's needed for 30-50 images + 3-5 videos per site.
