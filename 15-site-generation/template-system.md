@@ -28,6 +28,10 @@ template/
 │   │   ├── Section.tsx — reusable section wrapper with IntersectionObserver animations
 │   │   ├── ContactForm.tsx — Turnstile-ready, Zod validation, submission handler
 │   │   └── local/      — 15 local business components (see below)
+│   ├── hooks/
+│   │   ├── useInView.ts    — IntersectionObserver hook
+│   │   ├── useSEO.ts       — meta tag management
+│   │   └── useServiceWorker.ts — SW registration + offline detection
 │   ├── pages/          — route pages (Home, About, Services, Gallery, Contact, FAQ, Blog)
 │   ├── hooks/          — useScrollAnimation, useMediaQuery, useInView
 │   ├── lib/            — utils.ts (cn helper), constants.ts (brand tokens)

@@ -117,6 +117,21 @@ Never waste API credits on speculative builds. If error: reduce to simplest repr
 1. **GPT-4o vision QA: ***$1 HARD CAP.*** ** Image profiling FREE (Workers AI) + hero pick ~$0.02 (GPT-4o), logo pick ~$0.02, inspect.js draft rounds FREE (Workers AI) + final homepage ~$0.02, post-deploy homepage QA ~$0.02. Homepage/ATF gets GPT-4o priority. Total ~$0.08-0.15 typical.
 2. **Media generation/acquisition: $0.50-2.00 (GOOD spend).** Ideogram logos ~$0.05, GPT Image 1.5 originals ~$0.04/each (5-10 per site), Stability textures ~$0.03/each, stock APIs (free tiers). This spend CREATES the content that makes sites convert — never cap it below what's needed for 30-50 images + 3-5 videos per site.
 
+## Post-Launch Email Sequence (***DISABLED BY DEFAULT***)
+
+After site generation, the pipeline CAN auto-send a welcome email to the business owner (extracted from `_research.json.contact.email` or `_form_data.json.email`). Currently disabled — enable via `ENABLE_POST_LAUNCH_EMAIL=true` env var in container.
+
+**Sequence (Resend + Inngest):**
+1. **Immediate:** "Your new website is live at {slug}.projectsites.dev" — screenshot, direct link, QR code
+2. **Day 3:** "Claim your Google Business listing" — step-by-step with deep link to `business.google.com/create`
+3. **Day 7:** "Get your first 5-star review" — review QR card PDF, email template, SMS template
+4. **Day 14:** "Share your site on social media" — pre-written posts for Facebook/Instagram/LinkedIn
+5. **Day 30:** "Your first month: {pageviews} visitors, {calls} calls" — PostHog analytics summary
+
+**Implementation:** Inngest step functions with scheduled delays. Each step checks `_research.json.contact.email` validity. Unsubscribe link in every email. CAN-SPAM compliant. Templates in Resend with brand colors from `_brand.json`.
+
+**Trigger:** Worker sends Inngest event `site/launched` with slug+email+brandColors after successful build+deploy. Inngest function handles timing.
+
 ## Unit Economics at Scale (***1M+ SITES***)
 
 ### Per-Site Cost Model (current → optimized)
