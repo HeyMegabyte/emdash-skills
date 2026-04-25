@@ -23,10 +23,10 @@ submodules:
 
 Submodules: stripe-billing (free+$50/mo, donation presets, auto Products/Prices, webhook best practices), analytics-configuration (GA4 14-step, GTM, PostHog, flags, A/B, funnels), user-feedback-collection (5-star widget, /admin/feedback, NPS, testimonials), feature-flags-and-experiments (PostHog flags, A/B tests, gradual rollout, kill switches, lifecycle management), email-marketing-and-listmonk (Listmonk on Coolify, Resend SMTP relay, campaigns, subscribers, Go templates, double opt-in), sentry-alert-rules (auto-configured alerts at first deploy, Slack integration, deploy silence).
 
-## Stack (Consolidation Strategy)
+## Stack (Consolidation Strategy — ***ALL AUTO-PROVISION***)
 PostHog (posthog.megabyte.space, self-hosted, cookie-free) = product analytics + feature flags + A/B tests + session recording + error tracking (100K errors/mo free). Sentry (sentry.megabyte.space) = deep error tracking + performance + replays. GA4 via GTM = marketing analytics + server-side tagging. Listmonk on Coolify = newsletters. Resend = transactional email (React Email v6 components). OneSignal = push.
 
-PostHog consolidates 3-4 separate tools for startups. Sentry adds depth (stack traces + user experience + business impact together). GTM is ONLY script loader except Sentry early init.
+**Auto-provision mandate (***EVERY PROJECT***):** All three analytics layers (Sentry+PostHog+GA4/GTM) are non-negotiable from first deploy. Missing any one → install in same prompt. Sentry: mcp__sentry__create_project→DSN→wrangler secret put. PostHog: add snippet to HTML with `persistence:'memory'` (cookie-free), CSP script-src+connect-src for posthog domain. GA4/GTM: add GTM container snippet (head+noscript body), CSP for googletagmanager.com+google-analytics.com+analytics.google.com. Never ship a page without all three firing. PostHog consolidates 3-4 separate tools. Sentry adds depth (stack traces + user experience + business impact together). GTM is ONLY script loader except Sentry early init.
 
 ## GA4+GTM Best Practices (2026)
 GTM-first: centralize measurement via GTM for no-code updates, version control, preview mode. Use Google Tag (replaces old GA4 Config Tag). Custom dimensions over separate events: add `form_type`, `user_type` context rather than `form_submit_contact` vs `form_submit_signup`. One data stream per property. Internal traffic filter by IP. Extend retention to 14 months (default 2mo). Enable Google Signals for cross-device. Quality>quantity: focused measurement plan, not 70+ events. Quarterly audits.

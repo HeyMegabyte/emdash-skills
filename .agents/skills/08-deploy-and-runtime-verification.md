@@ -29,7 +29,7 @@ Triggers: any code/content/config change. Does NOT: reading, memory writes, anal
 Exceptions: user says don't | missing credentials (warn) | no wrangler.toml.
 
 ## Deploy Sequence
-1. `tsc --noEmit` 2. lint (`eslint --fix && prettier --write`) 3. build (if exists) 4. Sentry check: if missing @sentry/cloudflare→install+wrap+create project via mcp__sentry__create_project+set SENTRY_DSN 5. `wrangler deploy` 6. purge cache 7. wait 3-5s 8. Playwright E2E 9. visual verify 1280+375px 10. fix if needed, loop.
+1. `tsc --noEmit` 2. lint (`eslint --fix && prettier --write`) 3. build (if exists) 4. Analytics gate (***ALL THREE REQUIRED***): Sentry missing→install @sentry/cloudflare+wrap+mcp__sentry__create_project+SENTRY_DSN secret | PostHog missing→add snippet to HTML (persistence:'memory', cookie-free)+CSP | GTM missing→add container snippet (head+noscript body)+CSP 5. `wrangler deploy` 6. purge cache 7. wait 3-5s 8. Playwright E2E 9. visual verify 1280+375px 10. fix if needed, loop.
 
 ## Workers Builds (Native CI/CD — Preferred)
 Connect GitHub/GitLab in CF dashboard → auto-build+deploy on push. No self-hosted Git required. Config via `wrangler.toml` `[build]` section:
