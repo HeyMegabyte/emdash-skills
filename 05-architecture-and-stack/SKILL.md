@@ -20,6 +20,7 @@ submodules:
   - openapi-generation.md
   - cf-auto-provision.md
   - enterprise-multi-tenancy.md
+  - heartbeat-polling.md
 ---
 
 ## Submodules
@@ -37,6 +38,7 @@ submodules:
 | openapi-generation.md | @hono/zod-openapi auto-generated specs, Swagger UI, client SDK codegen, versioning. |
 | cf-auto-provision.md | Single-function CF project bootstrap: D1+KV+R2+DNS+routes+wrangler.toml+integrations via cf CLI. |
 | enterprise-multi-tenancy.md | DB-per-tenant D1, RBAC/ABAC, audit logging (R2 WORM), SSO/SCIM, data residency, rate limiting, white-labeling. |
+| heartbeat-polling.md | CF Workflows heartbeat polling for long-running container jobs — avoids 25min step timeout. |
 
 # 05 — Architecture and Stack
 
@@ -125,7 +127,7 @@ GCP: `/Users/apple/.config/emdash/gcp-service-account.json`
 CF Global: blzalewski@gmail.com / ***REDACTED_CF_KEY***
 
 | Service | Env Var | Free Tier |
-|---------|---------|-----------|
+|---------|---------|----------|
 | Cloudflare | CLOUDFLARE_API_TOKEN | Yes |
 | Stripe | STRIPE_API_KEY | Test free |
 | Resend | RESEND_API_KEY | 100/day |

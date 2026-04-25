@@ -15,11 +15,12 @@ submodules:
   - og-image-generation.md
   - image-optimization.md
   - technical-diagramming.md
+  - image-profiling.md
 ---
 
 # 12 -- Media Orchestration
 
-Submodules: media-prompts.md (prompt templates, Ideogram v3 API), compression-pipeline.md (Python code, format tables, CF Image Transforms, CLS, broken image detection), og-image-generation.md (Satori edge-rendered OG images, KV/R2 cache, meta-tag helper), image-optimization.md (Sharp processing, responsive srcset, WebP/AVIF, blur placeholders, R2 pipeline).
+Submodules: media-prompts.md (prompt templates, Ideogram v3 API), compression-pipeline.md (Python code, format tables, CF Image Transforms, CLS, broken image detection), og-image-generation.md (Satori edge-rendered OG images, KV/R2 cache, meta-tag helper), image-optimization.md (Sharp processing, responsive srcset, WebP/AVIF, blur placeholders, R2 pipeline), image-profiling.md (GPT-4o vision batch profiling — quality+placement+colors per image, pre-digest for builders).
 
 ## Strategy by Section
 Hero: GPT Image 1.5/Sora. Features: GPT Image 1.5/SVG. How It Works: GPT Image 1.5. Testimonials: stock. About: stock/real. Blog: GPT Image 1.5. Social: Satori OG 1200x630. Icons: Ideogram v3+processing.

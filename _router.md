@@ -20,6 +20,7 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | 12 | Media Orchestration | `compression-pipeline`, `image-optimization`, `media-prompts`, `og-image-generation`, `technical-diagramming` |
 | 13 | Observability and Growth | `analytics-configuration`, `conversion-optimization`, `email-marketing-and-listmonk`, `feature-flags-and-experiments`, `sentry-alert-rules`, `stripe-billing`, `user-feedback-collection` |
 | 14 | Independent Idea Engine | — |
+| 15 | Site Generation | `research-pipeline`, `media-acquisition`, `build-prompts`, `quality-gates`, `domain-features`, `template-system` |
 
 ## Task Routing
 
@@ -44,6 +45,8 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | Infra / self-hosted | `05/coolify-docker-proxmox`, `05/cf-auto-provision`, `08/uptime-and-health` |
 | Skills / config | `01`, `04` |
 | Security audit | `07/agentic-security`, `07/security-hardening`, `07/semgrep-codebase-rules` |
+| AI site generation | `15` — add `09`, `10`, `12` for brand/design/media |
+| Website rebuild / clone | `15`, `09`, `12` — add `03` for deep research |
 
 ## File Hints
 
@@ -69,6 +72,8 @@ Route prompts to smallest useful subset. Load `01-operating-system` FIRST always
 | `coolify/**`, `docker-compose*` | `05/coolify-docker-proxmox` |
 | `CLAUDE.md`, `.claude/**` | `01` |
 | `package.json`, `tsconfig.json` | `05` |
+| `**/container.ts`, `**/site-generation.ts`, `Dockerfile` | `15`, `05` |
+| `**/prompts/*.prompt.md` | `15` |
 
 ## Agent Library
 
