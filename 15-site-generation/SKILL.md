@@ -18,11 +18,12 @@ submodules:
   - quality-gates.md
   - domain-features.md
   - template-system.md
+  - local-seo.md
 ---
 
 # 15 -- Site Generation
 
-Submodules: research-pipeline.md (API-driven business research, scraping, enrichment), media-acquisition.md (image/video/logo sourcing from 12+ APIs), build-prompts.md (master prompt + enhancement phases), quality-gates.md (GPT-4o visual inspection, SEO audit, accessibility), domain-features.md (category-specific features for 15+ business types), template-system.md (Vite+React+Tailwind+shadcn/ui starter, customization patterns).
+Submodules: research-pipeline.md (API-driven business research, scraping, enrichment), media-acquisition.md (image/video/logo sourcing from 12+ APIs), build-prompts.md (master prompt + enhancement phases), quality-gates.md (tiered visual inspection, SEO audit, accessibility), domain-features.md (category-specific features for 18+ business types), template-system.md (Vite+React+Tailwind+shadcn/ui starter, customization patterns), local-seo.md (citation building, GBP sync, review generation, trust badges, local conversion tracking).
 
 ## Philosophy
 

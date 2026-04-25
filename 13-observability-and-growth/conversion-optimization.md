@@ -38,5 +38,42 @@ Inline validation (not on submit). Autofill attributes on all fields. Smart defa
 ## Anti-Patterns
 Never: dark patterns (hidden costs, forced continuity, misdirection) | fake urgency | guilt-tripping cancel copy | hiding unsubscribe | pre-checked upsells | bait-and-switch pricing. ADA/WCAG: all conversion elements keyboard accessible, screen reader compatible, sufficient contrast.
 
+## Local Business Conversions (***NOT SAAS***)
+
+Local businesses don't have trial-to-paid funnels. Their conversions are physical-world actions:
+
+### Event Taxonomy (PostHog + GA4 + Sentry breadcrumb)
+| Event | Trigger | Priority |
+|-------|---------|----------|
+| `phone_click` | `tel:` link clicked | Primary — highest intent |
+| `direction_click` | Google Maps directions clicked | Primary — visit intent |
+| `form_submit` | Contact/booking form submitted | Primary |
+| `booking_click` | External booking CTA (OpenTable, Calendly, etc.) | Primary |
+| `email_click` | `mailto:` link clicked | Secondary |
+| `chat_open` | Live chat widget opened | Secondary |
+| `review_click` | "Leave a Review" CTA clicked | Secondary |
+| `menu_download` | PDF menu/brochure downloaded | Micro |
+| `coupon_claim` | Special offer clicked | Micro |
+| `social_click` | Social media profile link clicked | Micro |
+
+### GA4 Goals (auto-configure via GTM dataLayer)
+```javascript
+// Inject in every local business site build
+document.querySelectorAll('a[href^="tel:"]').forEach(el =>
+  el.addEventListener('click', () => gtag('event', 'phone_click', { phone: el.href }))
+);
+document.querySelectorAll('a[href*="maps.google"]').forEach(el =>
+  el.addEventListener('click', () => gtag('event', 'direction_click'))
+);
+```
+
+### Local Funnel (PostHog)
+`Visit → Engagement (scroll 50%+) → Micro (menu/gallery) → Macro (call/directions/form/booking)`
+
+Track weekly conversion rate. Alert if rate drops >20% WoW. Typical local business: 3-8% macro conversion rate (vs 1-3% SaaS).
+
+### Call Tracking (optional premium)
+Google forwarding number (free with Google Ads) or CallRail ($45/mo). Tracks: duration, caller location, recording, missed call alerts. Without call tracking: `tel:` click count as proxy.
+
 ## Tools
 PostHog: funnel analysis + feature flags + session replay. Stripe: billing portal, proration, Smart Retries, revenue recovery. Resend: transactional + win-back emails. Inngest: automated lifecycle workflows (trial→paid→churn sequences).
