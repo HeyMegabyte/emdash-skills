@@ -84,6 +84,8 @@ These patterns must be applied automatically — not as a follow-up. Every page 
 
 **Contextual CTAs:** Every page ends with a relevant CTA section. Services→"Need a Meal?" + directions. About→"Join Our Mission" + donate/volunteer. Blog→"Support Our Mission" + donate/volunteer. Volunteer→"Can't Volunteer?" + donate. Match the CTA to what makes sense for the page topic.
 
+**Donation Forms (***MONTHLY-FIRST, LIVE VALIDATION***):** Donation pages default to monthly recurring at $100/mo. Monthly/one-time toggle at top (monthly pre-selected). Presets: $50, $100, $250, $500. $100 selected by default. Monthly preset amounts→Stripe Payment Links (redirect with `prefilled_email`). One-time/custom→PaymentIntent flow via API. Live validation: validate on blur, re-validate on change after first blur. Green checkmark icons for valid fields, red borders+messages for invalid. Summary bar shows amount+frequency before submit. "Secured by Stripe" trust badge below button. Partner logo strips use `flex flex-wrap justify-center` (NOT grid) to ensure horizontal centering regardless of item count.
+
 **The njsk.org enrichment incident:** The first build shipped pages with plain text heroes, no contact forms (just "email us" text), no partner logos (just name-drops), and sidebar-only maps. All of these should have been first-build features, not follow-up additions.
 
 ### Content Migration (***NEVER DISCARD CONTENT***)
