@@ -102,6 +102,34 @@ Universal rules applied to ALL generated sites:
 
 **Cross-Browser:** Test in Chrome + Safari (80%+ local business visitors). Safari-specific: `-webkit-` prefixes for backdrop-filter, scroll-snap. No Firefox-only CSS features without fallback.
 
+**Lightbox Coverage (***BUILD-BREAKING***):** `src/components/lightbox.tsx` MUST exist and be mounted in Layout. Every page with 4+ content images MUST include at least one `[data-gallery]` wrapper. Build gate: grep `dist/assets/*.js` for `data-zoomable` AND `data-gallery` strings — both required. Visual gate: Playwright opens 3 random pages, clicks 1st content image, asserts `[role="dialog"][aria-modal="true"]` appears within 200ms, presses `→`, asserts image src changes, presses `Esc`, asserts dialog removed. Audit checklist: prev/next buttons present when gallery has 2+ images|counter `n/total` visible|figcaption from alt text|44×44 close button|swipe gestures wired (Pointer Events listener)|`prefers-reduced-motion` disables scale|preload of neighbor images|focus-trap on modal-only.
+
+**Asset Existence (***BUILD-BREAKING***):** Every `<img src>`, `<source srcset>`, `<link href>`, `<script src>`, `<video src>`, `<source src>`, `url(...)` in dist/ HTML+CSS must resolve to a file present in dist/ OR an allowed external host (https only, hostname in allowlist: googletagmanager.com, fonts.googleapis.com, fonts.gstatic.com, www.google.com/maps/embed, microlink.io, posthog.com). Local refs (starting `/` or relative) checked against `find dist -type f`. Build gate: `node validate-assets.js dist/` — fail if any reference 404s. The megabyte-labs `/og-image.png` 404 incident (HTML referenced .png, R2 had .jpg) MUST never repeat.
+
+**Image Format vs Size (***BUILD-BREAKING***):** Any PNG over 200KB MUST be re-encoded to WebP (lossy q=85) or JPEG progressive (q=82) before R2 upload. Hero photos: WebP+AVIF variants at 1920/1280/640/320w. Logos: keep PNG only if <50KB transparent — otherwise SVG. OG cards: PNG OK at 1200×630 ≤100KB; if larger, re-encode to JPEG q=85. Build gate: `node validate-image-budgets.js dist/` — flag any single image >200KB, total images >500KB.
+
+**OG Image Quality (***BUILD-BREAKING***):** Every site MUST ship `/og-image.png` (or .jpg) at exactly 1200×630, ≤100KB, branded card style: dark brand background, primary color accent bar, business name in display font, tagline below, logo bottom-right. NO scraped or stock photo as og-image — must be generated via Satori or DALL-E with brand colors. `<meta property="og:image:width" content="1200">` + `og:image:height content="630"` mandatory. Twitter `summary_large_image` card mandatory.
+
+**Apple Touch Icon (***BUILD-BREAKING***):** `/apple-touch-icon.png` at 180×180 mandatory at root, generated from logo. `<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">` in every page head. Missing icon = build fails.
+
+**Meta Description Strict (***BUILD-BREAKING***):** Every page meta description 120-156 chars HARD LIMIT. Title 50-60 chars HARD LIMIT. Build gate: `node validate-meta.js dist/**/index.html` — count chars (not bytes), fail if outside ranges. Pages without meta desc = fail.
+
+**JSON-LD Count (***BUILD-BREAKING***):** Every page MUST include 4+ JSON-LD `<script type="application/ld+json">` blocks. Required minimum: WebSite + Organization (or LocalBusiness) + WebPage + BreadcrumbList. Sub-pages add: Product (manufacturer), BlogPosting (blog post), FAQPage (faq page), Person (team member), Article (article page). Build gate: count `application/ld+json` in dist HTML, fail if <4 on any indexed page.
+
+**H1 in HTML Shell (***BUILD-BREAKING — SEO***):** SPAs MUST prerender hero H1 + first paragraph + meta into the static `index.html` shell so crawlers see content without executing JS. Use `vite-plugin-prerender-spa` or static `<noscript>` fallback with H1 + business name + brief description. Build gate: `node validate-h1.js dist/index.html` — must find at least one `<h1>` in the raw HTML before any `<script>` tag executes.
+
+**Sitemap lastmod (***BUILD-BREAKING***):** Every `<url>` in `sitemap.xml` MUST include `<lastmod>YYYY-MM-DD</lastmod>` set to build timestamp. Missing lastmod = fail.
+
+**color-scheme Meta (***DARK SITES***):** Sites with dark theme as primary MUST include `<meta name="color-scheme" content="dark light">` so browsers render scrollbars + form controls correctly without flash-of-light.
+
+**JS Code-Splitting (***PERFORMANCE GATE***):** Vite config MUST include `build.rollupOptions.output.manualChunks` splitting React core, UI lib, route bundles. Per-route chunks via `React.lazy()` for any page >50KB. Build gate: largest single .js chunk <250KB gz; total JS <500KB gz.
+
+**DNS Prefetch + Font Preload (***PERFORMANCE — STANDARD***):** `<link rel="dns-prefetch">` + `<link rel="preconnect" crossorigin>` for fonts.googleapis.com, fonts.gstatic.com, www.google-analytics.com. `<link rel="preload" as="font" type="font/woff2" crossorigin>` for primary display + body font. Hero image: `<link rel="preload" as="image" fetchpriority="high">`.
+
+**Custom Hostname Canonical (***SEO***):** When projectsites.dev subdomain represents a real brand with custom domain potential or existing custom hostname, canonical URL MUST point to the custom domain (not the projectsites.dev URL) once domain provisioned. During pre-domain phase: canonical = projectsites.dev URL is acceptable.
+
+**`tel:` in Nav for Local Business (***CONVERSION***):** Local businesses with phone numbers MUST include a `<a href="tel:+...">` in primary navigation desktop + mobile, plus a sticky mobile CTA bar at bottom. Click triggers PostHog `phone_click` + GA4 `tel_click`.
+
 **Cookie Consent / GDPR:** If site targets EU: cookie banner with accept/reject. PostHog `persistence:'memory'` = no cookies (compliant by default). Google Analytics requires consent mode v2 (`gtag('consent', 'default', {analytics_storage:'denied'})` until accepted).
 
 **NAP Consistency (***BUILD-BREAKING***):** Name+Address+Phone must match EXACTLY across: site header, NAPFooter, JSON-LD LocalBusiness, Google Maps embed, contact page, `_gbp_sync.json`. Any divergence = build failure. Automated check in inspect.js: extract NAP from all sources, diff, fail if mismatch.

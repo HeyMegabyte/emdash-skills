@@ -229,6 +229,14 @@ img.save('screenshots/mobile-1080x1920.png')
 [ ] security.txt accessible at /.well-known/security.txt
 [ ] robots.txt references sitemap
 [ ] No Chrome DevTools manifest warnings
-[ ] OG image exists at 1200x630
+[ ] OG image exists at 1200x630 (≤100KB, branded)
+[ ] apple-touch-icon.png at root (180x180, generated from logo)
+[ ] color-scheme meta present (dark|light|dark light)
+[ ] DNS-prefetch + preconnect for fonts/analytics
+[ ] Font woff2 preload for primary display + body fonts
 [ ] All JSON-LD validates at schema.org validator
+[ ] 4+ JSON-LD blocks per page (WebSite + Org/LocalBusiness + WebPage + BreadcrumbList minimum)
+[ ] sitemap.xml every <url> has <lastmod>
+[ ] Lightbox component (src/components/lightbox.tsx) mounted in Layout
+[ ] Major image groups wrapped in [data-gallery="<id>"]
 ```
