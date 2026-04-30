@@ -18,6 +18,12 @@ compatibility:
 **Tier 3 (when appropriate):** CTA micro-interactions, confetti, animated illustrations, ambient motion, easter eggs.
 Anti-slop: each animation serves one purpose — state change, attention direction, or brand reinforcement. Uniform fade-in on everything = red flag.
 
+## animate.css (animate.style) — Tier 0 Pragmatic Default
+When the design calls for a stock entrance/exit (modals, toasts, alerts, dialog reveals), reach for animate.css before hand-rolling @keyframes. ~70KB minified, BSD-licensed, zero JS, drop-in classes. Preferred over custom keyframes for: dialog enter/exit, toast slideIns, attention seekers (pulse/shake on validation errors), entrance staggers.
+Install: `npm i animate.css` → wire global once via `angular.json:styles[]` or `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">` (prefer bundled — no extra DNS hop). Apply via `class="animate__animated animate__zoomIn animate__faster"`. Override duration with `--animate-duration: 0.25s;` on the element or `:root` for global. Programmatic exit: toggle class then `animationend` listener for cleanup.
+Tier mapping: dialog open → `animate__zoomIn` 0.25s | toast → `animate__fadeInUp` 0.3s | error shake → `animate__headShake` | success → `animate__tada` (sparingly) | dialog close → `animate__fadeOut` 0.2s. Pair with `prefers-reduced-motion` block (already in this skill) — animate.css respects `--animate-duration` so the global reset auto-disables.
+NEVER stack 3+ animate.css classes on the same element (collisions); NEVER use the `animate__infinite` modifier on attention seekers without intent.
+
 ## Transition Grammar
 ```css
 :root {
