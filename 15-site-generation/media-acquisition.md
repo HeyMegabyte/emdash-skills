@@ -6,7 +6,7 @@ updated: "2026-04-24"
 
 # Media Acquisition
 
-Collect 10x more assets than needed, curate down via AI visual inspection. A 4-page site needs ***30-50 high-quality images + 3-5 videos + 1 logo + 5-10 AI-generated originals*** minimum. The site must feel media-rich and immersive from the first scroll. Every site MUST have a logo and favicon set. Users should feel like a professional agency spent weeks curating this content.
+Collect 10x more assets than needed, curate down via AI visual inspection. Asset count scales with page count: every page needs **6+ images on home, 4+ images on every sub-page, plus 1 logo + 5–10 AI originals + 3–5 videos**. A 4-page rebuild ⇒ 30–50 images; a 50-page rebuild ⇒ 200+ images; a 500-page rebuild ⇒ 2000+ images. Page count comes from the source sitemap (1:N mapping, max 1000) — NEVER cap media at 4-page-site numbers when source has more. Site must feel media-rich and immersive from the first scroll. Every site MUST have a logo and favicon set. Users should feel like a professional agency spent weeks curating this content.
 
 ## Original Media Extraction (***FIRST STEP — EVERY BUILD WITH A SOURCE SITE***)
 
@@ -17,6 +17,21 @@ Before any stock/AI sourcing, walk the source site and extract EVERYTHING. The o
 **Group preservation (***NEVER FLATTEN — slider images stay sliders***):** When extracting from a slider/carousel/gallery, store images with their group identity intact: `public/images/sliders/{slider-id}/{order-index}-{filename}` and emit a manifest entry `{group: "homepage-hero-slider", order: [...], aspect: "16:9", autoplay: true, interval: 5000}`. The new site rebuilds the same slider with the same images in the same order — never dump grouped sliders into a flat gallery grid.
 
 **1.4x–2.0x augmentation rule (***NEVER FEWER IMAGES THAN ORIGINAL***):** Count original-site images. New site MUST ship `original_count × 1.4` minimum, `× 2.0` typical, `× 3.0` for thin source sites with <10 originals. Augmentation = original media + (Pexels/Unsplash/Pixabay stock matching brand voice) + (DALL-E 3 / GPT Image 1.5 originals matching extracted brand style — see DALL-E priority below) + (Google CSE image search for context shots). The deployed site should always feel richer, never sparser, than the source.
+
+**Multimedia Agent Integration (***FIRST-CLASS PARALLEL AGENTS — every build runs all 4 in parallel during Phase 0***):** Pexels, Google CSE, DALL-E 3, and Original-Site Crawler are first-class media agents — not optional fallbacks. Spawn all 4 in parallel as the first action of every build (before template clone, before any code). Each agent writes to `_assets/{agent}/` with metadata; main thread merges + dedupes via md5 + AI-rates via Workers AI Llama Vision (free) + curates final set.
+
+| Agent | Trigger | Min Output | Parallel Calls | Notes |
+|-------|---------|------------|----------------|-------|
+| **Pexels** | `PEXELS_API_KEY` set | 8 stills + 3 videos/site | 4-6 queries (`{type} interior`, `{type} {city}`, `{service} professional`, `{atmosphere}`) | Free commercial license; Workers AI rates relevance |
+| **Google CSE** | `GOOGLE_CSE_KEY`+`GOOGLE_CSE_CX` set | 5 context shots | 3-5 queries (`"{name}" {city}`, `"{name}" team`, `"{name}" exterior`, `{neighborhood} {type}`) | Filter `rights=cc_publicdomain,cc_attribute,cc_sharealike`; verify license before download |
+| **DALL-E 3** | `OPENAI_API_KEY` set | 5 originals/site | 5 generations (1 hero HD 1024×1792 + 3 sections 1024×1024 + 1 OG 1024×1024) | PRIMARY for AI imagery — Brian's stated preference; ultra-real photography mode + creative narrative mode |
+| **Original-Site Crawler** | source URL provided | every page crawled | Playwright concurrency 6, 1000-page cap | Walk all media types: img/picture/CSS bg/sliders/lazy/og:image/PDFs |
+
+**Two DALL-E modes (***use heavily — both modes per site***):** (1) **Ultra-real photography mode** — `"Photorealistic [scene depicting page topic], [extracted brand color palette from _brand.json], [logo style adjective], shot on Hasselblad, golden hour, 85mm prime lens, no text/logos, hyperdetailed, cinematic"` for hero backgrounds, service illustrations, atmospheric textures. (2) **Creative narrative mode** — when source has unique brand story OR original artwork OR strong logo motif, generate scene-by-scene narrative imagery extending that visual world (e.g. lonemountainglobal.com mountain motif → narrative scenes featuring mountains in different contexts: dawn climb, summit view, valley basecamp). Pair narrative scenes with site copy beats so imagery tells a story across sections rather than feeling decorative. ~$0.04-0.08/image, total $0.30-0.50/site.
+
+**Sora video agent (***when OPENAI_API_KEY present***):** Generate 1-2 short narrative video loops per site (5-10s, muted, autoplay) for hero backgrounds. Cost ~$0.20-0.40 each. Pair with same brand palette + narrative thread as DALL-E originals. Falls back to Pexels Video API loops when Sora unavailable.
+
+**Image count scales with sitemap (***NEVER cap at 4-page-site numbers***):** Required count = `max(30, original_image_count × 1.4, page_count × 6_home_or_4_sub)`. 4-page rebuild ⇒ ≥30 images, 50-page ⇒ ≥200, 500-page ⇒ ≥2000. Source sitemap.xml is ground truth; cap at 1000 pages. The pipeline that promised "4-8 page rebuild with 30+ images" but delivered ~15% of that is a build failure — every page must hit its image floor before "done".
 
 **DALL-E first for originals (***Brian's stated preference — use it a lot***):** When generating original imagery, use DALL-E 3 (via OpenAI Images API) as the primary engine — superior text rendering, brand-style adherence, and photorealistic results vs alternatives. Generate 3-5 hero variants per major section. Prompt template: `"Photorealistic [scene], [extracted brand color palette], [logo style adjective from logo extraction], shot on Hasselblad, golden hour, 85mm, no text, no logos, hyperdetailed, cinematic"`. Cost: ~$0.04-0.08/image (HD 1024×1792). Reserve GPT Image 1.5 for fast iteration, Stability AI for textures/patterns, Sora for short videos.
 
