@@ -100,16 +100,27 @@ Every image in assets/ MUST appear on the site. Every fact must come from resear
 - NEVER hardcode hex colors — always reference _brand.json or CSS custom properties
 - NEVER guess colors from business category — the njsk.org burgundy incident
 
-### Logo Extraction (***MANDATORY — NEVER SKIP***)
+### Logo Extraction (***MANDATORY — NEVER SKIP — KEEP ORIGINAL IN ALMOST ALL CASES***)
 - Phase 0 research pipeline MUST extract the official logo from the existing website
-- Extraction order: (1) <img> in <header>/<nav> with "logo" in src/alt/class (2) og:image meta tag (3) site banner/hero image with org name (4) favicon/apple-touch-icon (5) Squarespace/WordPress theme logo selectors
+- Extraction order (***walk ALL of these — never stop at the first hit; gather all candidates and pick highest-quality***): (1) `<img>` in `<header>/<nav>` with "logo"|"brand"|"site-logo"|"custom-logo-link" in src/alt/class (2) `<link rel="icon">` + `<link rel="apple-touch-icon">` + `<link rel="mask-icon">` (3) `<meta property="og:image">` + `<meta name="msapplication-TileImage">` (4) WordPress `wp-content/uploads/*/logo*` + `wp-content/themes/*/images/logo*` (5) Squarespace `header-title-logo img, .Header-logo img` (6) Wix `[data-mesh-id*="LOGO"] img` (7) site banner/hero with org name (8) favicon.ico (root + `/favicon.ico`) (9) Wayback Machine snapshot if live site is down
 - Download logo image to assets/logo.{ext} — preserve original format (WebP/PNG/SVG preferred)
 - Generate sized variants: logo-header.png (max 200px height for nav), logo.png (full size for OG/hero), logo-favicon.ico (32x32+16x16)
 - If original is WebP: convert to PNG via sips/sharp/imagemagick for broad compatibility
 - Logo MUST appear in: header nav (every page), footer, OG image, JSON-LD logo field, favicon
 - NEVER substitute SVG placeholder icons for the real logo — the njsk.org soup-bowl-SVG incident
+- ***Original-asset retention default:*** when source logo is professional (GPT-4o vision quality score ≥7/10), KEEP it verbatim. Replacement requires explicit user instruction OR quality <7/10. Brand equity > AI novelty. The lonemountainglobal.com 2026-04-30 incident: rebuild shipped without the original logo because extraction stopped at the header `<img>` and didn't walk og:image / `<link rel="icon">` / wp-content paths
 - If no logo found on website: check Google Places photos, social media profile images, Brandfetch API, logo.dev API — exhaust ALL sources before generating one
 - Logo colors inform brand palette extraction: dominant color→primary, secondary accent→secondary
+- ***Background-asset-from-logo extraction (LMG mountain-splash pattern):*** when logo contains a strong graphic motif (mountain, wave, leaf, geometric mark), crop the icon-only region (`magick logo.png -alpha extract -trim +repage`), upscale 2-4x via Real-ESRGAN/DALL-E variation, save as `assets/brand-splash.png` (full-bleed hero bg) + `assets/brand-mark.png` (favicon source). Pair with logo's matched font for cohesive design. See skill 09 §3a + skill 12/15 media-acquisition.md
+- ***Font matching from logo:*** GPT-4o vision identifies logo font → maps to closest Google Font → site uses that as `--font-heading` site-wide. Same hand drew the logo and the headlines
+
+### Favicon Pipeline (***real-favicongenerator MANDATORY — every site, every build***)
+- Run real-favicongenerator (API preferred when `REAL_FAVICON_GENERATOR_API_KEY` set, ImageMagick fallback otherwise) on the icon-only logo region (extract icon from lockup if needed)
+- MUST produce: favicon.ico, favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png (180×180), android-chrome-192x192.png, android-chrome-512x512.png, mstile-*.png set, safari-pinned-tab.svg, site.webmanifest, browserconfig.xml — 9 files minimum in `public/`
+- Inject the generated `<head>` snippet into `index.html` verbatim
+- Hard gate: `ls public/ | grep -E '(favicon|apple-touch|android-chrome|safari-pinned|site\.webmanifest|browserconfig)' | wc -l` must be ≥9; missing = build incomplete
+- See skill 12/15 media-acquisition.md "Favicon Set" for full pipeline
+- The lonemountainglobal.com 2026-04-30 incident: rebuild shipped without favicons because real-favicongenerator was never invoked — now it is a hard gate
 
 ### Pages (***match original site structure — NEVER reduce page count***)
 - Homepage: hero with brand image + gradient overlay, selling points grid, about preview, testimonials, FAQ, CTA

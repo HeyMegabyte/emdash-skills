@@ -141,6 +141,18 @@ Donation/payment: STRIPE_PAYMENT_LINK_URL (for DonationForm component, nonprofit
 
 **Government/institutional:** Clean navigation for dense content, accessibility-first, multi-language support, document library, news/press section, org chart, service finder.
 
+## Post-Build Self-Improvement Loop (***MANDATORY — every site, every prompt***)
+
+After ANY site build is declared "done", run a structured improvement scan and feed findings back into the local skills/template repos. This is the meta-learning loop — every shipped site makes the next one better.
+
+**Scan process (***runs automatically, no user prompt required***):** (1) Playwright + GPT-4o detail:low against the deployed URL — score 10 dimensions vs the source site (visual quality, brand fidelity, media density, motion sophistication, content depth, SEO completeness, a11y, performance, mobile polish, distinctiveness); each dimension 0-10 with `gap_notes[]`; (2) For each gap_notes entry, classify as `local-skill-gap` (fixable by editing this project's `.claude/`) vs `universal-skill-gap` (fixable by editing `~/.agentskills/`) vs `template-gap` (fixable in `megabytespace/template.projectsites.dev` or `saas-starter`) vs `one-off` (project-specific, no skill change); (3) Auto-edit the appropriate file with a dense pipe-delimited rule addition (match sibling density per Brian's preferences). The rule must include the project name + date as the citation incident (e.g. "lonemountainglobal.com 2026-04-30 — original logo/favicon dropped because extraction stopped at header img"); (4) For `template-gap` items, push commit to the template repo same prompt; (5) Record decision log to `.claude/improvements/{date}.md` so the user can review what was learned.
+
+**LMG case study (***reference incident, 2026-04-30***):** Source was lonemountainglobal.com (high-quality light theme, mountain-splash background extracted from logo, polished serif wordmark, slider-driven homepage, CV PDF on /about). First build shipped: dark theme (wrong — source was light), no logo (extraction stopped at header img instead of walking to og:image / wp-content / link rel=icon), no favicon set (real-favicongenerator not run), zero images on the entire site (slider/carousel images skipped), no PDF preserved, no font matching, no background-mark extraction. Fixes seeded into skills 09 + 12 + 15 (theme matching, logo extraction chain, real-favicongenerator gate, slider/carousel walker, background-from-logo extraction, font matching from logo, document preservation, 1.4-2.0x media augmentation, DALL-E primary, post-build self-improvement loop). Same gap will not recur.
+
+## Homepage Clone Directive (***WHEN USER SAYS SO — clone, then improve***)
+
+When the user explicitly says "clone the homepage" or "base the design on theirs" (or the source homepage scores ≥9/10 in the visual quality scan), the rebuild must (a) match the source homepage section-by-section (hero, hero-motif placement, font pairing, color usage, motion choreography, slider/gallery cadence), (b) keep the original logo + favicon + brand-extracted assets verbatim, (c) propagate the homepage's design language to all sub-pages with consistency, (d) add genuine improvements only where the source has clear weaknesses (mobile responsiveness, a11y, performance, missing trust elements, weak CTAs). Never "improve" what is already excellent — preserve it. The lonemountainglobal.com homepage with mountain-splash + serif logo + animated motif is the canonical "great source" pattern.
+
 ## Credit Discipline (***NON-NEGOTIABLE***)
 
 Never waste API credits on speculative builds. If error: reduce to simplest reproducible state first. Fix issues as separate minimal tests. Only trigger full builds when pipeline proven working.
