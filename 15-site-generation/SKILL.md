@@ -140,13 +140,49 @@ R2 credentials: CF_API_TOKEN, CF_ACCOUNT_ID, R2_BUCKET_NAME, SITE_SLUG, SITE_VER
 
 Donation/payment: STRIPE_PAYMENT_LINK_URL (for DonationForm component, nonprofit/church sites).
 
+## One-Line Prompt → Mode → Build (***mode set by skill 02***)
+
+Skill 02 infers `mode` (portfolio | saas | local-business | non-profit | other) from prompt+domain+context. Skill 15 builds per mode — each mode has different defaults for page count, feature set, content depth, and prompt-detail expectations. The prompt CAN handle anything; mode just biases defaults.
+
+**Detail expected in one-line prompt by mode:**
+- `portfolio`: minimal — domain + maybe a hint ("redo my website", "build me a portfolio at brian.dev", or just the domain). AI fills everything from inference (git config + GitHub + Gravatar + skill 02 founder chain).
+- `saas`: richer — product name + at minimum a 1-sentence value prop. Often includes pricing, target market, integrations, competitors. AI infers stack defaults from skill 05.
+- `local-business`: moderate — biz name + location/category. AI fills via Google Places + scrape.
+- `non-profit`: moderate — mission + cause. AI fills via scrape + donation CTA scaffolding.
+- `other`: variable — AI applies judgment, scans context, picks defaults.
+
+When prompt is genuinely ambiguous, AI defaults to `portfolio` (lowest blast radius) and announces the assumption in `PROJECT_BRIEF.md § Mode`.
+
+## Optional SaaS↔Portfolio Sibling Build (***RECOMMENDED, NOT BLIND***)
+
+When mode=`saas` AND skill 02 founder-pairing decision returns "spawn portfolio", skill 15 runs a SECOND parallel workflow instance for the founder portfolio. Same applies in reverse for mode=`portfolio` if a flagship SaaS exists. Pairing is judgment-driven — see skill 02 "Optional SaaS↔Portfolio Pairing" for the full skip/spawn matrix.
+
+**D1 schema (when paired):** `sites` table gains `pair_group_id TEXT` (UUID) + `pair_role TEXT CHECK(pair_role IN ('saas','portfolio'))`. Both sibling rows share `pair_group_id`. Solo builds leave both columns NULL. Worker `/api/sites/:id/siblings` returns partner row when present.
+
+**Sibling build pipeline (only when pairing decision = spawn):**
+1. `/api/sites/create` receives one-line prompt → skill 02 infers mode + founder + pairing decision → if spawn: write TWO D1 rows sharing `pair_group_id` → enqueue both into workflow runner. If skip: one row, NULL pair fields.
+2. Workflow `site-generation` accepts optional `pair_role` arg. SaaS branch: full skill 15 pipeline + portfolio link injected into `/about` + footer credit. Portfolio branch: condensed personal-site pipeline (4-page floor: `/`, `/about`, `/work`, `/contact`) — `/work` flagship #1 = paired SaaS, cross-link via `pair_group_id` lookup.
+3. Both branches share: `_brand.json` accent (founder accent if known, else SaaS color desaturated 20%), `_founder.json` (single source of truth for headshot/bio/links), `_pair.json` (sibling URLs).
+4. Domains: SaaS = `${product}.com|.dev|.app` (or `${product}.projectsites.dev` fallback). Portfolio = `${firstname}.dev` → `${firstname}-${lastname}.dev` → `${firstname}.megabyte.space` fallback chain.
+5. Cross-link gate (paired only): build VALIDATES SaaS `/about` HTML contains portfolio URL AND portfolio `/work` HTML contains SaaS URL — fail otherwise.
+
+**Founder portfolio template (always-included routes when portfolio mode runs):** `/` hero with name+role+headshot+1-line bio+CTA "View work →" | `/about` long bio + skills + timeline + contact | `/work` flagship grid (SaaS sibling auto-prepended as #1 when paired) + case studies | `/contact` form + email + social links | optional `/blog` (if founder has posts) + `/now` (Derek Sivers /now-page convention) + `/uses` (gear/stack page).
+
+**Portfolio brief enrichment (when `_founder.json` is sparse):**
+- Bio drafted from prompt context + `git config user.email` lookup (Gravatar bio) + GitHub profile fetch (if `github.com/${handle}` resolves).
+- Headshot: Gravatar (`https://gravatar.com/avatar/${md5(email)}?s=512&d=404`) → GitHub avatar → DALL-E 3 stylized portrait (last resort, alt clearly states "stylized representation").
+- Social links: discovered via skill 09 brand extraction over founder's email handle on GitHub/LinkedIn/Twitter/X/Bluesky/Mastodon.
+- Skills: inferred from paired SaaS stack + git history + GitHub repos + bio keywords.
+
+**Pairing skip cases (no portfolio sibling spawned — judgment call):** mode=`portfolio` already (single site is the goal) | internal-only SaaS with no external founder narrative | explicit `--no-portfolio` API flag | founder identity generic/anonymous | polished founder portfolio already exists and resolves (200 OK at expected domain) | budget/scope makes second build wasteful. Decision recorded in `PROJECT_BRIEF.md § Pairing Decision`.
+
 ## Site Types Supported
 
 **Local business:** Restaurant, salon, medical, legal, fitness, automotive, construction, photography, real estate, education, financial, cafe, retail. Category-specific features loaded from domain-features.md.
 
-**SaaS:** Feature comparison tables, pricing tiers (3-column), integrations grid, API documentation page, changelog, status page link, trust badges (SOC2, GDPR), free trial CTA, demo video hero.
+**SaaS:** Feature comparison tables, pricing tiers (3-column), integrations grid, API documentation page, changelog, status page link, trust badges (SOC2, GDPR), free trial CTA, demo video hero. ***Considers founder-portfolio pairing per skill 02 — recommended when founder is identifiable, never blind.***
 
-**Portfolio:** Masonry project grid, case study pages, client logos, testimonials carousel, skills/tech stack, resume/CV page, contact form with project brief fields.
+**Portfolio:** Masonry project grid, case study pages, client logos, testimonials carousel, skills/tech stack, resume/CV page, contact form with project brief fields. Default mode for personal sites and "redo my website" rebuilds — minimal prompt detail expected, AI fills via founder inference chain.
 
 **Non-profit:** Donation CTA (prominent, multiple placements), impact counters (animated), volunteer signup, event calendar, newsletter signup, partner logos, annual report highlights, mission statement hero.
 

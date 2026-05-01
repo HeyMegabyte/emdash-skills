@@ -89,33 +89,68 @@ GEO layer: quotable answer blocks 40-60 words, FAQPage+HowTo schema → AI citat
 
 Before major decisions: Aligned with thesis? Target users? Business model? Success criteria? Not in non-goals? Within constraints? Any fail → adjust implementation or escalate.
 
-## SaaS+Portfolio Pairing (***ALWAYS — universal rule***)
+## One-Line Prompt Mode Inference (***FIRST DECISION — every brief***)
 
-Every SaaS one-line prompt auto-spawns a SIBLING personal portfolio/about site for the founder/creator on a separate domain. Same session, same quality bar, parallel build via skill 15. Brief MUST capture both: (1) SaaS product brief and (2) Founder Portfolio brief in section `## Founder` of `PROJECT_BRIEF.md`.
+Every one-line prompt routes to ONE primary mode. The prompt CAN handle anything; mode just biases defaults — copy length, page count, feature defaults, expected detail in the prompt itself.
+
+| Mode | Trigger signals | Detail expected in prompt | Default page count | Auto-features |
+|------|-----------------|---------------------------|--------------------|--------------|
+| `portfolio` | `${firstname}.dev`/`${name}.com` personal domain, "redo my website", "rebuild ${url}", short prompt with no product noun | Minimal — domain + maybe a hint | 4 (`/`, `/about`, `/work`, `/contact`) +`/blog` if posts exist | Headshot, bio, work grid, contact form, social links |
+| `saas` | Product/app/platform noun, pricing mentioned, target market named, integrations cited, auth/billing implied | Richer — features, tiers, ICP, competitors often in-prompt | 6-12 (`/`, `/features`, `/pricing`, `/integrations`, `/docs`, `/blog`, `/changelog`, `/about`, `/contact`, legal) | Pricing table, feature comparison, Stripe checkout stub, Clerk auth stub, free-trial CTA, demo video, status page link |
+| `local-business` | Restaurant/salon/medical/legal/etc. category, physical address, phone#, "near me" intent | Moderate — biz name + location + category | 4-8 (`/`, `/services`, `/about`, `/contact`, `/menu`/`/team`/`/gallery` per category) | Google Places enrichment, NAP footer, map embed, hours block, sticky phone CTA, review surface |
+| `non-profit` | Donation/fundraise/give nouns, mission language, 501(c)(3), volunteer mentions | Moderate — mission + cause | 5-9 (`/`, `/mission`, `/programs`, `/volunteer`, `/donate`, `/events`, `/blog`, `/contact`) | Donation CTA prominent, impact counters, volunteer signup, partner logos |
+| `other` | Anything ambiguous, dev tool, OSS project, marketing site, documentation, blog | Variable — AI judgment | 4-6 default, scale to source-site mirror if rebuilding | AI picks features per scan |
+
+**Mode inference rules:**
+1. Read the prompt verbatim — note nouns, verbs, domain hints, brand mentions, URL references.
+2. If domain matches `~portfolio$|^${firstname}\.(dev|com|me)$|^${firstname}-${lastname}\..*` or prompt is "redo ${url}" with no product framing → `portfolio`.
+3. If prompt names a product + features OR pricing OR auth OR billing OR integrations → `saas`.
+4. If category fits Google Places taxonomy + has address → `local-business`.
+5. If donation/mission/501c3/volunteer keywords → `non-profit`.
+6. Otherwise → `other` and let AI pick from category-specific defaults in skill 15.
+7. Mode is biased default, not lock-in — AI overrides with judgment if signals are mixed (record decision in `PROJECT_BRIEF.md § Mode`).
+
+## Optional SaaS↔Portfolio Pairing (***RECOMMENDED — never blind***)
+
+When mode=`saas` AND a founder identity is reliably inferable AND no polished founder portfolio exists, the AI SHOULD propose a sibling portfolio build on a separate domain. Same applies in reverse: when mode=`portfolio` AND the founder has a flagship SaaS in flight, the portfolio MUST link to it. Pairing is a recommendation surface — apply judgment every time.
 
 **Founder identity inference (in priority order):**
-1. Explicit prompt mention (`built by X`, `for founder Y`)
+1. Explicit prompt mention (`built by X`, `for founder Y`, `${name} is making`)
 2. `~/emdash-projects/PORTFOLIO.md` (Brian's master profile)
-3. `git config user.name` + `git config user.email`
-4. Existing portfolio site at `${name}.megabyte.space` or `${firstname}.dev`
+3. `git config user.name` + `git config user.email` (then Gravatar+GitHub lookup)
+4. Existing portfolio at `${firstname}.dev` / `${name}.megabyte.space` (200 OK = exists, prefer linking over rebuilding)
 5. Default: Brian Zalewski / brian@megabyte.space / Megabyte Labs
 
-**Portfolio brief auto-fields (Section `## Founder` in PROJECT_BRIEF.md):**
-- `founder.name` | `founder.role` | `founder.bio_short` (≤140 chars) | `founder.bio_long` (≤500 words)
+**When to PROPOSE pairing (not all four required, judgment call):**
+- Confidence in founder identity ≥0.7 (explicit mention or polished GitHub profile resolves)
+- No existing portfolio at `${firstname}.dev` or polished one already linked from SaaS
+- SaaS is external-facing (consumer or B2B sold), not internal-only
+- Budget/scope allows a second build (one extra Bolt artifact ≈$5-7 Tier 3, ≈$0.40 Tier 1 templated)
+- Founder has at least 2 flagship works to populate `/work` (SaaS + 1 prior) — single-flagship portfolios feel thin
+
+**When to SKIP pairing (any one suffices):**
+- Prompt explicitly forbids (`--no-portfolio`, "just the SaaS")
+- Founder identity = Anonymous/Generic with no signal
+- SaaS is internal-only (intranet, employee tool, no external founder narrative)
+- Polished founder portfolio already exists and is linked
+- Source-rebuild ("redo ${url}") with no product framing — that's pure portfolio mode, not pairing
+
+**Founder Portfolio brief auto-fields (Section `## Founder` in PROJECT_BRIEF.md when paired):**
+- `founder.name` | `founder.role` | `founder.bio_short` (≤140ch) | `founder.bio_long` (≤500w)
 - `founder.email` | `founder.location` | `founder.timezone`
 - `founder.links[]`: github, linkedin, x, mastodon, bluesky, youtube, other
-- `founder.portfolio_domain`: defaults `${firstname}.dev` → fallback `${firstname}-${lastname}.dev` → fallback `${firstname}.megabyte.space`
-- `founder.flagship_works[]`: { name, url, summary, year } — SaaS being built auto-prepended as flagship #1
-- `founder.skills[]` | `founder.testimonials[]` (if available) | `founder.headshot_url` (Gravatar fallback)
+- `founder.portfolio_domain`: `${firstname}.dev` → `${firstname}-${lastname}.dev` → `${firstname}.megabyte.space` fallback chain
+- `founder.flagship_works[]`: { name, url, summary, year } — paired SaaS auto-prepended as flagship #1
+- `founder.skills[]` | `founder.testimonials[]` (if available) | `founder.headshot_url` (Gravatar+GitHub+DALL-E fallback chain — see skill 15)
 
-**Pairing rules baked into PROJECT_BRIEF.md template:**
-- SaaS site `/about` page MUST link to founder portfolio via "Built by {founder.name}" CTA + headshot
-- SaaS site footer MUST credit "Built by {founder.name} · {portfolio_url}"
-- Portfolio site MUST link back to SaaS as "Currently building" / flagship project
-- Both sites share `founder.headshot_url` + `founder.bio_short` (consistency)
-- D1 sites table: parent `site_id` (SaaS) + sibling `child_site_id` (portfolio), linked via `pair_group_id` UUID
+**Pairing cross-link contract (when paired):**
+- SaaS `/about` MUST include "Built by {founder.name}" with headshot + portfolio link
+- SaaS footer MUST credit "Built by {founder.name} · {portfolio_url}"
+- Portfolio `/work` MUST list paired SaaS as flagship #1 with link
+- Both sites share `founder.headshot_url` + `founder.bio_short` (visual+voice consistency)
+- D1 `sites` table: shared `pair_group_id` UUID + `pair_role` ∈ ('saas','portfolio')
 
-Skip ONLY when product type is itself a portfolio (already founder-owned site) or pure internal tool (no external founder narrative).
+**Pairing decision documented:** `PROJECT_BRIEF.md` MUST contain `## Pairing Decision` section with: (1) mode detected, (2) pairing proposed yes/no, (3) reason, (4) sibling URL if spawned. Auditable trail.
 
 ## Storage & Format
 
