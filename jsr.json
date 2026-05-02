@@ -1,5 +1,5 @@
 {
-  "name": "@megabytespace/claude-skills",
+  "name": "@heymegabyte/claude-skills",
   "version": "7.2.1",
   "description": "14-category autonomous product-building OS for AI coding tools. One-line prompts to deployed products on Cloudflare Workers.",
   "exports": {

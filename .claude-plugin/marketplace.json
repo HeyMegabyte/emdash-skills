@@ -4,7 +4,7 @@
   "description": "14-category autonomous product-building OS. One-line prompts to deployed SaaS on Cloudflare Workers. 94 reference docs, 18 specialized agents, 12 templates.",
   "version": "7.2.1",
   "author": "Brian Zalewski",
-  "repository": "https://github.com/megabytespace/claude-skills",
+  "repository": "https://github.com/heymegabyte/claude-skills",
   "homepage": "https://claude.megabyte.space",
   "license": "Rutgers",
   "categories": ["development", "deployment", "testing", "design"],
@@ -23,6 +23,6 @@
   },
   "install": {
     "type": "github",
-    "repo": "megabytespace/claude-skills"
+    "repo": "heymegabyte/claude-skills"
   }
 }

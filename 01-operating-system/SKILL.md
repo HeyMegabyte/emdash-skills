@@ -79,7 +79,7 @@ Agent team structure: Team Lead (claude-opus-4-6)→plans+coordinates|Frontend A
 
 Worktree isolation: each parallel agent gets isolated git worktree via `git worktree add`. File ownership enforced: frontend owns `src/app/`, backend owns `src/api/`. Test agents never modify app code. Deploy runs AFTER all builds complete. Context>60%→save progress.md→spawn fresh agent.
 
-SubagentStop hooks: stop hook at `~/.claude/hooks/` auto-commits+pushes skill/memory changes to megabytespace/claude-skills after every session. Triggers on session end with uncommitted changes.
+SubagentStop hooks: stop hook at `~/.claude/hooks/` auto-commits+pushes skill/memory changes to heymegabyte/claude-skills after every session. Triggers on session end with uncommitted changes.
 
 ## Model IDs (Current)
 claude-opus-4-6 (architecture/security/planning/visual-qa)|claude-sonnet-4-6 (implementation/debugging/testing/deployment)|claude-haiku-4-5-20251001 (formatting/changelog/content/simple review). Never use opus for single-file edits or formatting. Never use haiku for architecture or complex logic.
@@ -122,7 +122,7 @@ Never modify >3 skill files per prompt without user awareness|never change confl
 
 ## Self-Improving System (ALWAYS ACTIVE)
 
-Signals: correction→feedback memory|"always/never"→prefs/rules|new tool→tech_preferences|design change→skill 10|silence→confirmed|3x repeat→promote to skill|new capability→create submodule|new requirement→SPEC+E2E test. Updates: memory=prefs/feedback/state|skill submodules=patterns/decisions|rules=only if every-prompt (keep <1100 tokens total)|CLAUDE.md=structural only (rare)|agents=new types|settings.json=confirm first. Emdash projects (~/emdash-projects/): each must have CLAUDE.md+README.md+E2E tests for deployed features. Stop hook auto-commits+pushes skill/memory changes to megabytespace/claude-skills after every session.
+Signals: correction→feedback memory|"always/never"→prefs/rules|new tool→tech_preferences|design change→skill 10|silence→confirmed|3x repeat→promote to skill|new capability→create submodule|new requirement→SPEC+E2E test. Updates: memory=prefs/feedback/state|skill submodules=patterns/decisions|rules=only if every-prompt (keep <1100 tokens total)|CLAUDE.md=structural only (rare)|agents=new types|settings.json=confirm first. Emdash projects (~/emdash-projects/): each must have CLAUDE.md+README.md+E2E tests for deployed features. Stop hook auto-commits+pushes skill/memory changes to heymegabyte/claude-skills after every session.
 
 ## Fractal Expansion (***SUPREME***)
 

@@ -1,5 +1,5 @@
 {
-  "name": "@megabytespace/claude-skills",
+  "name": "@heymegabyte/claude-skills",
   "version": "7.2.1",
   "description": "14-category autonomous product-building OS for AI coding tools. One-line prompts → deployed products on Cloudflare Workers.",
   "author": {
@@ -10,7 +10,7 @@
   "homepage": "https://claude.megabyte.space",
   "repository": {
     "type": "git",
-    "url": "https://github.com/megabytespace/claude-skills.git"
+    "url": "https://github.com/heymegabyte/claude-skills.git"
   },
   "license": "SEE LICENSE IN LICENSE",
   "bin": {
