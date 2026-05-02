@@ -26,6 +26,6 @@ After EVERY response, render directly in text output as styled markdown:
 
 **Config:** {list each ~/.agentskills/ and ~/.claude/ file edited + brief summary; "none" if nothing}
 **Repos:** {list each non-current repo modified + brief summary; "none" if nothing}
-**Links:** [Repo]({url}) · [CF]({url}) · [Skills](https://github.com/megabytespace/claude-skills)
+**Links:** [Repo]({url}) · [CF]({url}) · [Skills](https://github.com/heymegabyte/claude-skills)
 ```
 Config/Repos lines ALWAYS present (print "none" if no changes). Every URL: FULL deeplinked. Also run `source ~/.claude/hooks/prompt-report.sh && emdash_report` via Bash (bg).
