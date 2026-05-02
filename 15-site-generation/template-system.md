@@ -129,22 +129,26 @@ Local business sites need components SaaS templates don't have. These are pre-bu
 
 **AddressBlock.tsx:** Bordered card with map-pin SVG, three size variants. Props: `lines: string[]; label?: string; mapsQuery?: string; mapsMode?: 'dir'|'search'; size?: 'sm'|'md'|'lg'`. `mapsMode='dir'` → `https://www.google.com/maps/dir/?api=1&destination=<urlencoded>` (default for street addresses), `'search'` → `https://www.google.com/maps/search/?api=1&query=<urlencoded>` (PO Boxes / no-direction-target). `size='sm'` indented hint-text 14px, `'md'` bordered card 16px (default), `'lg'` hero block 20px+. Wraps every line in the maps anchor with `target="_blank" rel="noopener"`. The whole tile is the click target (per always.md "tile-as-link" rule), not just inner text.
 
-**Lightbox.tsx (capture-restore handshake — fixes scroll-to-top bug):** YARL portal mount with body-scroll-lock. ALWAYS capture scrollY BEFORE setting open state, restore on close. Pattern:
+**Lightbox.tsx (overflow-lock + viewport-fixed root — fixes lightbox-renders-at-page-top bug):** YARL portal mount with `overflow:hidden` body lock + scrollbar-gutter compensation + forced `position:fixed; inset:0; zIndex:9999` on YARL root. NEVER use the `body.style.position='fixed'; top=-${scrollY}` shift pattern — YARL's portal child resolves its `position:fixed` against the displaced body's containing block when body is itself fixed, causing the lightbox to render anchored to the page-top (offset by `-scrollY`) instead of the viewport. The user sees the dialog "at the top of the page, can't scroll to it." Correct pattern:
 ```tsx
-const scrollYRef = useRef(0);
-const onOpen = (i:number) => { scrollYRef.current = window.scrollY; setIndex(i); setOpen(true); };
 useEffect(() => {
   if (!open) return;
-  const html = document.documentElement; const body = document.body;
-  const prevScrollBehavior = html.style.scrollBehavior; html.style.scrollBehavior = 'auto';
-  body.style.position = 'fixed'; body.style.top = \`-\${scrollYRef.current}px\`; body.style.width = '100%';
+  const body = document.body; const html = document.documentElement;
+  const scrollbarWidth = window.innerWidth - html.clientWidth;
+  const original = { overflow: html.style.overflow, bodyOverflow: body.style.overflow, paddingRight: body.style.paddingRight, scrollBehavior: html.style.scrollBehavior };
+  html.style.scrollBehavior = 'auto';
+  html.style.overflow = 'hidden'; body.style.overflow = 'hidden';
+  if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
   return () => {
-    body.style.position = ''; body.style.top = ''; body.style.width = '';
-    window.scrollTo(0, scrollYRef.current); html.style.scrollBehavior = prevScrollBehavior;
+    html.style.overflow = original.overflow; body.style.overflow = original.bodyOverflow;
+    body.style.paddingRight = original.paddingRight; html.style.scrollBehavior = original.scrollBehavior;
   };
 }, [open]);
+// YARL props:
+// portal={{ root: document.body }}
+// styles={{ root: { '--yarl__color_backdrop': 'rgba(8,0,12,0.94)', position: 'fixed', inset: 0, zIndex: 9999 } }}
 ```
-Without `scrollBehavior='auto'` override, smooth-scroll CSS pulls page to top on close. Without capture-BEFORE-setOpen, YARL's portal+focus-management has already moved scroll position by the time the effect runs. Mount in Layout, wrap ALL major image groups with `[data-gallery="<id>"]` (services|gallery|team|blog hero|testimonials|before-after). Bundle MUST contain `data-zoomable` AND `data-gallery` strings (verified by build_validators.ts). Lightbox-eligible: `kind!=logo AND dims≥1024×768 AND quality_score≥7` — logo grids use grayscale→color hover instead.
+The `paddingRight = scrollbarWidth` compensation prevents content reflow when the vertical scrollbar disappears. The `scrollBehavior='auto'` override defeats any global `html { scroll-behavior: smooth }` that would interfere when state changes around open/close. Mount in Layout, wrap ALL major image groups with `[data-gallery="<id>"]` (services|gallery|team|blog hero|testimonials|before-after). Bundle MUST contain `data-zoomable` AND `data-gallery` strings (verified by build_validators.ts). Lightbox-eligible: `kind!=logo AND dims≥1024×768 AND quality_score≥7` — logo grids use grayscale→color hover instead. Reference fix: njsk.org 2026-05-01 — initial body-shift pattern caused dialog to render at page-top; corrected to overflow-lock + viewport-fixed root.
 
 **FullWidthMap.tsx (route-conditional, per skill 15 §Quality Bar(2)):** Used ONLY on dedicated `/contact` AND `/mass-schedule` (or equivalent location-pages). Full-bleed (breaks out of `max-w-*` containers via negative margin or `100vw` width), 560px height, `loading="lazy"`, `referrerpolicy="no-referrer-when-downgrade"`. Embed src: `https://www.google.com/maps/embed?pb=...` from research geo. Below map: `<AddressBlock size="lg">` + `Get Directions →` deep link + hours grid. NEVER use this on home/about/services — those use `<MapEmbed>` with `max-w-*` container per skill 10 §Local Business or `<StylizedMap>` SVG thumbnail.
 
