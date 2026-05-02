@@ -72,12 +72,12 @@ IntersectionObserver-driven reveal animations cause a visible→invisible→fade
 
 `src/index.css`:
 ```css
-html.js-reveal-active main section,
+html.js-reveal-active main section:not(:has(.hero-rise)),
 html.js-reveal-active main [data-reveal] {
   transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-html.js-reveal-active main section:not(.reveal-visible):not(.no-reveal),
+html.js-reveal-active main section:not(.reveal-visible):not(.no-reveal):not(:has(.hero-rise)),
 html.js-reveal-active main [data-reveal]:not(.reveal-visible) {
   opacity: 0;
   transform: translateY(24px);
