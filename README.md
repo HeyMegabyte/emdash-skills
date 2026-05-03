@@ -18,7 +18,7 @@
 <br/>
 
 <div align="center">
-  <code>15 categories</code> · <code>113 reference docs</code> · <code>19 agents</code> · <code>12 templates</code><br/>
+  <code>15 categories</code> · <code>119 reference docs</code> · <code>19 agents</code> · <code>12 templates</code><br/>
   <a href="https://claude.megabyte.space"><strong>🌐 Showcase Website</strong></a>
 </div>
 
@@ -153,20 +153,20 @@ Auto-generated on every push to master. Each format uses native frontmatter for 
           │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐       │
           │   │ 05  │→ │ 06  │→ │ 07  │→ │ 08  │       │
           │   │Arch │  │Build│  │ QA  │  │Ship │       │
-          │   │ 11  │  │ 23  │  │ 24  │  │  9  │       │
+          │   │ 12  │  │ 26  │  │ 25  │  │ 10  │       │
           │   └─────┘  └─────┘  └─────┘  └─────┘       │
           │                                               │
           │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐       │
           │   │ 09  │→ │ 10  │→ │ 11  │→ │ 12  │       │
           │   │Brand│  │ UX  │  │Motn │  │Media│       │
-          │   │  4  │  │  1  │  │  0  │  │  5  │       │
+          │   │  7  │  │  2  │  │  1  │  │ 10  │       │
           │   └─────┘  └─────┘  └─────┘  └─────┘       │
           │                                               │
-          │          ┌─────┐  ┌─────┐                    │
-          │          │ 13  │→ │ 14  │                    │
-          │          │Grow │  │Ideas│                    │
-          │          │  7  │  │  0  │                    │
-          │          └─────┘  └─────┘                    │
+          │   ┌─────┐  ┌─────┐  ┌─────┐                  │
+          │   │ 13  │→ │ 14  │→ │ 15  │                  │
+          │   │Grow │  │Ideas│  │ Gen │                  │
+          │   │  7  │  │  0  │  │  9  │                  │
+          │   └─────┘  └─────┘  └─────┘                  │
           │                                               │
           │   Numbers = reference docs per category       │
           └──────────────────────────────────────────────┘
@@ -178,17 +178,17 @@ Auto-generated on every push to master. Each format uses native frontmatter for 
 | 02 | **Goal & Brief** | — | Product thesis from a domain name, business model inference |
 | 03 | **Planning & Research** | 1 | Competitive analysis, task decomposition, parallel workstreams |
 | 04 | **Preference & Memory** | 3 | Voice of Customer data, user preferences, behavioral psychology |
-| 05 | **Architecture & Stack** | 11 | CF Workers, Hono, Drizzle v1, Coolify, MCP, auth, API design, multi-tenancy |
-| 06 | **Build & Slice Loop** | 23 | Forms, search, blog, i18n, PWA, webhooks, admin, data tables, chat |
-| 07 | **Quality & Verification** | 24 | E2E, a11y, security hardening, perf, visual QA, adversarial, AI testing |
-| 08 | **Deploy & Runtime** | 9 | CI/CD, launch-day sequence, uptime, backup, changelog, GitHub CI fix |
-| 09 | **Brand & Content** | 4 | SEO engine, copy system, email templates, social automation |
-| 10 | **Design System** | 1 | Anti-slop design, dark-first, bold typography, CSS architecture |
-| 11 | **Motion & Interaction** | — | Scroll-driven animations, View Transitions, reduced-motion |
-| 12 | **Media Orchestration** | 5 | Image/video generation, AI prompts, compression, OG previews, diagramming |
+| 05 | **Architecture & Stack** | 12 | CF Workers, Hono, Drizzle v1, Coolify, MCP, auth, API design, multi-tenancy |
+| 06 | **Build & Slice Loop** | 26 | Forms, search, blog, i18n, PWA, webhooks, admin, data tables, chat |
+| 07 | **Quality & Verification** | 25 | E2E, a11y, security hardening, perf, visual QA, adversarial, AI testing |
+| 08 | **Deploy & Runtime** | 10 | CI/CD, launch-day sequence, uptime, backup, changelog, GitHub CI fix |
+| 09 | **Brand & Content** | 7 | SEO engine, copy system, email templates, social automation |
+| 10 | **Design System** | 2 | Anti-slop design, dark-first, bold typography, CSS architecture |
+| 11 | **Motion & Interaction** | 1 | Scroll-driven animations, View Transitions, reduced-motion |
+| 12 | **Media Orchestration** | 10 | Image/video generation, AI prompts, compression, OG previews, diagramming |
 | 13 | **Growth & Observability** | 7 | Stripe billing, analytics, Sentry alerts, email, experiments, CRO |
 | 14 | **Idea Engine** | — | Autonomous research, evidence-backed improvement proposals |
-| 15 | **Site Generation** | 12 | Full-corpus rebuild, slot-first DALL-E media, NotebookLM podcast/infographic/video, citations |
+| 15 | **Site Generation** | 9 | Full-corpus rebuild, slot-first DALL-E media, NotebookLM podcast/infographic/video, citations |
 
 ## Agents
 
@@ -312,7 +312,7 @@ Every deploy must clear all gates. No exceptions. No overrides.
 
 ## Task Routing
 
-The router loads the smallest useful subset per task — never the full 113 docs. See [`_router.md`](_router.md) for the complete routing table.
+The router loads the smallest useful subset per task — never the full 119 docs. See [`_router.md`](_router.md) for the complete routing table.
 
 | When you say... | Skills loaded |
 |-----------------|---------------|
