@@ -124,6 +124,87 @@ When `_pdf_facts.json` contains a CV with ≥3 timeline-eligible entries (positi
 
 **Budget split:** GPT-4o vision QA capped at $1 (see completeness-verification). Media generation/acquisition is a SEPARATE budget — spend what's needed to make the site gorgeous. Ideogram (~$0.05/logo), GPT Image 1.5 (~$0.04/image), Stability (~$0.03/image), stock APIs (free tiers). Typical media budget: $0.50-2.00/site. This is GOOD spend — it creates the content that makes sites convert.
 
+## R2 Self-Hosting Pipeline (***NO CDN HOTLINKS — UNIVERSAL — BUILD-BREAKING — 2026-05-02 lonemountainglobal.com cycle***)
+
+Every image, video, font, PDF, and JSON file the source site references via third-party CDN MUST be downloaded at build time, content-hashed, written to `public/assets/migrated/<sha256-prefix>.<ext>`, and rewritten throughout the source code so the production bundle has zero outbound CDN dependencies. The deployed site MUST self-host every asset on `<slug>.projectsites.dev` (R2-backed) — no `cdn.shopify.com`, no `*.squarespace-cdn.com`, no `*.wp.com`, no `*.wixstatic.com`, no `*.imgix.net`, no `images.ctfassets.net`, no `*.contentful.com`, no `*.cloudinary.com`, no random WordPress upload paths. Reference incident: lonemountainglobal.com 2026-05-02 — footer logo + 8 hero images hotlinked to source WordPress CDN; site visually broke when source WordPress was taken down for maintenance, AND every page load leaked referrer to the source host (privacy + brand-leak risk).
+
+**Vite plugin (`template/scripts/rewrite-cdn-assets.mjs`):** runs as `enforce: 'post'` Vite transform on every `.tsx|.jsx|.ts|.js|.html|.css|.json` file. Pseudocode:
+
+```js
+import { createHash } from 'node:crypto';
+import { writeFile, mkdir } from 'node:fs/promises';
+import { fetch } from 'undici';
+
+const CDN_HOSTS = [
+  'cdn.shopify.com', 'squarespace-cdn.com', 'wp.com', 'wixstatic.com', 'imgix.net',
+  'cloudinary.com', 'contentful.com', 'ctfassets.net', 'sanity.io', 'prismic.io',
+  'shopifycdn.com', 'shopify.com/s/files', 'i0.wp.com', 'i1.wp.com', 'i2.wp.com', 'i3.wp.com',
+  'amazonaws.com/wp-content', 'akamaized.net', 'cloudfront.net', 'fastly.net',
+  'unsplash.com/photos', 'pexels.com/photos', 'pixabay.com/photo'
+];
+
+export function r2AssetRewriter() {
+  const downloads = new Map();
+  return {
+    name: 'r2-asset-rewriter',
+    enforce: 'post',
+    async transform(code, id) {
+      if (!/\.(tsx?|jsx?|html|css|json)$/.test(id)) return null;
+      const re = new RegExp(`https?://([^/"'\\s)]*?(${CDN_HOSTS.join('|')}))/[^"'\\s)]+`, 'g');
+      const out = code.replace(re, (match) => {
+        const ext = guessExt(match);
+        const hash = createHash('sha256').update(match).digest('hex').slice(0, 16);
+        const localPath = `/assets/migrated/${hash}.${ext}`;
+        downloads.set(localPath, match);
+        return localPath;
+      });
+      return out === code ? null : { code: out, map: null };
+    },
+    async closeBundle() {
+      await mkdir('public/assets/migrated', { recursive: true });
+      const limit = pLimit(8);
+      await Promise.all([...downloads].map(([local, remote]) => limit(async () => {
+        const res = await fetch(remote, { headers: { 'User-Agent': REAL_UA } });
+        if (!res.ok) throw new Error(`CDN download failed ${remote}: ${res.status}`);
+        const buf = Buffer.from(await res.arrayBuffer());
+        await writeFile(`public${local}`, buf);
+      })));
+    }
+  };
+}
+```
+
+**Asset-extension detection:** parse URL pathname, fall back to MIME from HEAD response. Always store the original-quality variant (drop `?w=400&h=400` query strings; fetch the bare URL when CDN serves higher-res). When source CDN gates by signed URL with expiring token, fetch ONCE at build time — the local mirror has no expiration.
+
+**Hash strategy:** sha256 of the *original URL* (not the bytes) — guarantees byte-identical rewrites across multiple builds + lets the same image referenced from multiple places dedupe to one local file. Bytes-hash would force re-download of every reference; URL-hash is a build-cache key.
+
+**Excluded hosts (KEEP as-is):** `googletagmanager.com`, `google-analytics.com`, `googleapis.com/maps`, `posthog.com`, `sentry.io`, `js.stripe.com`, `*.youtube.com/embed`, `*.vimeo.com/video`, `fonts.gstatic.com`, `fonts.googleapis.com` — these are first-party SaaS platforms with stable CDN URLs that we WANT loaded from origin (better caching, security policies, version stability). Self-hosting Google Analytics or Stripe.js breaks them.
+
+**Validator (`validate-no-cdn-hotlinks.mjs`):** post-build, grep dist/ for any URL matching `CDN_HOSTS` regex outside the excluded list — any match=fail with diagnostic showing source HTML location + suggested local replacement path. CSS `url(...)` and `<img src>` and JS string literals all checked.
+
+**Build cache:** `.cdn-rewrite-cache.json` keyed by sha256-prefix → original URL + last-fetched-at + bytes-md5. Skip re-download when file exists locally + cache entry <30d old + HEAD request to original returns same `etag` or `content-length`. Cuts incremental build CDN bandwidth ~95%.
+
+## Blog Featured-Image Fallback (***NEVER SKIP — UNIVERSAL — every imported blog post MUST have a featured image***)
+
+When migrating a source blog (Squarespace, WordPress, Wix, Ghost, Medium, Substack), some posts have empty or 404'd featured-image fields — old posts where the source author skipped the image, posts where the CMS lost the asset, posts whose featured image was a 1px tracking pixel. The rebuilt blog MUST NOT ship posts with missing or broken hero images. Every post gets a featured image at build time, sourced via this fallback chain:
+
+1. **Source `featured_image`/`og:image` URL** if HEAD-200 + bytes >5KB (filters out tracking pixels) + dimensions ≥800×600.
+2. **First inline `<img>` from post body** if HEAD-200 + dimensions ≥800×600 — the article's lead image is usually a fine hero.
+3. **Pexels search** by post title + tags + categories: top 3 results scored by GPT-4o vision against `(post_title, post_excerpt, brand_palette)`, pick highest scoring ≥7/10.
+4. **DALL-E generation** with per-post prompt encoding all 6 mandatory fields (page topic+intent verbatim from `post_title + post_excerpt`, brand palette, composition matching post genre, subject specificity, photographic technical specs, negative prompt). Cost ~$0.04-0.08/post. ~$2-4 per 50-post blog migration.
+5. **Brand-gradient SVG** as the hard-floor fallback — placeholder SVG with post title rendered + brand palette gradient. Used only when DALL-E spend ceiling tripped.
+
+**Per-post prompt template:**
+```
+Photorealistic editorial-style image illustrating "<post_title>". Subject: <subject from post_excerpt + first paragraph>. Brand palette: <brand-primary hex> + <brand-accent hex>. Composition: 16:9 wide, hero-card aspect. Mood: <mood inferred from post_tags or default "warm documentary">. Lighting: natural soft, golden hour. Lens: 85mm prime, shallow DoF. Negative prompt: no text, no watermarks, no logos, no extra fingers, no AI artifacts, no stock-photo cliches, no busy backgrounds, no clip-art aesthetic.
+```
+
+**Vision validation:** each fallback hero gets vision-scored before commit; <7/10 triggers regen via DALL-E with refined prompt (max 3 attempts per post — capped lower than slot regen ceiling because blog herofills are bulk). Final fallback: brand-gradient SVG. Never ship a post with NO image.
+
+**Storage:** generated heroes go to `public/assets/blog/<post-slug>-hero.<ext>` (slug-named for human-readable diffs across rebuilds, NOT hash-named like CDN-rewritten assets). JSON-LD `BlogPosting.image` references this path.
+
+**Validator (`validate-blog-featured-images.mjs`):** for every entry in `_corpus.json.posts[]`, assert `featured_image_url` is non-null AND HEAD-200 in dist AND dimensions ≥800×600. FAIL on any post missing a hero. Reference incident: njsk.org 2026-05-02 — 14 of 129 imported blog posts had broken Squarespace CDN hero URLs (404), shipped with `<img src="">` rendering as broken-image icon. Fix: featured-image fallback chain runs at corpus-import time, NEVER at first user view.
+
 ## API Priority Chain (***DALL-E ELEVATED — Brian's stated preference for slot-fill***)
 
 Real photos of the actual entity always win when they exist (Places/uploads/scrape — slots 1-3). Beyond that, DALL-E becomes the PRIMARY originator for every slot the source chain didn't naturally fill — it crafts the per-slot ultra-realistic perfect photo for each spot. Stock APIs are supplements + speed-passes, not the workhorse.

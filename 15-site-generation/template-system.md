@@ -265,6 +265,118 @@ main h3 > a:not([class*="btn-"]):not([data-no-underline]):not(:has(img)):not(:ha
 ```
 The `:not(:has(img)):not(:has(svg))` exclusions prevent the sweep from rendering under image/icon links (logo, icon-only social, image cards). The `[data-no-underline]` escape hatch lets per-component opt-out (rare). Hash-link scroll-margin pairs with the sticky header: `[id] { scroll-margin-top: 5.5rem } @media (min-width: 640px) { [id] { scroll-margin-top: 7rem } }` — placed in `@layer base` so anchor jumps land below the sticky nav.
 
+## Three-Site Review Templates (***2026-05-02 cycle — lonemountainglobal/njsk/nyfoldingbox 13-critique generalization***)
+
+These six template components ship in `template/src/components/` and `template/src/lib/` to enforce the 13 universal rules added to `~/.claude/rules/always.md`. Each maps to a `validate-*.mjs` gate in `quality-gates.md`.
+
+**BrandLogo.tsx (transparent-variant `<picture>` swap — fixes invisible-logo-on-matching-bg):** every container with potential bg-luminance mismatch (header on light bg, footer on dark bg, mobile menu, modal) renders the logo via `<BrandLogo variant="auto"|"dark"|"light" container="header"|"footer"|"hero">`. Component reads `_brand.json.logo.{transparent_dark, transparent_light, original}` and emits `<picture>` with `<source media="(prefers-color-scheme: dark)" srcset="<transparent_light>">` + `<img src="<transparent_dark>">` swap. Build pipeline (skill 09 logo extraction) MUST emit BOTH variants — if source logo has solid `<rect>` background, run `sharp.removeAlphaBackground()` + GPT-4o vision verify transparent corners. `_brand.json.logo` schema:
+```ts
+interface BrandLogo {
+  original_url: string;             // full horizontal/wordmark
+  original_icon_url: string;        // square icon-only
+  transparent_dark_url: string;     // dark-text variant for light bgs (header on cream/white)
+  transparent_light_url: string;    // light-text variant for dark bgs (footer on navy)
+  font_family: string;              // extracted via vision, used for nav/H1
+  dominant_luminance: number;       // 0-1, drives theme polarity
+}
+```
+Reference incident: lonemountainglobal.com 2026-05-02 — header logo had solid white `<rect>` background; on white nav bar = invisible. Validator (`validate-logo-transparent-variant.mjs`) GPT-4o-checks logo bbox vs container computed bg at 6bp.
+
+**XIcon.tsx (official X brand path — replaces stale Twitter bird):** ships in `template/src/components/icons/XIcon.tsx`:
+```tsx
+export function XIcon({ className = "h-5 w-5", ...props }: React.SVGAttributes<SVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-label="X (formerly Twitter)" {...props}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+}
+```
+Social-icon barrel `template/src/components/icons/index.ts` exports `XIcon` NOT `TwitterIcon`. All social link components import from this barrel. Validator (`validate-x-not-twitter.mjs`) greps `dist/**/*.{html,js}` for `viewBox="0 0 24 24"` paths starting `M23.643 4.937` (legacy Twitter bird) — any match=fail. Reference incident: njsk.org 2026-05-02 footer rendered Twitter bird; X has been rebranded since 2023.
+
+**FullBleedSection.tsx (full-viewport-width wrapper — fixes max-width-cropped sections):** ships in `template/src/components/FullBleedSection.tsx`:
+```tsx
+export function FullBleedSection({ children, className = "", ...props }: React.HTMLAttributes<HTMLElement>) {
+  return (
+    <section
+      className={`relative w-screen left-1/2 right-1/2 -mx-[50vw] ${className}`}
+      style={{ marginLeft: 'calc(50% - 50vw)', marginRight: 'calc(50% - 50vw)' }}
+      {...props}
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">{children}</div>
+    </section>
+  );
+}
+```
+The double-mechanism (Tailwind classes + inline `style`) survives Tailwind purge AND parent `overflow-x: hidden` containers. Inner `<div class="max-w-7xl">` re-centers content while the outer `<section>` bg/gradient extends edge-to-edge. Used for hero gradients, stat rollup bands, comparison tables on mobile, CTA bands. Validator (`validate-full-bleed-sections.mjs`): for every `<section data-fullbleed>`, asserts `getBoundingClientRect().width === window.innerWidth` at 6bp. Reference incident: nyfoldingbox.com 2026-05-02 — hero section was constrained inside `max-w-7xl` parent, leaving 100px white gutters on 1920px viewport.
+
+**ExpandableCard.tsx (FLIP animation, no-crop-on-expand):** ships in `template/src/components/ExpandableCard.tsx`. Pattern uses CSS Grid `grid-template-rows: 0fr → 1fr` transition with `min-height: 0; overflow: hidden` on collapsed state, switching to `overflow: visible; max-height: none` AFTER expand transition completes (`onTransitionEnd` handler removes the overflow clip). Critical: NEVER leave `overflow: hidden` on the expanded state — children with absolute-positioned tooltips, dropdowns, or multi-line text get clipped at the original card height. Pattern:
+```tsx
+const [expanded, setExpanded] = useState(false);
+const [transitionDone, setTransitionDone] = useState(false);
+const overflowClass = expanded && transitionDone ? 'overflow-visible' : 'overflow-hidden';
+
+<article className={`expandable-card grid transition-[grid-template-rows] duration-500 ease-out ${expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+  <div className={`${overflowClass}`} onTransitionEnd={() => setTransitionDone(expanded)}>
+    {children}
+  </div>
+</article>
+```
+For complex layouts where Grid `0fr→1fr` is insufficient (sibling animation, FLIP across columns), fallback to FLIP technique: capture `getBoundingClientRect()` First, set state Last, Invert via `transform: translateY(<delta>) scale(<ratio>)`, Play via `transition: transform 500ms`. Validator (`validate-expandable-card-no-crop.mjs`): Playwright clicks each `[data-expandable]`, waits 600ms, asserts `scrollHeight === clientHeight` (no overflow) AND no descendant with `position: absolute` is clipped by `overflow: hidden` ancestor. Reference incident: nyfoldingbox.com 2026-05-02 paperboard substrate guide — expandable cards used `overflow: hidden` post-expand, clipping the tooltip + spec table that grew taller than the original card.
+
+**R2AssetRewriter (build-time CDN rewrite — self-host all source images):** ships in `template/scripts/rewrite-cdn-assets.mjs`. Runs as Vite plugin AND as post-build pass:
+```js
+// Vite plugin
+export function r2AssetRewriter(): Plugin {
+  return {
+    name: 'r2-asset-rewriter',
+    enforce: 'post',
+    async transform(code, id) {
+      if (!/\.(tsx?|jsx?|html|css)$/.test(id)) return null;
+      const cdnHosts = ['cdn.shopify.com','squarespace-cdn.com','wp.com','wixstatic.com','imgix.net'];
+      const re = new RegExp(`https?://([^/]*?)(${cdnHosts.join('|')})/[^"'\\s)]+`, 'g');
+      const downloads: string[] = [];
+      const out = code.replace(re, (match) => {
+        const localPath = `/assets/migrated/${sha256(match).slice(0,16)}.${guessExt(match)}`;
+        downloads.push(`${match}|${localPath}`);
+        return localPath;
+      });
+      if (downloads.length) await batchDownload(downloads, 'public/assets/migrated/');
+      return out;
+    }
+  };
+}
+```
+Build pipeline: source-site scrape captures every `<img src>` + CSS `background-image:` URL pointing to source CDN → asset rewriter downloads each to `public/assets/migrated/<hash>.<ext>` → source code references rewrite to local paths → R2 upload self-hosts the asset under `<slug>/assets/migrated/`. Survives source-site CDN expiration, paywall, geofencing, robots block. Companion: `validate-no-cdn-hotlinks.mjs` greps `dist/**/*.{html,js,css}` for hostnames in `cdnHosts[]` array; any match=fail. Reference incident: lonemountainglobal.com 2026-05-02 — footer logo + 8 hero images hotlinked to original WordPress CDN; would 404 the day they migrate hosting.
+
+**Stripe-first DonationForm (***supersedes prior DonationForm spec — Stripe-Checkout-only, no PayPal fallback***):** prior DonationForm spec ALSO listed external-platform fallbacks (Donorbox/Givebutter/Classy/Bonterra). Three-site review showed njsk.org `/donate` shipped a PayPal link as primary CTA, looked dated + low-trust. New rule: every non-profit `/donate` page MUST default to Stripe Checkout primary CTA, with external-platform link demoted to "Other ways to give" footer. Implementation requires Stripe Connect OAuth (skill 06 stripe-first-donations.md):
+1. Non-profit signs up via projectsites.dev → connects Stripe account via Standard OAuth (`https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<ca_*>&scope=read_write&state=<csrf>`).
+2. ProjectSites stores `stripe_account_id` (acct_*) on `sites.stripe_connect_account` D1 column.
+3. DonationForm POSTs to `/api/sites/<id>/donate-checkout` with `{amount_cents, recurrence: 'one-time'|'monthly', donor_email?, on_behalf_of?, in_memory_of?}`.
+4. Worker creates Stripe Checkout Session with `payment_intent_data.application_fee_amount = round(amount * 0.029 + 30)` (2.9% + 30¢ platform fee, configurable per non-profit) and `payment_intent_data.transfer_data.destination = <stripe_account_id>` — funds settle directly to non-profit's Stripe account, projectsites.dev keeps platform fee.
+5. Returns Checkout URL → DonationForm `window.location.href` redirects donor to Stripe-hosted page.
+
+GiveDirectly preset amounts (universal default for all non-profits): `[10, 25, 50, 100, 250, 500]` + Custom input. Defaults to `recurrence: 'monthly'` (recurring donor LTV ~3x one-time per Fundraise Up 2024 benchmark). Cover-fees checkbox defaults ON, adds `Math.ceil((amount * 0.029 + 0.30) / 0.971 * 100) - amount * 100` cents to keep nonprofit's net = stated amount. Tribute fields ("In honor of" / "In memory of") map to Stripe Checkout `metadata.tribute_*` for receipt rendering.
+
+DonationForm props (post-three-site-review):
+```ts
+interface DonationFormProps {
+  siteId: string;                                    // for /api/sites/<id>/donate-checkout
+  stripeConnectAccountId: string;                    // acct_* — required, build fails if missing
+  ein: string;                                       // 501(c)(3) EIN, cited inline in tax-deductibility FAQ
+  orgName: string;
+  defaultRecurrence?: 'monthly' | 'one-time';        // defaults 'monthly'
+  suggestedAmounts?: number[];                       // defaults [10,25,50,100,250,500]
+  impactTiers: Array<{amount:number; outcome:string}>;
+  allocations: Array<{label:string; pct:number; refId?:string}>;
+  externalDonationUrl?: string;                      // demoted to "Other ways to give" footer ONLY
+  mailingAddress?: string[];                         // for mail-in checks
+  majorGiftsEmail?: string;
+  liveGoalEnabled?: boolean;
+}
+```
+Validator (`validate-donation-stripe-first.mjs`): for every site with `_research.json.category === 'non-profit'`, asserts `/donate` route exists AND DonationForm primary CTA is `<button type="submit">` posting to `/api/sites/<id>/donate-checkout` (NOT `<a href="https://paypal.com/...">` or external donation URL); external-platform link MUST appear ONLY inside `<section data-donate-section="other-ways">`. Reference incident: njsk.org 2026-05-02 `/donate` shipped a PayPal `<a>` button as primary CTA, no Stripe Connect, no preset amounts.
+
 ## DonationForm — Non-Profit /donate Page Spec (***EXPANDED***)
 
 Replaces the prior bare DonationForm. Used by nonprofits at `/donate`, churches at `/give`. Composed sections (top-to-bottom):
