@@ -151,16 +151,26 @@ Donation/payment: STRIPE_PAYMENT_LINK_URL (for DonationForm component, nonprofit
 
 ## One-Line Prompt → Mode → Build (***mode set by skill 02***)
 
-Skill 02 infers `mode` (portfolio | saas | local-business | non-profit | other) from prompt+domain+context. Skill 15 builds per mode — each mode has different defaults for page count, feature set, content depth, and prompt-detail expectations. The prompt CAN handle anything; mode just biases defaults.
+Skill 02 infers `mode` (portfolio | saas | local-business | non-profit | other) from prompt+domain+context. Skill 15 builds per mode — each mode has different defaults for page count, feature set, content depth, prompt-detail expectations, and quality gates. The prompt CAN handle anything; mode just biases defaults. See `small-business-mode.md` for the full local-business spec and `non-technical-owner-onboarding.md` for the zero-code owner experience.
+
+**Mode inference table (***ALL FIELDS — pre-build defaults per mode***):**
+
+| Mode | Trigger phrases | Min pages | Required pre-research | Primary CTA | Trust stack | Stripe wiring | Owner-tech assumed |
+|---|---|---|---|---|---|---|---|
+| `portfolio` | bare domain, "redo my site", "make my site better", founder name | 4 (`/`, `/about`, `/work`, `/contact`) + optional `/blog` `/now` `/uses` | git config + GitHub + Gravatar + skill 02 founder chain | "View work" or "Hire me" | GitHub repos + LinkedIn endorsements + client logos | none default; opt-in for product/freelance pricing | high (operator builds own site) |
+| `saas` | "SaaS", "platform", "tool", "API", product name + value prop | 7+ (`/`, `/pricing`, `/features`, `/docs`, `/blog`, `/about`, `/contact`) + every pSEO landing | competitor scan + stack inference (skill 05) + audience persona | "Start free trial" or "Book demo" | logos row + testimonials + AggregateRating + case studies | full Checkout + subscriptions + webhooks (skill 13) | high (founder is technical) |
+| `local-business` | restaurant\|salon\|medical\|legal\|retail\|contractor\|gym\|auto\|pet (see small-business-mode.md trigger list) | 12+ (home + about + services index + per-service pSEO + team + contact + reviews + faq + gallery) | **Google Places NON-NEGOTIABLE** + competitor nearbysearch + photos + reviews | "Call now" or "Book now" or "Get quote" or "Order online" | Google reviews sync + license/cert visibility + years-in-business + actual photos | Stripe-first booking deposits (Cal.com→Stripe Checkout) | **none — see non-technical-owner-onboarding.md** |
+| `non-profit` | charity, foundation, mission, "501c3", donation language | 8+ (home + about + impact + programs + donate + events + contact + blog) + per-program pSEO | mission scrape + impact metrics + 990 lookup (Candid/GuideStar) + grant history | "Donate now" (Stripe Donation links) | impact stats with citations + board bios + financial transparency badge | Stripe Donation forms primary; fallback Stripe Checkout one-time + recurring | low-medium (volunteer ops staff) |
+| `other` | anything not matching above | judgment by AI from context | judgment by AI | judgment by AI | judgment by AI | judgment by AI | judgment by AI |
 
 **Detail expected in one-line prompt by mode:**
-- `portfolio`: minimal — domain + maybe a hint ("redo my website", "build me a portfolio at brian.dev", or just the domain). AI fills everything from inference (git config + GitHub + Gravatar + skill 02 founder chain).
+- `portfolio`: minimal — domain + maybe a hint ("redo my website", "build me a portfolio at brian.dev", or just the domain). AI fills everything from inference.
 - `saas`: richer — product name + at minimum a 1-sentence value prop. Often includes pricing, target market, integrations, competitors. AI infers stack defaults from skill 05.
-- `local-business`: moderate — biz name + location/category. AI fills via Google Places + scrape.
+- `local-business`: moderate — biz name + location/category (or just `mariospizza.com`). AI fills via Google Places + scrape. Owner experience optimized via `non-technical-owner-onboarding.md`.
 - `non-profit`: moderate — mission + cause. AI fills via scrape + donation CTA scaffolding.
 - `other`: variable — AI applies judgment, scans context, picks defaults.
 
-When prompt is genuinely ambiguous, AI defaults to `portfolio` (lowest blast radius) and announces the assumption in `PROJECT_BRIEF.md § Mode`.
+When prompt is genuinely ambiguous, AI defaults to `portfolio` (lowest blast radius) and announces the assumption in `PROJECT_BRIEF.md § Mode`. When source domain exists for any mode, source-fidelity loop runs (`source-fidelity-loop.md`).
 
 ## Optional SaaS↔Portfolio Sibling Build (***RECOMMENDED, NOT BLIND***)
 
