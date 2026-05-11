@@ -55,7 +55,7 @@ claude mcp add google-workspace -- npx -y @taylorwilsdon/google_workspace_mcp
 **Enterprise stack:** MCP (tool access) + A2A (agent coordination) = complete agent interop. MCP for connecting to services, A2A for multi-agent orchestration across teams/orgs.
 
 ### MCP -> Skill Mapping
-Cloudflare→08-deploy, Playwright→07-quality, Stripe→13/stripe-billing, GitHub→08/ci-cd-pipeline, Coolify→05/mcp-and-cloud-integrations, Firecrawl→03/competitive-analysis, Postiz→09/social-automation, n8n→06/webhook-system, Gmail→09/email-templates, WordPress→06/blog-and-content-engine, Notion→09/documentation-and-codebase-hygiene, Sentry→13-observability, PostHog→13-observability, Computer Use→07-quality, Plane→03-planning
+Cloudflare→08-deploy, Playwright→07-quality, Square→13/square-payments (donations/SMB default), Stripe→13/stripe-billing (SaaS subs/enterprise only), GitHub→08/ci-cd-pipeline, Coolify→05/mcp-and-cloud-integrations, Firecrawl→03/competitive-analysis, Postiz→09/social-automation, n8n→06/webhook-system, Gmail→09/email-templates, WordPress→06/blog-and-content-engine, Notion→09/documentation-and-codebase-hygiene, Sentry→13-observability, PostHog→13-observability, Computer Use→07-quality, Plane→03-planning
 
 ## Secret Hygiene
 
@@ -73,7 +73,8 @@ Cloudflare→08-deploy, Playwright→07-quality, Stripe→13/stripe-billing, Git
 |----------|------|
 | AI | OPENAI_API_KEY, ANTHROPIC_API_KEY, IDEOGRAM_API_KEY |
 | Cloud | CLOUDFLARE_API_TOKEN, CF_ZONE_ID |
-| Payments | STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET |
+| Payments (donations/SMB default) | SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, SQUARE_APPLICATION_ID, SQUARE_ENVIRONMENT, SQUARE_WEBHOOK_SIGNATURE_KEY |
+| Payments (SaaS subs / enterprise) | STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET |
 | Email | RESEND_API_KEY |
 | Auth | CLERK_SECRET_KEY |
 | Analytics | POSTHOG_API_KEY, SENTRY_DSN, GA4_MEASUREMENT_ID |
@@ -132,4 +133,4 @@ Hey — I need a [SERVICE] key. Options:
 
 ## Ownership
 **Owns:** MCP discovery/connection, secrets discovery, cloud API patterns, AI API strategy, notification patterns, automation hooks, projectsites.dev branding.
-**Never owns:** Specific implementations (→individual skills), payments (→13/stripe-billing), email (→09/email-templates), deployment (→08-deploy).
+**Never owns:** Specific implementations (→individual skills), donations + SMB payments (→13/square-payments), SaaS subscriptions + enterprise billing (→13/stripe-billing), email (→09/email-templates), deployment (→08-deploy).

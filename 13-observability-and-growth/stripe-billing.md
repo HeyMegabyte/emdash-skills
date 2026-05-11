@@ -1,8 +1,11 @@
 ---
 name: "Stripe Billing"
-description: "Stripe payments with sensible defaults: free tier + $50/mo pro for SaaS, or donation presets ($10/$25/$50/$100/$250/$500) for nonprofits styled like givedirectly.org. Auto-creates Stripe Products, Prices, and checkout endpoints. Brand-matched checkout with Stripe Link for one-click payments. Donation goals with real-time progress bars via Durable Objects."
-updated: "2026-04-23"
+description: "SaaS subscriptions + enterprise billing default. Tiered pricing, seat-based billing, Stripe Tax, Billing Meters (metered usage), Entitlements (feature gating), Connect (marketplaces), Atlas, Agentic Commerce (ACP). Use Stripe ONLY when SaaS subscriptions / metered usage / Entitlements / Connect marketplaces / enterprise invoicing are involved — for nonprofits, donations, and small-business one-time charges use 13/square-payments instead."
+updated: "2026-05-10"
 ---
+
+> **Routing rule (***FIRST DECISION***):** If the feature is nonprofit donations, small-business one-time checkout, restaurant/retail POS, or sub-$100 average ticket → use [13/square-payments](square-payments.md). Stripe is reserved for SaaS subscriptions, metered usage, Entitlements feature gating, Connect marketplaces, and enterprise invoicing. Hybrid is allowed (Square for donations + Stripe for SaaS subs on same site).
+
 
 # Stripe Billing
 ## Default Pricing Models
