@@ -13,6 +13,7 @@ compatibility:
 submodules:
   - design-tokens.md
   - build-breaking-rules.md
+  - cinematic-doctrine.md
 ---
 
 # 10 — Experience and Design System
