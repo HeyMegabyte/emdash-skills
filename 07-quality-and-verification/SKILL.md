@@ -82,15 +82,15 @@ TypeScript (tsc --noEmit), ESLint flat config, Prettier. Fix all. Suppress lines
 ## L3: E2E (Playwright v1.59+)
 Homepage-first. No sleeps (waitFor, toBeVisible, waitForResponse). Stable selectors: data-testid→role→text→Stagehand AI fallback. Parallel-safe, deterministic, production URLs. 6bp: 375/390/768/1024/1280/1920.
 
-## L4: Visual
-Percy AI Visual Review Agent (3x review reduction, 40% false positive filtering, OCR text-shift elimination). Chromatic for component-level (Storybook+Playwright). pixelmatch for local CI. See visual-inspection-loop.md + completeness-verification.md.
+## L4: Visual (Dual-Vision — see ~/.claude/rules/visual-inspection.md)
+**Dual-vision doctrine**: Claude Vision (Sonnet 4.6 via Max 20x OAuth) = PRIMARY FREE, fires per-slice + per-section + per-route + per-iteration + 6bp uncapped. GPT-4o = METERED JUDGE, $0.50/build cap, reserved for hero/ATF + brand-fidelity vs source + final pre-publish gate + arbitration when Claude<8 OR Claude+a11y disagree. Consensus: both ≥8 → ship | one <8 → remediate. Tier 1 a11y tree+axe-core FREE → Tier 2 Claude Vision FREE → Tier 3 GPT-4o METERED. Web dev is visual — code-only review = incomplete. Percy AI Visual Review (3x reduction, 40% false positive filtering) for full-page regression. Chromatic for component-level (Storybook+Playwright). pixelmatch for local CI. See visual-inspection-loop.md (dual-vision protocol) + completeness-verification.md.
 
 ## 8-Check Quality Gate
 
 | # | Check | Pass |
 |---|-------|------|
 | 1 | E2E | 0 failures |
-| 2 | Visual | No breaks 1280+375px, Percy/Chromatic clean |
+| 2 | Visual | Dual-vision both ≥8/10 6bp (Claude FREE + GPT-4o final-gate), Percy/Chromatic clean |
 | 3 | Links | All 200 |
 | 4 | SEO | JSON-LD 4+, OG 1200x630, sitemap |
 | 5 | Performance | LCP<2.5s, INP<200ms, CLS<0.1 |
